@@ -12,4 +12,5 @@ public class Paciente {
 		this.idCodPaciente = idCodPaciente;
 	}
 	
+	int Maricon;
 }
