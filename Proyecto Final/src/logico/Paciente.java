@@ -1,6 +1,7 @@
 package logico;
 
-public class Paciente {
+public class Paciente 
+{
 	
 	private String idCodPaciente;
 	
@@ -12,6 +13,6 @@ public class Paciente {
 		this.idCodPaciente = idCodPaciente;
 	}
 	
-	int Maricon;
-	int dame_todo;
 }
+
+
