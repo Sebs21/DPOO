@@ -13,4 +13,5 @@ public class Paciente {
 	}
 	
 	int Maricon;
+	int dame_todo;
 }
