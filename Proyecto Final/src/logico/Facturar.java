@@ -18,5 +18,23 @@ public class Facturar
 	public void setMontoPagar(float montoPagar) {
 		this.montoPagar = montoPagar;
 	}
+
+	public Consulta getConsulta() {
+		return consulta;
+	}
+
+	public void setConsulta(Consulta consulta) {
+		this.consulta = consulta;
+	}
+
+	public Seguro getSeguro() {
+		return seguro;
+	}
+
+	public void setSeguro(Seguro seguro) {
+		this.seguro = seguro;
+	}
+	
+	
 	
 }

@@ -1,21 +1,25 @@
 package logico;
 
-public class Paciente 
-{
+import java.util.ArrayList;
+
+public class Paciente extends Persona {	
 	
 	private String idCodPaciente;
 	private String enfermedad;
 	private int edad;
 	private Seguro seguro;
+	private ArrayList<HistoriaClinica>miHistoriaClinica;
 	
-	public Paciente ( String idCodPaciente, String enfermedad, int edad )
-	{
+	public Paciente(String cedula, String nombre, String apellido, String idCodPaciente, String enfermedad, int edad,
+			Seguro seguro, ArrayList<HistoriaClinica> miHistoriaClinica) {
+		super(cedula, nombre, apellido);
 		this.idCodPaciente = idCodPaciente;
 		this.enfermedad = enfermedad;
 		this.edad = edad;
 		this.seguro = seguro;
+		this.miHistoriaClinica = miHistoriaClinica;
 	}
-	
+
 	public String getEnfermedad() {
 		return enfermedad;
 	}
@@ -47,7 +51,14 @@ public class Paciente
 	public void setIdCodPaciente(String idCodPaciente) {
 		this.idCodPaciente = idCodPaciente;
 	}
+
+	public ArrayList<HistoriaClinica> getMiHistoriaClinica() {
+		return miHistoriaClinica;
+	}
+
+	public void setMiHistoriaClinica(ArrayList<HistoriaClinica> miHistoriaClinica) {
+		this.miHistoriaClinica = miHistoriaClinica;
+	}
 	
 }
-
 
