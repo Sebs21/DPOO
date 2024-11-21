@@ -2,13 +2,15 @@ package logico;
 
 import java.util.Date;
 
-public class inve_vacunacion {
+public class inve_vacunacion 
+{
 	
 	private int cant_vacuna;
 	private String nombre_vacuna;
 	private Date fechaRegistroVacuna;
 	
-	public inve_vacunacion(int cant_vacuna, String nombre_vacuna, Date fechaRegistroVacuna) {
+	public inve_vacunacion( int cant_vacuna, String nombre_vacuna, Date fechaRegistroVacuna ) 
+	{
 		super();
 		this.cant_vacuna = cant_vacuna;
 		this.nombre_vacuna = nombre_vacuna;

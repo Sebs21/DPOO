@@ -2,12 +2,14 @@ package logico;
 
 import java.util.ArrayList;
 
-public class Control_vacunacion {
+public class Control_vacunacion 
+{
 	private Consulta consulta;
 	private ArrayList<vacunacion> vacuna;
 	private ArrayList<inve_vacunacion> inve_vac;
 	
-	public Control_vacunacion(Consulta consulta, ArrayList<vacunacion> vacuna, ArrayList<inve_vacunacion> inve_vac) {
+	public Control_vacunacion( Consulta consulta, ArrayList<vacunacion> vacuna, ArrayList<inve_vacunacion> inve_vac ) 
+	{
 		super();
 		this.consulta = consulta;
 		this.vacuna = vacuna;

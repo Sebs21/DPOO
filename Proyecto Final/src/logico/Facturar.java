@@ -2,13 +2,24 @@ package logico;
 
 public class Facturar 
 {
+	
 	private Consulta consulta;
 	private Seguro seguro;
 	private float montoPagar;
+	private String id;
 	
-	public Facturar ( float montoPagar )
+	public Facturar ( String id, float montoPagar )
 	{
+		this.id = id;
 		this.montoPagar = montoPagar;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public float getMontoPagar() {

@@ -1,12 +1,14 @@
 package logico;
 
-public abstract class Persona {
+public abstract class Persona 
+{
 	
 	protected String cedula;
 	protected String nombre;
 	protected String apellido;
 	
-	public Persona(String cedula, String nombre, String apellido) {
+	public Persona( String cedula, String nombre, String apellido ) 
+	{
 		super();
 		this.cedula = cedula;
 		this.nombre = nombre;

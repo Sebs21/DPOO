@@ -2,11 +2,13 @@ package logico;
 
 import java.util.ArrayList;
 
-public class HistoriaClinica {
+public class HistoriaClinica 
+{
 	
 	private ArrayList<Consulta>misConsultas;
 
-	public HistoriaClinica(ArrayList<Consulta> misConsultas) {
+	public HistoriaClinica( ArrayList<Consulta> misConsultas ) 
+	{
 		super();
 		this.misConsultas = new ArrayList<>();
 	}

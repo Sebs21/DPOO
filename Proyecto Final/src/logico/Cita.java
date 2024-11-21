@@ -2,12 +2,14 @@ package logico;
 
 import java.util.Date;
 
-public class Cita {
+public class Cita 
+{
 	private Doctor doctor;
 	private Persona persona;
 	private Date fechaCita;
 	
-	public Cita(Doctor doctor, Persona persona, Date fechaCita) {
+	public Cita( Doctor doctor, Persona persona, Date fechaCita ) 
+	{
 		super();
 		this.doctor = doctor;
 		this.persona = persona;

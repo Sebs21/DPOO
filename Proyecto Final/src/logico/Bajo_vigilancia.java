@@ -1,13 +1,15 @@
 package logico;
 
-public class Bajo_vigilancia {
+public class Bajo_vigilancia 
+{
 	
 	private int codVigilancia;
 	private String enfermedad;
 	private int tiempoVigilancia;
 	private String monitoreo;
 	
-	public Bajo_vigilancia(int codVigilancia, String enfermedad, int tiempoVigilancia, String monitoreo) {
+	public Bajo_vigilancia(int codVigilancia, String enfermedad, int tiempoVigilancia, String monitoreo) 
+	{
 		super();
 		this.codVigilancia = codVigilancia;
 		this.enfermedad = enfermedad;
