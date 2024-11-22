@@ -7,7 +7,16 @@ public class Facturar
 	private Seguro seguro;
 	private float montoPagar;
 	private String id;
+	private boolean seleccionado;
 	
+	public boolean isSeleccionado() {
+		return seleccionado;
+	}
+
+	public void setSeleccionado(boolean seleccionado) {
+		this.seleccionado = seleccionado;
+	}
+
 	public Facturar ( String id, float montoPagar )
 	{
 		this.id = id;

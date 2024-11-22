@@ -13,7 +13,16 @@ public class Consulta
 	private Paciente paciente;
 	private boolean importancia;
 	private boolean noimportancia;
+	private boolean seleccionado;
 	
+	public boolean isSeleccionado() {
+		return seleccionado;
+	}
+
+	public void setSeleccionado(boolean seleccionado) {
+		this.seleccionado = seleccionado;
+	}
+
 	public Consulta ( String id, String enfermedad, Date fechaConsulta, String descripcion, boolean importancia )
 	{
 		this.id = id;

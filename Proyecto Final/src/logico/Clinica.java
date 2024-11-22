@@ -5,9 +5,9 @@ import java.util.ArrayList;
 public class Clinica 
 {
 	
-	private ArrayList<Persona> misPersonas;
 	private ArrayList<Consulta> misConsultas;
 	private ArrayList<Facturar> misFacturas;
+	private ArrayList<Cita> misCitas;
 	private ArrayList<Control_enfermedad> control_enfer;
 	private ArrayList<Control_vacunacion> control_vacu;
 	private ArrayList<Paciente> misPacientes;
@@ -16,7 +16,8 @@ public class Clinica
 	public static int idPersona;
 	public static int idConsulta;
 	public static int idFactura;
-	public static int controlEnfemerdad;
+	public static int idCita;
+	public static int controlEnfermerdad;
 	public static int controlVacuna;
 	
 	public static Clinica clinica = null;
@@ -24,15 +25,54 @@ public class Clinica
 	public Clinica() 
 	{
 		super();
-		misPersonas = new ArrayList<>();
 		misPacientes = new ArrayList<>();
 		misDoctores = new ArrayList<>();
 		misConsultas = new ArrayList<>();
 		misFacturas = new ArrayList<>();
 		control_enfer = new ArrayList<>();
 		control_vacu = new ArrayList<>();
+		
+		idPersona = 1;
+		idConsulta = 1;
+		idFactura = 1;
+		controlEnfermedad = 1;
+		controlVacuna = 1;
+		idCita = 1;
+		
 	}
 	
+	public ArrayList<Cita> getMisCitas() {
+		return misCitas;
+	}
+
+	public void setMisCitas(ArrayList<Cita> misCitas) {
+		this.misCitas = misCitas;
+	}
+
+	public static int getControlEnfermerdad() {
+		return controlEnfermerdad;
+	}
+
+	public static void setControlEnfermerdad(int controlEnfermerdad) {
+		Clinica.controlEnfermerdad = controlEnfermerdad;
+	}
+
+	public static int getControlVacuna() {
+		return controlVacuna;
+	}
+
+	public static void setControlVacuna(int controlVacuna) {
+		Clinica.controlVacuna = controlVacuna;
+	}
+
+	public static Clinica getClinica() {
+		return clinica;
+	}
+
+	public static void setClinica(Clinica clinica) {
+		Clinica.clinica = clinica;
+	}
+
 	public static Clinica getInstance ()
 	{
 		if ( clinica == null )
@@ -58,14 +98,6 @@ public class Clinica
 
 	public void setMisDoctores(ArrayList<Doctor> misDoctores) {
 		this.misDoctores = misDoctores;
-	}
-
-	public ArrayList<Persona> getMisPersonas() {
-		return misPersonas;
-	}
-	
-	public void setMisPersonas(ArrayList<Persona> misPersonas) {
-		this.misPersonas = misPersonas;
 	}
 	
 	public ArrayList<Consulta> getMisConsultas() {
@@ -211,5 +243,109 @@ public class Clinica
 	{
 		misFacturas.remove( aux );
 	}
+	
+	public void eliminarCita ( Cita aux )
+	{
+		misCitas.remove( aux );
+	}
+	
+	public void agregarDoctor ( Doctor aux )
+	{
+		misDoctores.add( aux );
+	}
+	
+	public void agregarPaciente ( Paciente aux )
+	{
+		misPacientes.add( aux );
+	}
+	
+	public void agregarConsulta ( Consulta aux )
+	{
+		misConsultas.add( aux );
+	}
+	
+	public void agregarCita ( Cita aux )
+	{
+		misCitas.add( aux );
+	}
+	
+	public void agregarFacturar ( Facturar aux )
+	{
+		misFacturas.add( aux );
+	}
+	
+	public Facturar calcularFacturasTotales ( Facturar aux )
+	{
+		
+	}
+	
+	public ArrayList<Paciente> PacientesNoSeleccionados ()
+	{
+		
+		ArrayList<Paciente> noSeleccionadosArrayList = new ArrayList<>();
+		
+		for ( Paciente paciente : misPacientes )
+		{
+			if ( !paciente )
+			{
+				noSeleccionadosArrayList.add( paciente );
+			}
+		}
+		
+		return noSeleccionadosArrayList;
+		
+	}
+	
+	public ArrayList<Doctor> DoctoresNoSeleccionados ()
+	{
+		
+		ArrayList<Paciente> noSeleccionadosArrayList = new ArrayList<>();
+		
+		for ( Queso queso : misQuesos )
+		{
+			if ( !queso.getSeleccionado() )
+			{
+				noSeleccionadosArrayList.add( queso );
+			}
+		}
+		
+		return noSeleccionadosArrayList;
+		
+	}
+	
+	public ArrayList<Consulta> ConsultasNoSeleccionadas ()
+	{
+		
+		ArrayList<Paciente> noSeleccionadosArrayList = new ArrayList<>();
+		
+		for ( Queso queso : misQuesos )
+		{
+			if ( !queso.getSeleccionado() )
+			{
+				noSeleccionadosArrayList.add( queso );
+			}
+		}
+		
+		return noSeleccionadosArrayList;
+		
+	}
+	
+	public ArrayList<Cita> CitasNoSeleccionadas ()
+	{
+		
+		ArrayList<Paciente> noSeleccionadosArrayList = new ArrayList<>();
+		
+		for ( Queso queso : misQuesos )
+		{
+			if ( !queso.getSeleccionado() )
+			{
+				noSeleccionadosArrayList.add( queso );
+			}
+		}
+		
+		return noSeleccionadosArrayList;
+		
+	}
+	
 	
 }

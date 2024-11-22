@@ -7,7 +7,16 @@ public class Cita
 	private Doctor doctor;
 	private Persona persona;
 	private Date fechaCita;
+	private boolean seleccionado;
 	
+	public boolean isSeleccionado() {
+		return seleccionado;
+	}
+
+	public void setSeleccionado(boolean seleccionado) {
+		this.seleccionado = seleccionado;
+	}
+
 	public Cita( Doctor doctor, Persona persona, Date fechaCita ) 
 	{
 		super();

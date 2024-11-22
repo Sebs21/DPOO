@@ -6,7 +6,16 @@ public class Seguro
 	private String nombreEmpresa;
 	private String tipoDeSeguro;
 	private float pago;
+	private boolean seleccionado;
 	
+	public boolean isSeleccionado() {
+		return seleccionado;
+	}
+
+	public void setSeleccionado(boolean seleccionado) {
+		this.seleccionado = seleccionado;
+	}
+
 	public Seguro ( String idSeguro, String nombreEmpresa, String tipoDeSeguro, float pago )
 	{
 		this.idSeguro = idSeguro;
