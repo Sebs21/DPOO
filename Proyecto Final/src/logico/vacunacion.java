@@ -4,7 +4,6 @@ import java.util.Date;
 
 public class vacunacion 
 {
-	
 	private int cod_Vacu;
 	private String tipo_Vacuna;
 	private Date fecha_Vacunacion;

@@ -2,24 +2,34 @@ package visual;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
+
+import logico.ListaVenta;
+import logico.Paciente;
+
 import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
+
 import java.awt.Color;
 
 public class InterfazDoctor extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTable tblPacientes;
-
+	private DefaultTableModel modelo;
+	private JTable table;
 	/**
 	 * Launch the application.
 	 */
@@ -46,7 +56,7 @@ public class InterfazDoctor extends JDialog {
 		{
 			JPanel panel = new JPanel();
 			panel.setBorder(new TitledBorder(new LineBorder(new Color(224, 255, 255), 3, true), "Pacientes", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-			panel.setBounds(502, 11, 478, 496);
+			panel.setBounds(255, 11, 725, 496);
 			contentPanel.add(panel);
 			panel.setLayout(new BorderLayout(0, 0));
 			
@@ -64,12 +74,6 @@ public class InterfazDoctor extends JDialog {
 			JButton btnInformacion = new JButton("M\u00E1s Informaci\u00F3n");
 			buttonPane.add(btnInformacion);
 			{
-				JButton okButton = new JButton("Aceptar");
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
-			}
-			{
 				JButton cancelButton = new JButton("Cancelar");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -80,5 +84,31 @@ public class InterfazDoctor extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+		
+		modelo = new DefaultTableModel();
+        String[] headers = {"Cedula", "Nombre", "Apellido", "Edad", "Seguro", "Enfermedad", "Vacunas"};
+        modelo.setColumnIdentifiers(headers);
+		
+        table = new JTable(modelo);
+        table.setBorder(new MatteBorder(4, 6, 4, 6, (Color) new Color(176, 196, 222)));
+        table.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+        
 	}
+	
+	public void actualizarTablaDoctor(ArrayList<Paciente>misPacientes) {
+		modelo.setColumnCount(0);
+		for (Paciente paciente : misPacientes) {
+			Object[] fila = { 
+	            	paciente.getCedula(),
+	            	paciente.getNombre(),
+	            	paciente.getApellido(),
+	            	paciente.getEdad(),
+	            	paciente.getSeguro().getNombreEmpresa(),
+	            	paciente.getEnfermedad(),
+	            	paciente.getMiVacuna() //Revisar si la funcion de getVacuna retorna solo 1 o las retorna todas.
+	            };
+	            modelo.addRow(fila);
+		}
+	}
+	
 }

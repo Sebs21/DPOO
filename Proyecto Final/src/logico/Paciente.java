@@ -10,16 +10,17 @@ public class Paciente extends Persona
 	private int edad;
 	private Seguro seguro;
 	private ArrayList<HistoriaClinica>miHistoriaClinica;
+	private ArrayList<vacunacion>miVacuna;
 	
 	public Paciente(String cedula, String nombre, String apellido, String idCodPaciente, String enfermedad, int edad,
-			Seguro seguro, ArrayList<HistoriaClinica> miHistoriaClinica) 
-	{
+			Seguro seguro, ArrayList<HistoriaClinica> miHistoriaClinica, ArrayList<vacunacion> miVacuna) {
 		super(cedula, nombre, apellido);
 		this.idCodPaciente = idCodPaciente;
 		this.enfermedad = enfermedad;
 		this.edad = edad;
 		this.seguro = seguro;
 		this.miHistoriaClinica = miHistoriaClinica;
+		this.miVacuna = miVacuna;
 	}
 
 	public String getEnfermedad() {
@@ -60,6 +61,14 @@ public class Paciente extends Persona
 
 	public void setMiHistoriaClinica(ArrayList<HistoriaClinica> miHistoriaClinica) {
 		this.miHistoriaClinica = miHistoriaClinica;
+	}
+	
+	public ArrayList<vacunacion> getMiVacuna() {
+		return miVacuna;
+	}
+
+	public void setMiVacuna(ArrayList<vacunacion> miVacuna) {
+		this.miVacuna = miVacuna;
 	}
 	
 }
