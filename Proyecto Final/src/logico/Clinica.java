@@ -1,4 +1,5 @@
-package src.logico;
+package logico;
+
 
 import java.util.ArrayList;
 

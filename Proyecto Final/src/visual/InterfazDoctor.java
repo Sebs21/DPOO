@@ -1,4 +1,4 @@
-package src.visual;
+package visual;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

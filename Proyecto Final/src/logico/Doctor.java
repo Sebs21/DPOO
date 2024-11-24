@@ -1,4 +1,4 @@
-package src.logico;
+package logico;
 
 public class Doctor extends Persona 
 {

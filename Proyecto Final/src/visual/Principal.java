@@ -1,4 +1,4 @@
-package src.visual;
+package visual;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
