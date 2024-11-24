@@ -12,11 +12,13 @@ public class Clinica
 	private ArrayList<Control_vacunacion> control_vacu;
 	private ArrayList<Paciente> misPacientes;
 	private ArrayList<Doctor> misDoctores;
+	private ArrayList<Seguro> misSeguros;
 	
 	public static int idPersona;
 	public static int idConsulta;
 	public static int idFactura;
 	public static int idCita;
+	public static int idSeguro;
 	public static int controlEnfermerdad;
 	public static int controlVacuna;
 	
@@ -35,9 +37,10 @@ public class Clinica
 		idPersona = 1;
 		idConsulta = 1;
 		idFactura = 1;
-		controlEnfermedad = 1;
+		controlEnfermerdad = 1;
 		controlVacuna = 1;
 		idCita = 1;
+		idSeguro = 1;
 		
 	}
 	
@@ -274,19 +277,14 @@ public class Clinica
 		misFacturas.add( aux );
 	}
 	
-	public Facturar calcularFacturasTotales ( Facturar aux )
-	{
-		
-	}
-	
-	public ArrayList<Paciente> PacientesNoSeleccionados ()
+	public ArrayList<Paciente> pacientesNoSeleccionados ()
 	{
 		
 		ArrayList<Paciente> noSeleccionadosArrayList = new ArrayList<>();
 		
 		for ( Paciente paciente : misPacientes )
 		{
-			if ( !paciente )
+			if ( !paciente.getSeleccionado() )
 			{
 				noSeleccionadosArrayList.add( paciente );
 			}
@@ -296,16 +294,16 @@ public class Clinica
 		
 	}
 	
-	public ArrayList<Doctor> DoctoresNoSeleccionados ()
+	public ArrayList<Doctor> doctoresNoSeleccionados ()
 	{
 		
-		ArrayList<Paciente> noSeleccionadosArrayList = new ArrayList<>();
+		ArrayList<Doctor> noSeleccionadosArrayList = new ArrayList<>();
 		
-		for ( Queso queso : misQuesos )
+		for ( Doctor doctor : misDoctores )
 		{
-			if ( !queso.getSeleccionado() )
+			if ( !doctor.getSeleccionado() )
 			{
-				noSeleccionadosArrayList.add( queso );
+				noSeleccionadosArrayList.add( doctor );
 			}
 		}
 		
@@ -313,16 +311,16 @@ public class Clinica
 		
 	}
 	
-	public ArrayList<Consulta> ConsultasNoSeleccionadas ()
+	public ArrayList<Consulta> consultasNoSeleccionadas ()
 	{
 		
-		ArrayList<Paciente> noSeleccionadosArrayList = new ArrayList<>();
+		ArrayList<Consulta> noSeleccionadosArrayList = new ArrayList<>();
 		
-		for ( Queso queso : misQuesos )
+		for ( Consulta consulta : misConsultas )
 		{
-			if ( !queso.getSeleccionado() )
+			if ( !consulta.getSeleccionado() )
 			{
-				noSeleccionadosArrayList.add( queso );
+				noSeleccionadosArrayList.add( consulta );
 			}
 		}
 		
@@ -330,20 +328,122 @@ public class Clinica
 		
 	}
 	
-	public ArrayList<Cita> CitasNoSeleccionadas ()
+	public ArrayList<Cita> citasNoSeleccionadas ()
 	{
 		
-		ArrayList<Paciente> noSeleccionadosArrayList = new ArrayList<>();
+		ArrayList<Cita> noSeleccionadosArrayList = new ArrayList<>();
 		
-		for ( Queso queso : misQuesos )
+		for ( Cita cita : misCitas )
 		{
-			if ( !queso.getSeleccionado() )
+			if ( !cita.getSeleccionado() )
 			{
-				noSeleccionadosArrayList.add( queso );
+				noSeleccionadosArrayList.add( cita );
 			}
 		}
 		
 		return noSeleccionadosArrayList;
+		
+	}
+	
+	public ArrayList<Seguro> segurosNoSeleccionados ()
+	{
+		
+		ArrayList<Seguro> noSeleccionadosArrayList = new ArrayList<>();
+		
+		for ( Seguro seguro : misSeguros )
+		{
+			if ( !seguro.getSeleccionado() )
+			{
+				noSeleccionadosArrayList.add( seguro );
+			}
+		}
+		
+		return noSeleccionadosArrayList;
+		
+	}
+	
+	public ArrayList<Paciente> pacientesSeleccionados ()
+	{
+		
+		ArrayList<Paciente> seleccionadosArrayList = new ArrayList<>();
+		
+		for ( Paciente paciente : misPacientes )
+		{
+			if ( paciente.getSeleccionado() )
+			{
+				seleccionadosArrayList.add( paciente );
+			}
+		}
+		
+		return seleccionadosArrayList;
+		
+	}
+	
+	public ArrayList<Doctor> doctoresSeleccionados ()
+	{
+		
+		ArrayList<Doctor> seleccionadosArrayList = new ArrayList<>();
+		
+		for ( Doctor doctor : misDoctores )
+		{
+			if ( doctor.getSeleccionado() )
+			{
+				seleccionadosArrayList.add( doctor );
+			}
+		}
+		
+		return seleccionadosArrayList;
+		
+	}
+	
+	public ArrayList<Consulta> consultasSeleccionadas ()
+	{
+		
+		ArrayList<Consulta> seleccionadosArrayList = new ArrayList<>();
+		
+		for ( Consulta consulta : misConsultas )
+		{
+			if ( consulta.getSeleccionado() )
+			{
+				seleccionadosArrayList.add( consulta );
+			}
+		}
+		
+		return seleccionadosArrayList;
+		
+	}
+	
+	public ArrayList<Cita> citasSeleccionadas ()
+	{
+		
+		ArrayList<Cita> seleccionadosArrayList = new ArrayList<>();
+		
+		for ( Cita cita : misCitas )
+		{
+			if ( cita.getSeleccionado() )
+			{
+				seleccionadosArrayList.add( cita );
+			}
+		}
+		
+		return seleccionadosArrayList;
+		
+	}
+	
+	public ArrayList<Seguro> segurosSeleccionados ()
+	{
+		
+		ArrayList<Seguro> seleccionadosArrayList = new ArrayList<>();
+		
+		for ( Seguro seguro : misSeguros )
+		{
+			if ( seguro.getSeleccionado() )
+			{
+				seleccionadosArrayList.add( seguro );
+			}
+		}
+		
+		return seleccionadosArrayList;
 		
 	}
 	
