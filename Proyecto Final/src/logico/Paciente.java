@@ -12,14 +12,6 @@ public class Paciente extends Persona
 	private ArrayList<HistoriaClinica>miHistoriaClinica;
 	private ArrayList<vacunacion>miVacuna;
 	private boolean seleccionado;
-	
-	public boolean isSeleccionado() {
-		return seleccionado;
-	}
-
-	public void setSeleccionado(boolean seleccionado) {
-		this.seleccionado = seleccionado;
-	}
 
 	public Paciente(String cedula, String nombre, String apellido, String idCodPaciente, String enfermedad, int edad,
 			Seguro seguro, ArrayList<HistoriaClinica> miHistoriaClinica, ArrayList<vacunacion> miVacuna) {
@@ -30,6 +22,14 @@ public class Paciente extends Persona
 		this.seguro = seguro;
 		this.miHistoriaClinica = miHistoriaClinica;
 		this.miVacuna = miVacuna;
+	}
+	
+	public boolean getSeleccionado() {
+		return seleccionado;
+	}
+
+	public void setSeleccionado(boolean seleccionado) {
+		this.seleccionado = seleccionado;
 	}
 
 	public String getEnfermedad() {

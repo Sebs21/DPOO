@@ -5,19 +5,19 @@ public class Doctor extends Persona
 	
 	private String especialidad;
 	private boolean seleccionado;
-	
-	public boolean isSeleccionado() {
-		return seleccionado;
-	}
-
-	public void setSeleccionado(boolean seleccionado) {
-		this.seleccionado = seleccionado;
-	}
 
 	public Doctor( String cedula, String nombre, String apellido, String especialidad ) 
 	{
 		super( cedula, nombre, apellido );
 		this.especialidad = especialidad;
+	}
+	
+	public boolean getSeleccionado() {
+		return seleccionado;
+	}
+
+	public void setSeleccionado(boolean seleccionado) {
+		this.seleccionado = seleccionado;
 	}
 
 	public String getEspecialidad() {
