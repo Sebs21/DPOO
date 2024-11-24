@@ -1,7 +1,6 @@
 package logico;
 
-public class Bajo_vigilancia 
-{
+public class Bajo_vigilancia {
 	
 	private int codVigilancia;
 	private String enfermedad;
