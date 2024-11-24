@@ -24,6 +24,8 @@ public class Clinica
 	
 	public static Clinica clinica = null;
 	
+	private int maricon;
+	
 	public Clinica() 
 	{
 		super();
