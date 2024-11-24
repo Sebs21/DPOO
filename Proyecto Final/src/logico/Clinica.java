@@ -1,4 +1,4 @@
-package logico;
+package src.logico;
 
 import java.util.ArrayList;
 
@@ -23,8 +23,6 @@ public class Clinica
 	public static int controlVacuna;
 	
 	public static Clinica clinica = null;
-	
-	private int maricon;
 	
 	public Clinica() 
 	{
