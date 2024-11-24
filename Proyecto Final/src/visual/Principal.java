@@ -17,6 +17,9 @@ import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.JButton;
 
 public class Principal extends JFrame {
 
@@ -76,9 +79,35 @@ public class Principal extends JFrame {
 		btnResumenes.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuBar.add(btnResumenes);
 		
-		JMenu btnEnfermedadesVigilancia = new JMenu("Enfermedades Bajo Vigilancia");
+		JMenu menu = new JMenu("Generar Resumenes Consultas");
+		menu.setFont(new Font("Segoe UI", Font.BOLD, 16));
+		menuBar.add(menu);
+		
+		JMenu btnEnfermedadesVigilancia = new JMenu("Enfermedades Vigiladas");
 		btnEnfermedadesVigilancia.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuBar.add(btnEnfermedadesVigilancia);
+		
+		JButton btn_Registro_Vigilancia = new JButton("Registro Vigilancia");
+		btn_Registro_Vigilancia.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		btn_Registro_Vigilancia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				
+				
+			}
+		});
+		btnEnfermedadesVigilancia.add(btn_Registro_Vigilancia);
+		
+		JButton btn_Reporte_Vigilancia = new JButton("Reporte Vigilancia");
+		btn_Reporte_Vigilancia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				
+			}
+		});
+		btn_Reporte_Vigilancia.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		btnEnfermedadesVigilancia.add(btn_Reporte_Vigilancia);
 		
 		JMenu btnVacunacion = new JMenu("Vacunaci\u00F3n");
 		btnVacunacion.setFont(new Font("Segoe UI", Font.BOLD, 16));

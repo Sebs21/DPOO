@@ -8,6 +8,7 @@ public class Control_enfermedad
 	private Consulta consulta;
 	private ArrayList<Bajo_vigilancia> vigilancia;
 	
+	
 	public Control_enfermedad( Consulta consulta, ArrayList<Bajo_vigilancia> vigilancia ) 
 	{
 		super();
