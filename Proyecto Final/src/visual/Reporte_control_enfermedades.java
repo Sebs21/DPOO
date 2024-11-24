@@ -1,4 +1,4 @@
-package visual;
+package src.visual;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
