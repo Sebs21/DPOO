@@ -1,6 +1,7 @@
 package visual;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
@@ -9,6 +10,11 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.table.DefaultTableModel;
+
+import logico.Clinica;
+import logico.Doctor;
+import logico.Paciente;
+
 import javax.swing.border.BevelBorder;
 import javax.swing.JRadioButton;
 import java.awt.Font;
@@ -23,6 +29,7 @@ public class ListadoGeneral extends JDialog
 {
 
 	private final JPanel contentPanel = new JPanel();
+	private Dimension dim;
 	
 	private static Object[] pacientesRow;
 	private static Object[] doctoresRow;
@@ -45,12 +52,6 @@ public class ListadoGeneral extends JDialog
 	private int indCitaEliminar = -1;
 	private int indCitaModificar = -1; 
 	
-	private JRadioButton btnPacientes;
-	private JRadioButton btnDoctores;
-	private JRadioButton btnSeguros;
-	private JRadioButton btnConsultas;
-	private JRadioButton btnCitas;
-	
 	private JTable tablePaciente;
 	
 	private static DefaultTableModel modelo;
@@ -61,6 +62,9 @@ public class ListadoGeneral extends JDialog
 	private JButton btnEliminar;
 	private JButton btnModificar;
 	private JButton btnCancelar;
+	private JPanel panelDoctores;
+	private JScrollPane scrollPane_1;
+	private JTable tableDoctores;
 	
 
 	/**
@@ -81,45 +85,23 @@ public class ListadoGeneral extends JDialog
 	 */
 	public ListadoGeneral() {
 		setTitle("Listado General");
-		setBounds(100, 100, 671, 525);
+		setBounds(100, 100, 903, 812);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
+		dim = getToolkit().getScreenSize();
+		setSize( dim.width, dim.height );
+		setLocationRelativeTo(null);
 		
-		btnPacientes = new JRadioButton("Pacientes");
-		btnPacientes.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		btnPacientes.setBounds(21, 38, 127, 25);
-		contentPanel.add(btnPacientes);
-		
-		btnDoctores = new JRadioButton("Doctores");
-		btnDoctores.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		btnDoctores.setBounds(152, 38, 127, 25);
-		contentPanel.add(btnDoctores);
-		
-		btnSeguros = new JRadioButton("Seguros");
-		btnSeguros.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		btnSeguros.setBounds(283, 38, 127, 25);
-		contentPanel.add(btnSeguros);
-		
-		btnConsultas = new JRadioButton("Consultas");
-		btnConsultas.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		btnConsultas.setBounds(414, 38, 127, 25);
-		contentPanel.add(btnConsultas);
-		
-		btnCitas = new JRadioButton("Citas");
-		btnCitas.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		btnCitas.setBounds(545, 38, 127, 25);
-		contentPanel.add(btnCitas);
-		
-		JPanel panel = new JPanel();
-		panel.setBounds(21, 89, 602, 295);
-		contentPanel.add(panel);
-		panel.setLayout(null);
+		JPanel panelPacientes = new JPanel();
+		panelPacientes.setBounds(12, 13, 697, 295);
+		contentPanel.add(panelPacientes);
+		panelPacientes.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 0, 602, 295);
-		panel.add(scrollPane);
+		scrollPane.setBounds(0, 0, 697, 295);
+		panelPacientes.add(scrollPane);
 		
 		tablePaciente = new JTable();
 		tablePaciente.addMouseListener(new MouseAdapter() {
@@ -147,8 +129,31 @@ public class ListadoGeneral extends JDialog
 		modelo = new DefaultTableModel();
 		String[] identificadores = { "Codigo", "Cedula", "Nombre", "Apellido", "Edad", "Seguro", "Vacuna" };
 		modelo.setColumnIdentifiers( identificadores );
+		tablePaciente.setModel( modelo );
 		
 		scrollPane.setViewportView(tablePaciente);
+		{
+			panelDoctores = new JPanel();
+			panelDoctores.setBounds(12, 321, 697, 262);
+			contentPanel.add(panelDoctores);
+			panelDoctores.setLayout(null);
+			{
+				scrollPane_1 = new JScrollPane();
+				scrollPane_1.setBounds(0, 0, 697, 262);
+				panelDoctores.add(scrollPane_1);
+				{
+					tableDoctores = new JTable();
+					tableDoctores.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseClicked(MouseEvent arg0) 
+						{
+							
+						}
+					});
+					scrollPane_1.setViewportView(tableDoctores);
+				}
+			}
+		}
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
@@ -173,5 +178,58 @@ public class ListadoGeneral extends JDialog
 				buttonPane.add(btnCancelar);
 			}
 		}
+		
+		datosPacientes();
+		
+	}
+	
+	public void datosPacientes ()
+	{
+		modelo.setRowCount(0);
+		pacientesRow = new Object[tablePaciente.getColumnCount()];
+		
+		for ( Paciente paciente : Clinica.getInstance().pacientesSeleccionados() )
+		{
+			pacientesRow[0] = paciente.getIdCodPaciente();
+			pacientesRow[1] = paciente.getCedula();
+			pacientesRow[2] = paciente.getNombre();
+			pacientesRow[3] = paciente.getApellido();
+			pacientesRow[4] = paciente.getEdad();
+			pacientesRow[5] = paciente.getSeguro();
+			pacientesRow[6] = paciente.getMiVacuna();
+		}
+		
+	}
+	
+	public void datosDoctor ()
+	{
+		modelo1.setRowCount(0);
+		doctoresRow = new Object[tablePaciente.getColumnCount()];
+		
+		for ( Doctor doctor : Clinica.getInstance().doctoresSeleccionados() )
+		{
+			
+		}
+	}
+	
+	public void datosSeguro ()
+	{
+		modelo2.setRowCount(0);
+		
+	}
+	
+	public void datosConsulta ()
+	{
+		
+	}
+	
+	public void datosCita ()
+	{
+		
+	}
+	
+	public void clean ()
+	{
+		
 	}
 }
