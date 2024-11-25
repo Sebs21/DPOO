@@ -17,25 +17,25 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
+import java.awt.Toolkit;
 
 public class Visual_Control_enfermedades extends JFrame {
 
 	  private final JPanel contentPanel = new JPanel();
-	    private JTextField txt_fact;
-	    private JTextField txt_code_cliente;
-	    private JTextField txt_code_empleado;
-	    private JTextField cod_queso_txt1;
+	    private JTextField txt_code_enfe;
+	    private JTextField txt_code_paciente;
+	    private JTextField txt_code_doctor;
+	    private JTextField cod_;
 
 	   
-	    private JTextField txt_nombre_cliente;
-	    private JTextField txt_numero_cliente;
-	    private JTextField txt_nombre_empleado;
+	    private JTextField txt_nombre_paciente;
+	    private JTextField txt_numero_paciente;
+	    private JTextField txt_nombre_doctor;
 	    private JTextField txt_item_producto;
 	    private JTextField txt_costo_producto;
 	    private JButton btnGuardar;
 	    private JLabel monitoreo;
-	    private JTextField textField;
-	    private JTextField textField_1;
+	    private JTextField txt_expecialidad;
 
 	/**
 	 * Launch the application.
@@ -57,6 +57,7 @@ public class Visual_Control_enfermedades extends JFrame {
 	 * Create the frame.
 	 */
 	public Visual_Control_enfermedades() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\esmil\\OneDrive\\Documentos\\SIGIC_logo.jpg"));
 		 setTitle("Registro Vigilancia");
 	        setBounds(100, 100, 868, 564);
 	        setLocationRelativeTo(null); 
@@ -78,86 +79,78 @@ public class Visual_Control_enfermedades extends JFrame {
 	        contentPanel.add(lblCodigoDeEmpleado);
 
 	        JLabel cod_queso_jbl = new JLabel("Enfermedad:");
-	        cod_queso_jbl.setBounds(21, 254, 192, 26);
+	        cod_queso_jbl.setBounds(21, 214, 192, 26);
 	        contentPanel.add(cod_queso_jbl);
 
-	        txt_fact = new JTextField();
-	        txt_fact.setText("VI-");
-	        txt_fact.setEditable(false);
-	        txt_fact.setBounds(234, 29, 186, 32);
-	        contentPanel.add(txt_fact);
+	        txt_code_enfe = new JTextField();
+	        txt_code_enfe.setText("VI-");
+	        txt_code_enfe.setEditable(false);
+	        txt_code_enfe.setBounds(234, 29, 186, 32);
+	        contentPanel.add(txt_code_enfe);
 
-	        txt_code_cliente = new JTextField();
-	        txt_code_cliente.setBounds(234, 83, 186, 32);
-	        contentPanel.add(txt_code_cliente);
+	        txt_code_paciente = new JTextField();
+	        txt_code_paciente.setBounds(234, 83, 186, 32);
+	        contentPanel.add(txt_code_paciente);
 
-	        txt_code_empleado = new JTextField();
-	        txt_code_empleado.setBounds(234, 146, 186, 32);
-	        contentPanel.add(txt_code_empleado);
+	        txt_code_doctor = new JTextField();
+	        txt_code_doctor.setBounds(234, 146, 186, 32);
+	        contentPanel.add(txt_code_doctor);
 
-	        cod_queso_txt1 = new JTextField();
-	        cod_queso_txt1.setBounds(234, 245, 186, 32);
-	        contentPanel.add(cod_queso_txt1);
+	        cod_ = new JTextField();
+	        cod_.setBounds(234, 205, 186, 32);
+	        contentPanel.add(cod_);
 
 	       
-	        txt_nombre_cliente = new JTextField();
-	        txt_nombre_cliente.setEditable(false);
-	        txt_nombre_cliente.setBounds(430, 83, 186, 32);
-	        contentPanel.add(txt_nombre_cliente);
+	        txt_nombre_paciente = new JTextField();
+	        txt_nombre_paciente.setEditable(false);
+	        txt_nombre_paciente.setBounds(430, 83, 186, 32);
+	        contentPanel.add(txt_nombre_paciente);
 
-	        txt_numero_cliente = new JTextField();
-	        txt_numero_cliente.setEditable(false);
-	        txt_numero_cliente.setBounds(630, 83, 186, 32);
-	        contentPanel.add(txt_numero_cliente);
+	        txt_numero_paciente = new JTextField();
+	        txt_numero_paciente.setEditable(false);
+	        txt_numero_paciente.setBounds(630, 83, 186, 32);
+	        contentPanel.add(txt_numero_paciente);
 
-	        txt_nombre_empleado = new JTextField();
-	        txt_nombre_empleado.setEditable(false);
-	        txt_nombre_empleado.setBounds(430, 146, 186, 32);
-	        contentPanel.add(txt_nombre_empleado);
+	        txt_nombre_doctor = new JTextField();
+	        txt_nombre_doctor.setEditable(false);
+	        txt_nombre_doctor.setBounds(430, 146, 186, 32);
+	        contentPanel.add(txt_nombre_doctor);
 
 	        txt_item_producto = new JTextField();
 	        txt_item_producto.setEditable(false);
-	        txt_item_producto.setBounds(430, 245, 186, 32);
+	        txt_item_producto.setBounds(430, 205, 186, 32);
 	        contentPanel.add(txt_item_producto);
 
 	        txt_costo_producto = new JTextField();
 	        txt_costo_producto.setEditable(false);
-	        txt_costo_producto.setBounds(630, 248, 186, 32);
+	        txt_costo_producto.setBounds(630, 208, 186, 32);
 	        contentPanel.add(txt_costo_producto);
 
 	        JLabel lbl_Cant_hora = new JLabel("Cantidad hora:");
-	        lbl_Cant_hora.setBounds(21, 301, 192, 26);
+	        lbl_Cant_hora.setBounds(21, 261, 192, 26);
 	        contentPanel.add(lbl_Cant_hora);
 
 	        JSpinner cant_spinner = new JSpinner();
 	        cant_spinner.setModel(new SpinnerNumberModel(new Integer(1), null, null, new Integer(1)));
-	        cant_spinner.setBounds(234, 298, 186, 32);
+	        cant_spinner.setBounds(234, 258, 186, 32);
 	        contentPanel.add(cant_spinner);
 	        
 	        monitoreo = new JLabel("Monitoreo:");
-	        monitoreo.setBounds(21, 350, 192, 26);
+	        monitoreo.setBounds(21, 310, 192, 26);
 	        contentPanel.add(monitoreo);
 	        
 	        JCheckBox chckbxNewCheckBox = new JCheckBox("Activo");
-	        chckbxNewCheckBox.setBounds(241, 346, 179, 35);
+	        chckbxNewCheckBox.setBounds(241, 306, 179, 35);
 	        contentPanel.add(chckbxNewCheckBox);
 	        
 	        JCheckBox chckbxInactivo = new JCheckBox("Inactivo");
-	        chckbxInactivo.setBounds(430, 346, 179, 35);
+	        chckbxInactivo.setBounds(430, 306, 179, 35);
 	        contentPanel.add(chckbxInactivo);
 	        
-	        textField = new JTextField();
-	        textField.setEditable(false);
-	        textField.setBounds(430, 192, 186, 32);
-	        contentPanel.add(textField);
-	        
-	        textField_1 = new JTextField();
-	        textField_1.setBounds(234, 192, 186, 32);
-	        contentPanel.add(textField_1);
-	        
-	        JLabel lblCodigoDeEnfermera = new JLabel("Codigo de Enfermera:");
-	        lblCodigoDeEnfermera.setBounds(21, 196, 206, 26);
-	        contentPanel.add(lblCodigoDeEnfermera);
+	        txt_expecialidad = new JTextField();
+	        txt_expecialidad.setEditable(false);
+	        txt_expecialidad.setBounds(630, 146, 186, 32);
+	        contentPanel.add(txt_expecialidad);
 
 	        JPanel buttonPane = new JPanel();
 	        buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -179,21 +172,21 @@ public class Visual_Control_enfermedades extends JFrame {
 	        buttonPane.add(cancelButton);
 
 	       
-	        txt_code_cliente.addFocusListener(new FocusAdapter() {
+	        txt_code_paciente.addFocusListener(new FocusAdapter() {
 	            @Override
 	            public void focusLost(FocusEvent e) {
 	             //   buscarCliente(txt_code_cliente.getText());
 	            }
 	        });
 
-	        txt_code_empleado.addFocusListener(new FocusAdapter() {
+	        txt_code_doctor.addFocusListener(new FocusAdapter() {
 	            @Override
 	            public void focusLost(FocusEvent e) {
 	                //buscarEmpleado(txt_code_empleado.getText());
 	            }
 	        });
 
-	        cod_queso_txt1.addFocusListener(new FocusAdapter() {
+	        cod_.addFocusListener(new FocusAdapter() {
 	            @Override
 	            public void focusLost(FocusEvent e) {
 	              //  buscarProducto(cod_queso_txt1.getText());
