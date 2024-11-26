@@ -3,6 +3,7 @@ package visual;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -48,6 +49,7 @@ public class InicioSesion extends JDialog {
 	 * Create the dialog.
 	 */
 	public InicioSesion() {
+		setIconImage(new ImageIcon (getClass().getResource("/visual/SIGIC_logo.jpg")).getImage());
 		setTitle("Inicio de Sesion");
 		setBounds(100, 100, 658, 414);
 		getContentPane().setLayout(new BorderLayout());

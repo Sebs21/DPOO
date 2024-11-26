@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -91,6 +92,7 @@ public class ListadoGeneral extends JDialog
 	 */
 	public ListadoGeneral() 
 	{
+		setIconImage(new ImageIcon (getClass().getResource("/visual/SIGIC_logo.jpg")).getImage());
 		setTitle("Listado General");
 		setBounds(100, 100, 903, 812);
 		getContentPane().setLayout(new BorderLayout());

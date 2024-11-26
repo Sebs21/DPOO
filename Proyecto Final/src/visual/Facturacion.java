@@ -3,6 +3,7 @@ package visual;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -51,6 +52,7 @@ public class Facturacion extends JDialog {
 	 */
 	public Facturacion () 
 	{
+		setIconImage(new ImageIcon (getClass().getResource("/visual/SIGIC_logo.jpg")).getImage());
 		setTitle("Facturaci\u00F3n");
 		setBounds(100, 100, 619, 347);
 		getContentPane().setLayout(new BorderLayout());

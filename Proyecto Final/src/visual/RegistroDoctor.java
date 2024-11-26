@@ -3,6 +3,7 @@ package visual;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -21,6 +22,7 @@ import logico.Doctor;
 
 import java.awt.Color;
 import javax.swing.border.TitledBorder;
+import java.awt.Toolkit;
 
 public class RegistroDoctor extends JDialog {
 
@@ -47,6 +49,7 @@ public class RegistroDoctor extends JDialog {
 	 * Create the dialog.
 	 */
 	public RegistroDoctor() {
+		setIconImage(new ImageIcon (getClass().getResource("/visual/SIGIC_logo.jpg")).getImage());
 		setTitle("Registro Doctor");
 		setBounds(100, 100, 585, 565);
 		getContentPane().setLayout(new BorderLayout());

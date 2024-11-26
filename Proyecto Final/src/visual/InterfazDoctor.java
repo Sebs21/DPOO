@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -59,6 +60,7 @@ public class InterfazDoctor extends JDialog {
 		contentPanel.setLayout(null);
 		{
 			JPanel panel = new JPanel();
+			setIconImage(new ImageIcon (getClass().getResource("/visual/SIGIC_logo.jpg")).getImage());
 			panel.setBorder(new TitledBorder(new LineBorder(new Color(224, 255, 255), 3, true), "Pacientes Consultados", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 			panel.setBounds(513, 11, 736, 709);
 			contentPanel.add(panel);

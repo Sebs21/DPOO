@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -57,7 +58,7 @@ public class Visual_Control_enfermedades extends JFrame {
 	 * Create the frame.
 	 */
 	public Visual_Control_enfermedades() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\esmil\\OneDrive\\Documentos\\SIGIC_logo.jpg"));
+		setIconImage(new ImageIcon (getClass().getResource("/visual/SIGIC_logo.jpg")).getImage());
 		 setTitle("Registro Vigilancia");
 	        setBounds(100, 100, 868, 564);
 	        setLocationRelativeTo(null); 
