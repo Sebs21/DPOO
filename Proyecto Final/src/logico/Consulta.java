@@ -5,6 +5,7 @@ import java.util.Date;
 public class Consulta 
 {
 	private String id;
+	private String idFactura;
 	private String descripcion;
 	private String enfermedad;
 	private Date fechaConsulta;
@@ -15,12 +16,13 @@ public class Consulta
 	private boolean noimportancia;
 	private boolean seleccionado;
 
-	public Consulta ( String id, String enfermedad, Date fechaConsulta, String descripcion, boolean importancia )
+	public Consulta ( String id, String enfermedad, Date fechaConsulta, String descripcion, String idFactura, boolean importancia )
 	{
 		this.id = id;
 		this.enfermedad = enfermedad;
 		this.fechaConsulta = fechaConsulta;
 		this.descripcion = descripcion;
+		this.idFactura = idFactura;
 		
 		if ( importancia == false )
 		{
@@ -34,6 +36,14 @@ public class Consulta
 		
 	}
 	
+	public String getIdFactura() {
+		return idFactura;
+	}
+
+	public void setIdFactura(String idFactura) {
+		this.idFactura = idFactura;
+	}
+
 	public boolean getSeleccionado() {
 		return seleccionado;
 	}

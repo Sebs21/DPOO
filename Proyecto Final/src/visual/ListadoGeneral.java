@@ -89,7 +89,8 @@ public class ListadoGeneral extends JDialog
 	/**
 	 * Create the dialog.
 	 */
-	public ListadoGeneral() {
+	public ListadoGeneral() 
+	{
 		setTitle("Listado General");
 		setBounds(100, 100, 903, 812);
 		getContentPane().setLayout(new BorderLayout());

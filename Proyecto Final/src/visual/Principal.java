@@ -61,7 +61,8 @@ public class Principal extends JFrame {
 				if(Clinica.getInstance().getMisDoctores().isEmpty()) {
 				JOptionPane.showMessageDialog(null, "No hay doctores registrados en el sistema.");
 			}
-				else {
+				else 
+				{
 					InicioSesion iniSe = new InicioSesion();
 					iniSe.setVisible(true);
 					iniSe.setModal(true);
@@ -86,9 +87,8 @@ public class Principal extends JFrame {
 		JButton btn_Registro_Vigilancia = new JButton("Registro Vigilancia");
 		btn_Registro_Vigilancia.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		btn_Registro_Vigilancia.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				
+			public void actionPerformed(ActionEvent arg0) 
+			{		
 				
 			}
 		});

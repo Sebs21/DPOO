@@ -11,6 +11,8 @@ public class Paciente extends Persona
 	private Seguro seguro;
 	private ArrayList<HistoriaClinica>miHistoriaClinica;
 	private ArrayList<vacunacion>miVacuna;
+	private ArrayList<Facturar> miFactura;
+
 	private boolean seleccionado;
 
 	public Paciente(String cedula, String nombre, String apellido, String idCodPaciente, String enfermedad, int edad,
@@ -78,6 +80,14 @@ public class Paciente extends Persona
 
 	public void setMiVacuna(ArrayList<vacunacion> miVacuna) {
 		this.miVacuna = miVacuna;
+	}
+	
+	public ArrayList<Facturar> getMiFactura() {
+		return miFactura;
+	}
+
+	public void setMiFactura(ArrayList<Facturar> miFactura) {
+		this.miFactura = miFactura;
 	}
 	
 }

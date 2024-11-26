@@ -204,6 +204,29 @@ public class Clinica
 		
 	}
 	
+	public Paciente buscarPacienteByCedula ( String cedula )
+	{
+		
+		boolean findit = false;
+		Paciente aux = null;
+		int ind = 0;
+		
+		while ( !findit && ind < misPacientes.size() )
+		{
+			if ( misPacientes.get( ind ).getCedula().equalsIgnoreCase( cedula ) )
+			{
+				aux = misPacientes.get( ind );
+				findit = true;
+			}
+			
+			ind++;
+			
+		}
+		
+		return aux;
+		
+	}
+	
 	public Facturar buscarFacturaById ( String id )
 	{
 		
@@ -430,6 +453,14 @@ public class Clinica
 		
 	}
 	
+	public static int getIdFactura() {
+		return idFactura;
+	}
+
+	public static void setIdFactura(int idFactura) {
+		Clinica.idFactura = idFactura;
+	}
+
 	public ArrayList<Seguro> segurosSeleccionados ()
 	{
 		
