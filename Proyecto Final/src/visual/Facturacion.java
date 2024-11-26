@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import logico.Clinica;
+import logico.Paciente;
 
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -157,7 +158,7 @@ public class Facturacion extends JDialog {
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				Paciente paciente = Clinica.getInstance()
+				//Paciente paciente = Clinica.getInstance();
 			}
 		});
 		btnBuscar.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));

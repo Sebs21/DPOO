@@ -24,6 +24,9 @@ import java.awt.event.ActionEvent;
 
 public class InicioSesion extends JDialog {
 
+	/**
+	 * 
+	 */
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtNombre;
 	private JPasswordField txtCedula;
@@ -102,6 +105,8 @@ public class InicioSesion extends JDialog {
 							InterfazDoctor interDoc = new InterfazDoctor();
 							interDoc.setVisible(true);
 							interDoc.setModal(true);
+							interDoc.actualizarTablaConsultas(txtCedula.getPassword().toString());
+							//interDoc.NombreDoc(txtCedula.getPassword().toString());
 						} else {
 							JOptionPane.showMessageDialog(null, "Debe ingresar una contraseña válida.");
 						}

@@ -6,7 +6,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -19,6 +18,8 @@ import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import logico.Clinica;
+import logico.Doctor;
 import logico.Paciente;
 
 public class InterfazDoctor extends JDialog {
@@ -27,6 +28,8 @@ public class InterfazDoctor extends JDialog {
 	private JTable tblPacientes;
 	private DefaultTableModel modelo;
 	private JTable table;
+	private Doctor doc;
+	private JTable tblCitas;
 	/**
 	 * Launch the application.
 	 */
@@ -43,17 +46,21 @@ public class InterfazDoctor extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
+	
+	
+	
 	public InterfazDoctor() {
-		setTitle("Doctor");
-		setBounds(100, 100, 1006, 590);
+		
+		//setTitle("Doctor" + doc.getNombre());
+		setBounds(100, 100, 1275, 803);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		{
 			JPanel panel = new JPanel();
-			panel.setBorder(new TitledBorder(new LineBorder(new Color(224, 255, 255), 3, true), "Pacientes", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-			panel.setBounds(255, 11, 725, 496);
+			panel.setBorder(new TitledBorder(new LineBorder(new Color(224, 255, 255), 3, true), "Pacientes Consultados", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+			panel.setBounds(513, 11, 736, 709);
 			contentPanel.add(panel);
 			panel.setLayout(new BorderLayout(0, 0));
 			
@@ -63,6 +70,18 @@ public class InterfazDoctor extends JDialog {
 			tblPacientes = new JTable();
 			scrollPane.setViewportView(tblPacientes);
 		}
+		
+		JPanel panel = new JPanel();
+		panel.setBorder(new TitledBorder(new LineBorder(new Color(135, 206, 250), 3, true), "Citas Pendientes", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel.setBounds(10, 11, 460, 709);
+		contentPanel.add(panel);
+		panel.setLayout(new BorderLayout(0, 0));
+		
+		JScrollPane scrollPane = new JScrollPane();
+		panel.add(scrollPane, BorderLayout.CENTER);
+		
+		tblCitas = new JTable();
+		scrollPane.setViewportView(tblCitas);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -92,20 +111,24 @@ public class InterfazDoctor extends JDialog {
         
 	}
 	
-	public void actualizarTablaDoctor(ArrayList<Paciente>misPacientes) {
-		modelo.setColumnCount(0);
-		for (Paciente paciente : misPacientes) {
-			Object[] fila = { 
-	            	paciente.getCedula(),
-	            	paciente.getNombre(),
-	            	paciente.getApellido(),
-	            	paciente.getEdad(),
-	            	paciente.getSeguro().getNombreEmpresa(),
-	            	paciente.getEnfermedad(),
-	            	paciente.getMiVacuna() //Revisar si la funcion de getVacuna retorna solo 1 o las retorna todas.
-	            };
-	            modelo.addRow(fila);
-		}
+	public void actualizarTablaCitas() {
+		
 	}
 	
+	public void actualizarTablaConsultas(String CedulaDoc) {
+		modelo.setColumnCount(0);
+		Doctor aux = Clinica.getInstance().buscarDoctorByCedula(CedulaDoc);
+			for (Paciente paciente : aux.getMisPacientes()) {
+				Object[] fila = { 
+						paciente.getCedula(),
+		            	paciente.getNombre(),
+		            	paciente.getApellido(),
+		            	paciente.getEdad(),
+		            	paciente.getSeguro().getNombreEmpresa(),
+		            	paciente.getEnfermedad(),
+		            	paciente.getMiVacuna() 
+		            };
+		            modelo.addRow(fila);
+			}
+		}
 }
