@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -19,8 +20,11 @@ import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import logico.Cita;
 import logico.Clinica;
+import logico.Consulta;
 import logico.Doctor;
+import logico.HistoriaClinica;
 import logico.Paciente;
 
 public class InterfazDoctor extends JDialog {
@@ -31,6 +35,9 @@ public class InterfazDoctor extends JDialog {
 	private JTable table;
 	private Doctor doc;
 	private JTable tblCitas;
+	private DefaultTableModel modeloCitas;
+	private Consulta consulta;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -98,24 +105,66 @@ public class InterfazDoctor extends JDialog {
 					dispose();
 					}
 				});
+				
+				JButton btnConsulta = new JButton("Proceder a Consulta");
+				btnConsulta.addActionListener(new ActionListener() {
+				    public void actionPerformed(ActionEvent e) {
+				        int filaSeleccionada = tblCitas.getSelectedRow();
+				        if (filaSeleccionada != -1) {
+				        	Consultar consultar = new Consultar();
+				            Cita cita = Clinica.getInstance().getMisCitas().get(filaSeleccionada);
+				            Paciente paciente = (Paciente) cita.getPersona();
+				            Doctor doctor = cita.getDoctor();
+		
+				            consultar.actualizarCampos(doctor, paciente);
+				            consultar.setVisible(true);
+				            consultar.setModal(true);
+
+				            actualizarTablaConsultas(doctor.getCedula());
+				            actualizarTablaCitas(doctor.getCedula());
+				        }
+				    }
+				});
+
+				buttonPane.add(btnConsulta);
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
 		}
 		
 		modelo = new DefaultTableModel();
-        String[] headers = {"Cedula", "Nombre", "Apellido", "Edad", "Seguro", "Enfermedad", "Vacunas"};
-        modelo.setColumnIdentifiers(headers);
-		
-        table = new JTable(modelo);
-        table.setBorder(new MatteBorder(4, 6, 4, 6, (Color) new Color(176, 196, 222)));
-        table.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+		String[] headersConsultas = {"Cédula", "Edad", "Nombre", "Apellido", "Seguro", "Enfermedad"};
+		modelo.setColumnIdentifiers(headersConsultas);
+		tblPacientes.setModel(modelo);
+
         
+        modeloCitas = new DefaultTableModel();
+        String[] headersCitas = {"Edad", "Nombre", "Apellido", "Seguro"};
+        modeloCitas.setColumnIdentifiers(headersCitas);
+        tblCitas.setModel(modeloCitas);
+
 	}
 	
-	public void actualizarTablaCitas() {
-		
+	public void actualizarTablaCitas(String cedulaDoctor) {
+	    modeloCitas.setRowCount(0);
+	    Doctor doctor = Clinica.getInstance().buscarDoctorByCedula(cedulaDoctor);
+
+	    if (doctor != null) {
+	        for (Cita cita : Clinica.getInstance().getMisCitas()) {
+	            if (cita.getDoctor() == doctor) {
+	                Paciente paciente = (Paciente) cita.getPersona();
+	                Object[] fila = {    
+	                	paciente.getEdad(),
+	                	paciente.getNombre(),
+	                    paciente.getApellido(),
+	                    paciente.getSeguro().getNombreEmpresa()
+	                };
+	                modeloCitas.addRow(fila);
+	            }
+	        }
+	    }
 	}
+
 	
 	public void actualizarTablaConsultas(String CedulaDoc) {
 		modelo.setColumnCount(0);
@@ -123,14 +172,14 @@ public class InterfazDoctor extends JDialog {
 			for (Paciente paciente : aux.getMisPacientes()) {
 				Object[] fila = { 
 						paciente.getCedula(),
+						paciente.getEdad(),
 		            	paciente.getNombre(),
 		            	paciente.getApellido(),
-		            	paciente.getEdad(),
 		            	paciente.getSeguro().getNombreEmpresa(),
-		            	paciente.getEnfermedad(),
-		            	paciente.getMiVacuna() 
+		            	paciente.getEnfermedad()
 		            };
 		            modelo.addRow(fila);
 			}
 		}
+
 }
