@@ -39,6 +39,11 @@ public class Facturacion extends JDialog {
 	private JTextField txtCedulaPaciente;
 	private JButton btnBuscar;
 	private boolean existePaciente;
+	private Paciente updated = null;
+	private JTextField txtPrecio;
+	private JTextField txtPrecioSeguro;
+	private JTextField txtPrecioTotalPagar;
+	private JTextField txtPagoPaciente;
 
 	/**
 	 * Launch the application.
@@ -60,7 +65,7 @@ public class Facturacion extends JDialog {
 	{
 		setIconImage(new ImageIcon (getClass().getResource("/visual/SIGIC_logo.jpg")).getImage());
 		setTitle("Facturaci\u00F3n");
-		setBounds(100, 100, 635, 376);
+		setBounds(100, 100, 635, 388);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -176,7 +181,7 @@ public class Facturacion extends JDialog {
 				{
 					txtNombre.setText( paciente.getNombre() );
 					txtApellido.setText( paciente.getApellido() );
-					txtIdPaciente.setText( cedula.getTxtCedula() );
+					txtIdPaciente.setText( paciente.getIdCodPaciente() );
 					txtEdad.setText( paciente.getEdad() );
 					txtEnfermedad.setText( paciente.getEnfermedad() );
 					txtSeguro.setText( paciente.getSeguro() );
@@ -185,6 +190,7 @@ public class Facturacion extends JDialog {
 				else
 				{
 					JOptionPane.showMessageDialog( null, "Su ID no ha sido encontrado, inicie sesión nuevamente. " );
+					existePaciente = false;
 					dispose();
 				}
 				
@@ -196,6 +202,68 @@ public class Facturacion extends JDialog {
 		btnBuscar.setActionCommand("OK");
 		btnBuscar.setBounds(270, 27, 81, 25);
 		contentPanel.add(btnBuscar);
+		
+		JLabel lblNewLabel_1 = new JLabel("Precio consulta:");
+		lblNewLabel_1.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 17));
+		lblNewLabel_1.setBounds(381, 73, 142, 16);
+		contentPanel.add(lblNewLabel_1);
+		
+		txtPrecio = new JTextField();
+		txtPrecio.setEnabled(false);
+		txtPrecio.setEditable(false);
+		txtPrecio.setFont(new Font("Times New Roman", Font.PLAIN, 13));
+		txtPrecio.setBounds(317, 104, 241, 22);
+		contentPanel.add(txtPrecio);
+		txtPrecio.setColumns(10);
+		
+		JLabel lblNewLabel_2 = new JLabel("Porciento aplicado por el seguro:");
+		lblNewLabel_2.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 17));
+		lblNewLabel_2.setBounds(317, 139, 241, 16);
+		contentPanel.add(lblNewLabel_2);
+		
+		txtPrecioSeguro = new JTextField();
+		txtPrecioSeguro.setFont(new Font("Times New Roman", Font.PLAIN, 13));
+		txtPrecioSeguro.setEnabled(false);
+		txtPrecioSeguro.setEditable(false);
+		txtPrecioSeguro.setColumns(10);
+		txtPrecioSeguro.setBounds(317, 169, 241, 22);
+		contentPanel.add(txtPrecioSeguro);
+		
+		JLabel lblPrecioAPagar = new JLabel("Precio a pagar:");
+		lblPrecioAPagar.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 17));
+		lblPrecioAPagar.setBounds(317, 204, 124, 20);
+		contentPanel.add(lblPrecioAPagar);
+		
+		txtPrecioTotalPagar = new JTextField();
+		txtPrecioTotalPagar.setFont(new Font("Times New Roman", Font.PLAIN, 13));
+		txtPrecioTotalPagar.setEnabled(false);
+		txtPrecioTotalPagar.setEditable(false);
+		txtPrecioTotalPagar.setColumns(10);
+		txtPrecioTotalPagar.setBounds(317, 231, 116, 22);
+		contentPanel.add(txtPrecioTotalPagar);
+		
+		JLabel lblPago = new JLabel("Pago del paciente:");
+		lblPago.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
+		lblPago.setBounds(445, 202, 131, 20);
+		contentPanel.add(lblPago);
+		
+		txtPagoPaciente = new JTextField();
+		txtPagoPaciente.setFont(new Font("Times New Roman", Font.PLAIN, 13));
+		txtPagoPaciente.setColumns(10);
+		txtPagoPaciente.setBounds(445, 231, 116, 22);
+		contentPanel.add(txtPagoPaciente);
+		
+		JLabel lblFecha = new JLabel("Fecha:");
+		lblFecha.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
+		lblFecha.setBounds(23, 263, 93, 16);
+		contentPanel.add(lblFecha);
+		
+		JTextField txtFecha = new JTextField();
+		txtFecha.setText("");
+		txtFecha.setEditable(false);
+		txtFecha.setColumns(10);
+		txtFecha.setBounds(142, 266, 116, 22);
+		contentPanel.add(txtFecha);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -203,25 +271,43 @@ public class Facturacion extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton btnFacturar = new JButton("Facturar");
+				btnFacturar.setBackground(Color.CYAN);
+				btnFacturar.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
 				btnFacturar.setActionCommand("OK");
 				buttonPane.add(btnFacturar);
 				getRootPane().setDefaultButton(btnFacturar);
 			}
 			{
-				JButton cancelButton = new JButton("Cancelar");
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
+				JButton btnCancelar = new JButton("Cancelar");
+				btnCancelar.setBackground(Color.CYAN);
+				btnCancelar.setForeground(Color.BLACK);
+				btnCancelar.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
+				btnCancelar.setActionCommand("Cancel");
+				buttonPane.add(btnCancelar);
 			}
+		}
+		
+		loadDatosPaciente();
+		
+	}
+	
+	private void loadDatosPaciente ()
+	{
+		if ( updated != null )
+		{
+			txtCedulaPaciente.setText( updated.getCedula() );
+			
 		}
 	}
 	
 	private void clean ()
 	{
+		txtIdPaciente.setText("");
 		txtNombre.setText("");
 		txtApellido.setText("");
 		txtEdad.setText("");
 		txtEnfermedad.setText("");
 		txtSeguro.setText("");
+		txtIdFactura.setText(" F - " +Clinica.getInstance().idFactura );
 	}
-	
 }

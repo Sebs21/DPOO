@@ -301,6 +301,12 @@ public class Clinica
 		idFactura++;
 	}
 	
+	public void agregarSeguro ( Seguro aux )
+	{
+		misSeguros.add( aux );
+		idSeguro++;
+	}
+	
 	public ArrayList<Paciente> pacientesNoSeleccionados ()
 	{
 		
