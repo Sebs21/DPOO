@@ -1,13 +1,15 @@
 package visual;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -17,27 +19,26 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
+import java.awt.Choice;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class Visual_vacunacion extends JFrame {
 
-	private JPanel contentPane;
-
-    private JTextField txt_code_enfe;
+	 private final JPanel contentPanel = new JPanel();
+	    private JTextField txt_code_enfe;
 	    private JTextField txt_code_paciente;
-	    private JTextField txt_code_doctor;
-	    private JTextField cod_;
 
 	   
 	    private JTextField txt_nombre_paciente;
 	    private JTextField txt_numero_paciente;
-	    private JTextField txt_nombre_doctor;
-	    private JTextField txt_item_producto;
-	    private JTextField txt_costo_producto;
 	    private JButton btnGuardar;
 	    private JLabel monitoreo;
-	    private JTextField txt_expecialidad;
+	    private JTextField textField;
+	    private JTextField textField_1;
 
 	 
 	public static void main(String[] args) {
@@ -75,16 +76,16 @@ public class Visual_vacunacion extends JFrame {
 	        lblCodigoDepaciente.setBounds(21, 86, 192, 26);
 	        contentPanel.add(lblCodigoDepaciente);
 
-	        JLabel lblCodigoDeEmpleado = new JLabel("Codigo de Doctor:");
+	        JLabel lblCodigoDeEmpleado = new JLabel("Vacuna:");
 	        lblCodigoDeEmpleado.setBounds(21, 149, 192, 26);
 	        contentPanel.add(lblCodigoDeEmpleado);
 
-	        JLabel cod_queso_jbl = new JLabel("Enfermedad:");
+	        JLabel cod_queso_jbl = new JLabel("Cantidad ml:");
 	        cod_queso_jbl.setBounds(21, 214, 192, 26);
 	        contentPanel.add(cod_queso_jbl);
 
 	        txt_code_enfe = new JTextField();
-	        txt_code_enfe.setText("VI-");
+	        txt_code_enfe.setText("VA-");
 	        txt_code_enfe.setEditable(false);
 	        txt_code_enfe.setBounds(234, 29, 186, 32);
 	        contentPanel.add(txt_code_enfe);
@@ -92,14 +93,6 @@ public class Visual_vacunacion extends JFrame {
 	        txt_code_paciente = new JTextField();
 	        txt_code_paciente.setBounds(234, 83, 186, 32);
 	        contentPanel.add(txt_code_paciente);
-
-	        txt_code_doctor = new JTextField();
-	        txt_code_doctor.setBounds(234, 146, 186, 32);
-	        contentPanel.add(txt_code_doctor);
-
-	        cod_ = new JTextField();
-	        cod_.setBounds(234, 205, 186, 32);
-	        contentPanel.add(cod_);
 
 	       
 	        txt_nombre_paciente = new JTextField();
@@ -111,30 +104,6 @@ public class Visual_vacunacion extends JFrame {
 	        txt_numero_paciente.setEditable(false);
 	        txt_numero_paciente.setBounds(630, 83, 186, 32);
 	        contentPanel.add(txt_numero_paciente);
-
-	        txt_nombre_doctor = new JTextField();
-	        txt_nombre_doctor.setEditable(false);
-	        txt_nombre_doctor.setBounds(430, 146, 186, 32);
-	        contentPanel.add(txt_nombre_doctor);
-
-	        txt_item_producto = new JTextField();
-	        txt_item_producto.setEditable(false);
-	        txt_item_producto.setBounds(430, 205, 186, 32);
-	        contentPanel.add(txt_item_producto);
-
-	        txt_costo_producto = new JTextField();
-	        txt_costo_producto.setEditable(false);
-	        txt_costo_producto.setBounds(630, 208, 186, 32);
-	        contentPanel.add(txt_costo_producto);
-
-	        JLabel lbl_Cant_hora = new JLabel("Cantidad hora:");
-	        lbl_Cant_hora.setBounds(21, 261, 192, 26);
-	        contentPanel.add(lbl_Cant_hora);
-
-	        JSpinner cant_spinner = new JSpinner();
-	        cant_spinner.setModel(new SpinnerNumberModel(new Integer(1), null, null, new Integer(1)));
-	        cant_spinner.setBounds(234, 258, 186, 32);
-	        contentPanel.add(cant_spinner);
 	        
 	        monitoreo = new JLabel("Monitoreo:");
 	        monitoreo.setBounds(21, 310, 192, 26);
@@ -148,10 +117,33 @@ public class Visual_vacunacion extends JFrame {
 	        chckbxInactivo.setBounds(430, 306, 179, 35);
 	        contentPanel.add(chckbxInactivo);
 	        
-	        txt_expecialidad = new JTextField();
-	        txt_expecialidad.setEditable(false);
-	        txt_expecialidad.setBounds(630, 146, 186, 32);
-	        contentPanel.add(txt_expecialidad);
+	        JButton btnNewButton = new JButton("\" \"");
+	        btnNewButton.setBounds(430, 145, 56, 35);
+	        contentPanel.add(btnNewButton);
+	        
+	        textField = new JTextField();
+	        textField.setEditable(false);
+	        textField.setBounds(501, 146, 186, 32);
+	        contentPanel.add(textField);
+	        
+	        textField_1 = new JTextField();
+	        textField_1.setBounds(234, 146, 186, 32);
+	        contentPanel.add(textField_1);
+	        
+	        JSpinner spinner = new JSpinner();
+	        spinner.setBounds(234, 211, 186, 32);
+	        contentPanel.add(spinner);
+	        
+	        
+	        JLabel lblFecha = new JLabel("Fecha:");
+			lblFecha.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
+			lblFecha.setBounds(32, 160, 91, 44);
+			panel.add(lblFecha);
+			
+			JSpinner spinner = new JSpinner();
+			spinner.setModel(new SpinnerDateModel(new Date(1732593600000L), new Date(1732593600000L), null, Calendar.DAY_OF_YEAR));
+			spinner.setBounds(133, 167, 165, 37);
+			panel.add(spinner);
 
 	        JPanel buttonPane = new JPanel();
 	        buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -179,20 +171,5 @@ public class Visual_vacunacion extends JFrame {
 	             //   buscarCliente(txt_code_cliente.getText());
 	            }
 	        });
-
-	        txt_code_doctor.addFocusListener(new FocusAdapter() {
-	            @Override
-	            public void focusLost(FocusEvent e) {
-	                //buscarEmpleado(txt_code_empleado.getText());
-	            }
-	        });
-
-	        cod_.addFocusListener(new FocusAdapter() {
-	            @Override
-	            public void focusLost(FocusEvent e) {
-	              //  buscarProducto(cod_queso_txt1.getText());
-	            }
-	        });
 	}
-
 }
