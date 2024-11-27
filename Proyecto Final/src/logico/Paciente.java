@@ -50,7 +50,8 @@ public class Paciente extends Persona
 		this.edad = edad;
 	}
 
-	public Seguro getSeguro() {
+	public Seguro getSeguro() 
+	{
 		return seguro;
 	}
 
