@@ -22,6 +22,7 @@ import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.border.TitledBorder;
 
 public class InicioSesion extends JDialog {
 
@@ -52,49 +53,72 @@ public class InicioSesion extends JDialog {
 	{
 		setIconImage(new ImageIcon (getClass().getResource("/visual/SIGIC_logo.jpg")).getImage());
 		setTitle("Inicio de Sesion");
-		setBounds(100, 100, 658, 414);
+		setBounds(100, 100, 872, 514);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		setLocationRelativeTo(null);
-
-		txtNombre = new JTextField();
-		txtNombre.setBounds(235, 96, 171, 52);
-		contentPanel.add(txtNombre);
-		txtNombre.setColumns(10);
-
-		txtCedula = new JPasswordField();
-		txtCedula.setBounds(235, 253, 171, 52);
-		contentPanel.add( txtCedula );
-
-		JPanel panel = new JPanel();
-		panel.setBorder(new LineBorder(UIManager.getColor("activeCaption"), 3, true));
-		panel.setBounds(270, 23, 101, 52);
-		contentPanel.add(panel);
-
-		JLabel lblNewLabel = new JLabel("Nombre:");
-		panel.add(lblNewLabel);
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 22));
-
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new LineBorder(new Color(135, 206, 235), 3, true));
-		panel_1.setBounds(270, 182, 101, 51);
-		contentPanel.add(panel_1);
-
-		JLabel lblCedula = new JLabel("Cedula:");
-		panel_1.add(lblCedula);
-		lblCedula.setFont(new Font("Tahoma", Font.PLAIN, 23));
-
-		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new LineBorder(new Color(135, 206, 235), 3, true));
-		panel_2.setBounds(218, 244, 205, 69);
-		contentPanel.add(panel_2);
-
-		JPanel panel_3 = new JPanel();
-		panel_3.setBorder(new LineBorder(UIManager.getColor("activeCaption"), 3, true));
-		panel_3.setBounds(218, 86, 205, 75);
-		contentPanel.add(panel_3);
+		
+		JPanel panel_4 = new JPanel();
+		panel_4.setBorder(new TitledBorder(new LineBorder(new Color(95, 158, 160), 4, true), "Iniciar Sesion", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_4.setBounds(69, 11, 315, 420);
+		contentPanel.add(panel_4);
+		panel_4.setLayout(null);
+		
+				txtNombre = new JTextField();
+				txtNombre.setBounds(67, 134, 171, 52);
+				panel_4.add(txtNombre);
+				txtNombre.setColumns(10);
+				
+						txtCedula = new JPasswordField();
+						txtCedula.setBounds(67, 291, 171, 52);
+						panel_4.add(txtCedula);
+						
+								JPanel panel = new JPanel();
+								panel.setBounds(102, 61, 101, 52);
+								panel_4.add(panel);
+								panel.setBorder(new LineBorder(UIManager.getColor("activeCaption"), 3, true));
+								
+										JLabel lblNewLabel = new JLabel("Nombre:");
+										panel.add(lblNewLabel);
+										lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 22));
+										
+												JPanel panel_1 = new JPanel();
+												panel_1.setBounds(102, 220, 101, 51);
+												panel_4.add(panel_1);
+												panel_1.setBorder(new LineBorder(new Color(135, 206, 235), 3, true));
+												
+														JLabel lblCedula = new JLabel("Cedula:");
+														panel_1.add(lblCedula);
+														lblCedula.setFont(new Font("Tahoma", Font.PLAIN, 23));
+														
+																JPanel panel_2 = new JPanel();
+																panel_2.setBounds(50, 282, 205, 69);
+																panel_4.add(panel_2);
+																panel_2.setBorder(new LineBorder(new Color(135, 206, 235), 3, true));
+																
+																		JPanel panel_3 = new JPanel();
+																		panel_3.setBounds(50, 124, 205, 75);
+																		panel_4.add(panel_3);
+																		panel_3.setBorder(new LineBorder(UIManager.getColor("activeCaption"), 3, true));
+		
+		JPanel panel_5 = new JPanel();
+		panel_5.setBorder(new TitledBorder(new LineBorder(new Color(70, 130, 180), 4, true), "Registrar Doctor", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_5.setBounds(453, 117, 332, 207);
+		contentPanel.add(panel_5);
+		panel_5.setLayout(new BorderLayout(0, 0));
+		
+		JButton btnRegistrar = new JButton("Registrar un nuevo Doctor");
+		btnRegistrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegistroDoctor regisDoc = new RegistroDoctor();
+				regisDoc.setVisible(true);
+				regisDoc.setModal(true);
+			}
+		});
+		btnRegistrar.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
+		panel_5.add(btnRegistrar);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));

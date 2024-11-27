@@ -35,7 +35,7 @@ public class Consultar extends JDialog {
 	private JTextField txtEnfermedad;
 	private JTextField txtNombre;
 	private JTextField txtApellido;
-	private JTextField textField;
+	private JTextField txtCedula;
 	private JTextField textField_1;
 
 	/**
@@ -174,6 +174,14 @@ public class Consultar extends JDialog {
 		panel_2.add(lblApellido);
 		
 		JButton btnHistoriaClinica = new JButton("Ver historia clinica");
+		btnHistoriaClinica.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			HistoriaXPaciente hXp = new HistoriaXPaciente();
+			hXp.actualizarTabla(txtCedula.getText());
+			hXp.setVisible(true);
+			hXp.setModal(true);
+			}
+		});
 		btnHistoriaClinica.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
 		btnHistoriaClinica.setBounds(490, 243, 165, 37);
 		panel_2.add(btnHistoriaClinica);
@@ -183,11 +191,11 @@ public class Consultar extends JDialog {
 		btnVerVacunas.setBounds(315, 243, 165, 37);
 		panel_2.add(btnVerVacunas);
 		
-		textField = new JTextField();
-		textField.setEditable(false);
-		textField.setColumns(10);
-		textField.setBounds(148, 47, 165, 37);
-		panel_2.add(textField);
+		txtCedula = new JTextField();
+		txtCedula.setEditable(false);
+		txtCedula.setColumns(10);
+		txtCedula.setBounds(148, 47, 165, 37);
+		panel_2.add(txtCedula);
 		
 		JLabel lblCedula = new JLabel("Cedula:");
 		lblCedula.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
@@ -254,7 +262,7 @@ public class Consultar extends JDialog {
 
 	    txtNombre.setText(paciente.getNombre());
 	    txtApellido.setText(paciente.getApellido());
-	    textField.setText(paciente.getCedula()); 
+	    txtCedula.setText(paciente.getCedula()); 
 	    textField_1.setText(String.valueOf(paciente.getEdad())); 
 	    txtSeguro.setText(paciente.getSeguro().getNombreEmpresa());		
 	}

@@ -1,6 +1,7 @@
 package visual;
 
 import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -61,7 +62,8 @@ public class Visual_vacunacion extends JFrame {
 	        setBounds(100, 100, 868, 564);
 	        setLocationRelativeTo(null); 
 	        getContentPane().setLayout(new BorderLayout());
-	        contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+	    
+			contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 	        getContentPane().add(contentPanel, BorderLayout.CENTER);
 	        contentPanel.setLayout(null); 
 

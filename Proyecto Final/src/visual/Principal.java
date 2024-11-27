@@ -11,13 +11,9 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-
-import logico.Clinica;
-import java.awt.Toolkit;
 
 public class Principal extends JFrame {
 
@@ -61,20 +57,26 @@ public class Principal extends JFrame {
 		JMenuItem btnIniciarSesion = new JMenuItem("Iniciar Sesion");
 		btnIniciarSesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				InicioSesion iniSe = new InicioSesion();
+				iniSe.setVisible(true);
+				iniSe.setModal(true);
 			
-				if(Clinica.getInstance().getMisDoctores().isEmpty()) {
-				JOptionPane.showMessageDialog(null, "No hay doctores registrados en el sistema.");
-			}
-				else 
-				{
-					InicioSesion iniSe = new InicioSesion();
-					iniSe.setVisible(true);
-					iniSe.setModal(true);
-				}
 			}
 		});
 		btnIniciarSesion.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		btnAdministracion.add(btnIniciarSesion);
+		
+		JMenuItem mntmNewMenuItem = new JMenuItem("Registrar Paciente");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegistroPaciente regisPa = new RegistroPaciente();
+				regisPa.setVisible(true);
+				regisPa.setModal(true);
+			}
+		});
+		mntmNewMenuItem.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		btnAdministracion.add(mntmNewMenuItem);
 		
 		JMenu btnResumenes = new JMenu("Generar Resumenes Consultas");
 		btnResumenes.setFont(new Font("Segoe UI", Font.BOLD, 16));
