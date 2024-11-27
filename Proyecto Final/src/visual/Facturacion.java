@@ -13,6 +13,8 @@ import logico.Clinica;
 import logico.Paciente;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JTextField;
 import java.awt.Color;
@@ -20,6 +22,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.TitledBorder;
 
 public class Facturacion extends JDialog {
 
@@ -33,6 +38,7 @@ public class Facturacion extends JDialog {
 	private JTextField txtIdFactura;
 	private JTextField txtCedulaPaciente;
 	private JButton btnBuscar;
+	private boolean existePaciente;
 
 	/**
 	 * Launch the application.
@@ -54,7 +60,7 @@ public class Facturacion extends JDialog {
 	{
 		setIconImage(new ImageIcon (getClass().getResource("/visual/SIGIC_logo.jpg")).getImage());
 		setTitle("Facturaci\u00F3n");
-		setBounds(100, 100, 619, 347);
+		setBounds(100, 100, 635, 376);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -78,6 +84,8 @@ public class Facturacion extends JDialog {
 		txtCedulaPaciente.setColumns(10);
 		
 		txtIdFactura = new JTextField();
+		txtIdFactura.setText("F - " +Clinica.getInstance().idFactura );
+		
 		txtIdFactura.setForeground(Color.CYAN);
 		txtIdFactura.setEditable(false);
 		txtIdFactura.setEnabled(false);
@@ -157,10 +165,29 @@ public class Facturacion extends JDialog {
 		contentPanel.add(lblFacturacin);
 		
 		btnBuscar = new JButton("Buscar");
-		btnBuscar.addActionListener(new ActionListener() {
+		btnBuscar.addActionListener(new ActionListener() 
+		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				//Paciente paciente = Clinica.getInstance();
+				Paciente paciente = Clinica.getInstance().buscarPacienteByCedula( txtCedulaPaciente.getText() );
+				InicioSesion cedula;
+				
+				if ( paciente != null )
+				{
+					txtNombre.setText( paciente.getNombre() );
+					txtApellido.setText( paciente.getApellido() );
+					txtIdPaciente.setText( cedula.getTxtCedula() );
+					txtEdad.setText( paciente.getEdad() );
+					txtEnfermedad.setText( paciente.getEnfermedad() );
+					txtSeguro.setText( paciente.getSeguro() );
+					existePaciente = true;
+				}
+				else
+				{
+					JOptionPane.showMessageDialog( null, "Su ID no ha sido encontrado, inicie sesión nuevamente. " );
+					dispose();
+				}
+				
 			}
 		});
 		btnBuscar.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
@@ -171,6 +198,7 @@ public class Facturacion extends JDialog {
 		contentPanel.add(btnBuscar);
 		{
 			JPanel buttonPane = new JPanel();
+			buttonPane.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
@@ -186,4 +214,14 @@ public class Facturacion extends JDialog {
 			}
 		}
 	}
+	
+	private void clean ()
+	{
+		txtNombre.setText("");
+		txtApellido.setText("");
+		txtEdad.setText("");
+		txtEnfermedad.setText("");
+		txtSeguro.setText("");
+	}
+	
 }

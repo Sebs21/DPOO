@@ -48,7 +48,8 @@ public class InicioSesion extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public InicioSesion() {
+	public InicioSesion() 
+	{
 		setIconImage(new ImageIcon (getClass().getResource("/visual/SIGIC_logo.jpg")).getImage());
 		setTitle("Inicio de Sesion");
 		setBounds(100, 100, 658, 414);
@@ -65,7 +66,7 @@ public class InicioSesion extends JDialog {
 
 		txtCedula = new JPasswordField();
 		txtCedula.setBounds(235, 253, 171, 52);
-		contentPanel.add(txtCedula);
+		contentPanel.add( txtCedula );
 
 		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(UIManager.getColor("activeCaption"), 3, true));
@@ -129,5 +130,21 @@ public class InicioSesion extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+	}
+
+	public JTextField getTxtNombre() {
+		return txtNombre;
+	}
+
+	public void setTxtNombre(JTextField txtNombre) {
+		this.txtNombre = txtNombre;
+	}
+
+	public JPasswordField getTxtCedula() {
+		return txtCedula;
+	}
+
+	public void setTxtCedula(JPasswordField txtCedula) {
+		this.txtCedula = txtCedula;
 	}
 }

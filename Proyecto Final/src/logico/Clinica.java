@@ -298,6 +298,7 @@ public class Clinica
 	public void agregarFacturar ( Facturar aux )
 	{
 		misFacturas.add( aux );
+		idFactura++;
 	}
 	
 	public ArrayList<Paciente> pacientesNoSeleccionados ()

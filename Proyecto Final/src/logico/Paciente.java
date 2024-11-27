@@ -12,6 +12,7 @@ public class Paciente extends Persona
 	private ArrayList<HistoriaClinica>miHistoriaClinica;
 	private ArrayList<vacunacion>miVacuna;
 	private ArrayList<Facturar> miFactura;
+	
 	private boolean seleccionado;
 
 	public Paciente(String cedula, String nombre, String apellido, String idCodPaciente, String enfermedad, int edad,
