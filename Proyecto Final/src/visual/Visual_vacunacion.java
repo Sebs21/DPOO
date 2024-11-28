@@ -11,21 +11,17 @@ import java.awt.event.FocusEvent;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
-import java.awt.Choice;
 import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.SwingConstants;
 
 public class Visual_vacunacion extends JFrame {
 
@@ -37,8 +33,6 @@ public class Visual_vacunacion extends JFrame {
 	    private JTextField txt_nombre_paciente;
 	    private JTextField txt_numero_paciente;
 	    private JButton btnGuardar;
-	    private JTextField txt_vacuna;
-	    private JTextField txt_code_vacuna;
 
 	 
 	public static void main(String[] args) {
@@ -63,6 +57,7 @@ public class Visual_vacunacion extends JFrame {
 	        setBounds(100, 100, 868, 564);
 	        setLocationRelativeTo(null); 
 	        getContentPane().setLayout(new BorderLayout());
+			contentPanel.setToolTipText("");
 	    
 			contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 	        getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -105,27 +100,6 @@ public class Visual_vacunacion extends JFrame {
 	        txt_numero_paciente.setBounds(546, 83, 186, 32);
 	        contentPanel.add(txt_numero_paciente);
 	        
-	        JButton btn_busqueda_vacu = new JButton();
-	        btn_busqueda_vacu.addActionListener(new ActionListener() {
-	        	public void actionPerformed(ActionEvent arg0) {
-	        		
-	        		
-	        		
-	        	}
-	        });
-	        btn_busqueda_vacu.setText("\"\r\n\"");
-	        btn_busqueda_vacu.setBounds(345, 145, 56, 35);
-	        contentPanel.add(btn_busqueda_vacu);
-	        
-	        txt_vacuna = new JTextField();
-	        txt_vacuna.setEditable(false);
-	        txt_vacuna.setBounds(423, 146, 186, 32);
-	        contentPanel.add(txt_vacuna);
-	        
-	        txt_code_vacuna = new JTextField();
-	        txt_code_vacuna.setBounds(154, 146, 186, 32);
-	        contentPanel.add(txt_code_vacuna);
-	        
 	        JSpinner spinner_cant_ml = new JSpinner();
 	        spinner_cant_ml.setBounds(117, 213, 61, 32);
 	        contentPanel.add(spinner_cant_ml);
@@ -140,6 +114,12 @@ public class Visual_vacunacion extends JFrame {
 			fecha_vacu.setModel(new SpinnerDateModel(new Date(1732593600000L), new Date(1732593600000L), null, Calendar.DAY_OF_YEAR));
 			fecha_vacu.setBounds(267, 211, 165, 37);
 			contentPanel.add(fecha_vacu);
+			
+			 JComboBox<Object> tipo_queso = new JComboBox<>();
+		        tipo_queso.setModel(new DefaultComboBoxModel<Object>(new String[] {"<Seleccione>"}));
+		        tipo_queso.setBounds(117, 146, 200, 32);
+		        contentPanel.add(tipo_queso);
+
 
 	        JPanel buttonPane = new JPanel();
 	        buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));

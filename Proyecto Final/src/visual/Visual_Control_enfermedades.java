@@ -3,10 +3,13 @@ package visual;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -16,9 +19,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
-import java.awt.Toolkit;
 
 public class Visual_Control_enfermedades extends JFrame {
 
@@ -26,7 +29,6 @@ public class Visual_Control_enfermedades extends JFrame {
 	    private JTextField txt_code_enfe;
 	    private JTextField txt_code_paciente;
 	    private JTextField txt_code_doctor;
-	    private JTextField cod_;
 
 	   
 	    private JTextField txt_nombre_paciente;
@@ -76,11 +78,11 @@ public class Visual_Control_enfermedades extends JFrame {
 	        contentPanel.add(lblCodigoDepaciente);
 
 	        JLabel lblCodigoDeEmpleado = new JLabel("Codigo de Doctor:");
-	        lblCodigoDeEmpleado.setBounds(21, 149, 192, 26);
+	        lblCodigoDeEmpleado.setBounds(21, 208, 192, 26);
 	        contentPanel.add(lblCodigoDeEmpleado);
 
 	        JLabel cod_queso_jbl = new JLabel("Enfermedad:");
-	        cod_queso_jbl.setBounds(21, 214, 192, 26);
+	        cod_queso_jbl.setBounds(21, 149, 192, 26);
 	        contentPanel.add(cod_queso_jbl);
 
 	        txt_code_enfe = new JTextField();
@@ -94,12 +96,8 @@ public class Visual_Control_enfermedades extends JFrame {
 	        contentPanel.add(txt_code_paciente);
 
 	        txt_code_doctor = new JTextField();
-	        txt_code_doctor.setBounds(234, 146, 186, 32);
+	        txt_code_doctor.setBounds(234, 202, 186, 32);
 	        contentPanel.add(txt_code_doctor);
-
-	        cod_ = new JTextField();
-	        cod_.setBounds(234, 205, 186, 32);
-	        contentPanel.add(cod_);
 
 	       
 	        txt_nombre_paciente = new JTextField();
@@ -114,17 +112,17 @@ public class Visual_Control_enfermedades extends JFrame {
 
 	        txt_nombre_doctor = new JTextField();
 	        txt_nombre_doctor.setEditable(false);
-	        txt_nombre_doctor.setBounds(430, 146, 186, 32);
+	        txt_nombre_doctor.setBounds(430, 202, 186, 32);
 	        contentPanel.add(txt_nombre_doctor);
 
 	        txt_item_producto = new JTextField();
 	        txt_item_producto.setEditable(false);
-	        txt_item_producto.setBounds(430, 205, 186, 32);
+	        txt_item_producto.setBounds(234, 146, 186, 32);
 	        contentPanel.add(txt_item_producto);
 
 	        txt_costo_producto = new JTextField();
 	        txt_costo_producto.setEditable(false);
-	        txt_costo_producto.setBounds(630, 208, 186, 32);
+	        txt_costo_producto.setBounds(430, 146, 186, 32);
 	        contentPanel.add(txt_costo_producto);
 
 	        JLabel lbl_Cant_hora = new JLabel("Cantidad hora:");
@@ -150,8 +148,19 @@ public class Visual_Control_enfermedades extends JFrame {
 	        
 	        txt_expecialidad = new JTextField();
 	        txt_expecialidad.setEditable(false);
-	        txt_expecialidad.setBounds(630, 146, 186, 32);
+	        txt_expecialidad.setBounds(630, 202, 186, 32);
 	        contentPanel.add(txt_expecialidad);
+	        
+	        JLabel label = new JLabel("Fecha:");
+	        label.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
+	        label.setBounds(440, 255, 91, 44);
+	        contentPanel.add(label);
+	        
+	    	JSpinner fecha_vacu = new JSpinner();
+			fecha_vacu.setModel(new SpinnerDateModel(new Date(1732593600000L), new Date(1732593600000L), null, Calendar.DAY_OF_YEAR));
+			fecha_vacu.setBounds(510, 256, 165, 37);
+			contentPanel.add(fecha_vacu);
+
 
 	        JPanel buttonPane = new JPanel();
 	        buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -184,13 +193,6 @@ public class Visual_Control_enfermedades extends JFrame {
 	            @Override
 	            public void focusLost(FocusEvent e) {
 	                //buscarEmpleado(txt_code_empleado.getText());
-	            }
-	        });
-
-	        cod_.addFocusListener(new FocusAdapter() {
-	            @Override
-	            public void focusLost(FocusEvent e) {
-	              //  buscarProducto(cod_queso_txt1.getText());
 	            }
 	        });
 	}

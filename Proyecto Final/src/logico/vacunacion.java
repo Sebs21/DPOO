@@ -9,15 +9,20 @@ public class vacunacion
 	private Date fecha_Vacunacion;
 	private boolean verifica;
 	
-	public vacunacion( int codVacu, String tipoVacuna, Date fechaVacunacion, boolean verifica ) 
-	{
+
+	
+	
+	
+	
+
+	public vacunacion(int cod_Vacu, String tipo_Vacuna, Date fecha_Vacunacion, boolean verifica) {
 		super();
-		this.cod_Vacu = codVacu;
-		this.tipo_Vacuna = tipoVacuna;
-		this.fecha_Vacunacion = fechaVacunacion;
+		this.cod_Vacu = cod_Vacu;
+		this.tipo_Vacuna = tipo_Vacuna;
+		this.fecha_Vacunacion = fecha_Vacunacion;
 		this.verifica = verifica;
 	}
-	
+
 	public int getCodVacu() {
 		return cod_Vacu;
 	}
