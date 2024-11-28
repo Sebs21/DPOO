@@ -53,7 +53,7 @@ public class InicioSesion extends JDialog {
 	{
 		setIconImage(new ImageIcon (getClass().getResource("/visual/SIGIC_logo.jpg")).getImage());
 		setTitle("Inicio de Sesion");
-		setBounds(100, 100, 872, 514);
+		setBounds(100, 100, 1202, 514);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -119,6 +119,24 @@ public class InicioSesion extends JDialog {
 		});
 		btnRegistrar.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
 		panel_5.add(btnRegistrar);
+		
+		JPanel panel_6 = new JPanel();
+		panel_6.setBorder(new TitledBorder(new LineBorder(new Color(70, 130, 180), 4, true), "Registrar Seguro", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_6.setBounds(797, 117, 332, 207);
+		contentPanel.add(panel_6);
+		panel_6.setLayout(new BorderLayout(0, 0));
+		
+		JButton btnRegistrarSuSeguro = new JButton("Registrar su Seguro Medico");
+		btnRegistrarSuSeguro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				SeguroPaciente seguro = new SeguroPaciente ();
+				seguro.setVisible( true );
+				seguro.setModal( true );
+			}
+		});
+		btnRegistrarSuSeguro.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
+		panel_6.add(btnRegistrarSuSeguro, BorderLayout.CENTER);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));

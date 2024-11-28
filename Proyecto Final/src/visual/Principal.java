@@ -68,8 +68,10 @@ public class Principal extends JFrame {
 		btnAdministracion.add(btnIniciarSesion);
 		
 		JMenuItem mntmNewMenuItem = new JMenuItem("Registrar Paciente");
-		mntmNewMenuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		mntmNewMenuItem.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 				RegistroPaciente regisPa = new RegistroPaciente();
 				regisPa.setVisible(true);
 				regisPa.setModal(true);
@@ -78,9 +80,21 @@ public class Principal extends JFrame {
 		mntmNewMenuItem.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		btnAdministracion.add(mntmNewMenuItem);
 		
-		JMenu btnResumenes = new JMenu("Generar Resumenes Consultas");
+		JMenu btnResumenes = new JMenu("Datos Ingresados");
 		btnResumenes.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuBar.add(btnResumenes);
+		
+		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Lista General");
+		mntmNewMenuItem_2.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		mntmNewMenuItem_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				ListadoGeneral lista = new ListadoGeneral ();
+				lista.setVisible( true );
+				lista.setModal( true );
+			}
+		});
+		btnResumenes.add(mntmNewMenuItem_2);
 		
 		JMenu menu = new JMenu("Generar Resumenes Consultas");
 		menu.setFont(new Font("Segoe UI", Font.BOLD, 16));

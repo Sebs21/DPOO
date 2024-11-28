@@ -28,6 +28,13 @@ import javax.swing.ListSelectionModel;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ListadoGeneral extends JDialog 
 {
@@ -41,37 +48,41 @@ public class ListadoGeneral extends JDialog
 	private static Object[] consultasRow;
 	private static Object[] citasRow;
 	
-	private int indPacienteEliminar = -1;
 	private int indPacienteModificar = -1;
-	
-	private int indDoctorEliminar = -1;
 	private int indDoctorModificar = -1;
-	
-	private int indConsultaEliminar = -1;
 	private int indConsultaModificar = -1;
-	
-	private int indSeguroEliminar = -1;
 	private int indSeguroModificar = -1;
-	
-	private int indCitaEliminar = -1;
 	private int indCitaModificar = -1; 
-	
-	private JTable tablePaciente;
 	
 	private static DefaultTableModel modelo;
 	private static DefaultTableModel modelo1;
 	private static DefaultTableModel modelo2;
 	private static DefaultTableModel modelo3;
 	private static DefaultTableModel modelo4;
-	private JButton btnEliminar;
+	
+	private Paciente selected = null;
+	private Doctor selected01 = null;
+	private Seguro selected02 = null;
+	private Cita selected03 = null;
+	private Consulta selected04 = null;
+	
 	private JButton btnModificar;
 	private JButton btnCancelar;
+	
 	private JPanel panelDoctores;
+	
 	private JScrollPane scrollPane_1;
-	private JTable tableDoctores;
+	
+	private JTextField txtDoctoresTotales;
+	private JTextField txtSegurosTotales;
+	private JTextField txtCitasTotales;
+	private JTextField txtConsultasTotales;
+	private JTextField txtPacientesTotales;
+	private JTable tablePaciente;
+	private JTable tableDoctor;
+	private JTable tableSeguro;
 	private JTable tableConsulta;
 	private JTable tableCita;
-	private JTable tableSeguro;
 	
 
 	/**
@@ -113,34 +124,10 @@ public class ListadoGeneral extends JDialog
 		panelPacientes.add(scrollPane);
 		
 		tablePaciente = new JTable();
-		tablePaciente.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) 
-			{
-				indPacienteEliminar = tablePaciente.getSelectedRow();
-				indPacienteModificar = tablePaciente.getSelectedRow();
-				
-				if ( indPacienteEliminar >= 0 )
-				{
-					btnEliminar.setEnabled( true );
-					btnModificar.setEnabled( true );
-				}
-				else
-				{
-					btnEliminar.setEnabled( false );
-					btnModificar.setEnabled( false );
-				}
-				
-			}
-		});
-		
-		tablePaciente.setSelectionMode( ListSelectionModel.SINGLE_SELECTION );
+		scrollPane.setViewportView( tablePaciente );
 		modelo = new DefaultTableModel();
 		String[] identificadores = { "Codigo", "Cedula", "Nombre", "Apellido", "Edad", "Seguro", "Vacuna" };
 		modelo.setColumnIdentifiers( identificadores );
-		tablePaciente.setModel( modelo );
-		
-		scrollPane.setViewportView(tablePaciente);
 		{
 			panelDoctores = new JPanel();
 			panelDoctores.setBounds(12, 321, 697, 295);
@@ -150,35 +137,13 @@ public class ListadoGeneral extends JDialog
 				scrollPane_1 = new JScrollPane();
 				scrollPane_1.setBounds(0, 0, 697, 295);
 				panelDoctores.add(scrollPane_1);
+				
+				tableDoctor = new JTable();
+				scrollPane_1.setViewportView(tableDoctor);
 				{
-					tableDoctores = new JTable();
-					tableDoctores.addMouseListener(new MouseAdapter() {
-						@Override
-						public void mouseClicked(MouseEvent arg0) 
-						{
-							
-							indDoctorEliminar = tableDoctores.getSelectedRow();
-							indDoctorModificar = tableDoctores.getSelectedRow();
-							
-							if ( indDoctorEliminar >= 0 )
-							{
-								btnEliminar.setEnabled( true );
-								btnModificar.setEnabled( true );
-							}
-							else
-							{
-								btnEliminar.setEnabled( false );
-								btnModificar.setEnabled( false );
-							}
-						}
-					});
-					
-					tableDoctores.setSelectionMode( ListSelectionModel.SINGLE_SELECTION );
 					modelo1 = new DefaultTableModel();
 					String[] identificadores01 = { "Cedula", "Nombre", "Apellido", "Especialidad" };
 					modelo1.setColumnIdentifiers( identificadores01 );
-					tablePaciente.setModel( modelo1 );
-					scrollPane_1.setViewportView( tableDoctores );
 				}
 			}
 		}
@@ -193,32 +158,10 @@ public class ListadoGeneral extends JDialog
 		panelSeguros.add(scrollPane_2);
 		
 		tableSeguro = new JTable();
-		tableSeguro.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) 
-			{
-				
-				indSeguroEliminar = tableSeguro.getSelectedRow();
-				indSeguroModificar = tableSeguro.getSelectedRow();
-				
-				if ( indSeguroEliminar >= 0 )
-				{
-					btnEliminar.setEnabled( true );
-					btnModificar.setEnabled( true );
-				}
-				else
-				{
-					btnEliminar.setEnabled( false );
-					btnModificar.setEnabled( false );
-				}
-			}
-		});
-		
-		scrollPane_2.setViewportView( tableSeguro );
+		scrollPane_2.setViewportView(tableSeguro);
 		modelo2 = new DefaultTableModel();
-		String[] identificadores02 = { "Cedula", "Nombre", "Apellido", "Especialidad" };
+		String[] identificadores02 = { "ID Seguro", "Nombre de Empresa", "Tipo de Seguro" };
 		modelo2.setColumnIdentifiers( identificadores02 );
-		tablePaciente.setModel( modelo2 );
 		
 		JPanel panelConsulta = new JPanel();
 		panelConsulta.setBounds(721, 321, 691, 295);
@@ -230,31 +173,11 @@ public class ListadoGeneral extends JDialog
 		panelConsulta.add(scrollPane_3);
 		
 		tableConsulta = new JTable();
-		tableConsulta.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) 
-			{
-				indConsultaEliminar = tableConsulta.getSelectedRow();
-				indConsultaModificar = tableConsulta.getSelectedRow();
-				
-				if ( indConsultaEliminar >= 0 )
-				{
-					btnEliminar.setEnabled( true );
-					btnModificar.setEnabled( true );
-				}
-				else
-				{
-					btnEliminar.setEnabled( false );
-					btnModificar.setEnabled( false );
-				}
-			}
-		});
+		scrollPane_3.setViewportView(tableConsulta);
 		
 		modelo3 = new DefaultTableModel();
 		String[] identificadores03 = { "ID", "Enfermedad", "Fecha Consulta", "Descripción", "Importancia" };
 		modelo3.setColumnIdentifiers( identificadores03 );
-		tableConsulta.setModel( modelo3 );
-		scrollPane_3.setViewportView(tableConsulta);
 		
 		JPanel panelCita = new JPanel();
 		panelCita.setBounds(359, 643, 768, 336);
@@ -266,32 +189,66 @@ public class ListadoGeneral extends JDialog
 		panelCita.add(scrollPane_4);
 		
 		tableCita = new JTable();
-		tableCita.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) 
-			{
-				
-				indCitaEliminar = tableCita.getSelectedRow();
-				indCitaModificar = tableCita.getSelectedRow();
-				
-				if ( indCitaEliminar >= 0 )
-				{
-					btnEliminar.setEnabled( true );
-					btnModificar.setEnabled( true );
-				}
-				else
-				{
-					btnEliminar.setEnabled( false );
-					btnModificar.setEnabled( false );
-				}
-			}
-		});
+		scrollPane_4.setViewportView(tableCita);
 		
 		modelo4 = new DefaultTableModel();
-		String[] identificadores04 = { "" };
+		String[] identificadores04 = { "Doctor", "Paciente", "Fecha de Cita" };
 		modelo4.setColumnIdentifiers( identificadores04 );
-		tableCita.setModel( modelo4 );
-		scrollPane_4.setViewportView(tableCita);
+		
+		JLabel lblNewLabel = new JLabel("Pacientes totales:");
+		lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 17));
+		lblNewLabel.setBounds(1604, 48, 135, 16);
+		contentPanel.add(lblNewLabel);
+		
+		txtPacientesTotales = new JTextField();
+		txtPacientesTotales.setEditable(false);
+		txtPacientesTotales.setBounds(1611, 77, 116, 22);
+		contentPanel.add(txtPacientesTotales);
+		txtPacientesTotales.setColumns(10);
+		
+		JLabel lblDoctoresTotales = new JLabel("Doctores totales:");
+		lblDoctoresTotales.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 17));
+		lblDoctoresTotales.setBounds(1604, 124, 135, 16);
+		contentPanel.add(lblDoctoresTotales);
+		
+		txtDoctoresTotales = new JTextField();
+		txtDoctoresTotales.setEditable(false);
+		txtDoctoresTotales.setColumns(10);
+		txtDoctoresTotales.setBounds(1611, 156, 116, 22);
+		contentPanel.add(txtDoctoresTotales);
+		
+		JLabel lblSegurosTotales = new JLabel("Seguros totales:");
+		lblSegurosTotales.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 17));
+		lblSegurosTotales.setBounds(1604, 205, 135, 16);
+		contentPanel.add(lblSegurosTotales);
+		
+		txtSegurosTotales = new JTextField();
+		txtSegurosTotales.setEditable(false);
+		txtSegurosTotales.setColumns(10);
+		txtSegurosTotales.setBounds(1611, 234, 116, 22);
+		contentPanel.add(txtSegurosTotales);
+		
+		JLabel lblCitasTotales = new JLabel("Citas totales:");
+		lblCitasTotales.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 17));
+		lblCitasTotales.setBounds(1604, 276, 135, 16);
+		contentPanel.add(lblCitasTotales);
+		
+		txtCitasTotales = new JTextField();
+		txtCitasTotales.setEditable(false);
+		txtCitasTotales.setColumns(10);
+		txtCitasTotales.setBounds(1604, 305, 116, 22);
+		contentPanel.add(txtCitasTotales);
+		
+		JLabel lblConsultasTotales = new JLabel("Consultas totales:");
+		lblConsultasTotales.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 17));
+		lblConsultasTotales.setBounds(1604, 342, 135, 16);
+		contentPanel.add(lblConsultasTotales);
+		
+		txtConsultasTotales = new JTextField();
+		txtConsultasTotales.setEditable(false);
+		txtConsultasTotales.setColumns(10);
+		txtConsultasTotales.setBounds(1604, 375, 116, 22);
+		contentPanel.add(txtConsultasTotales);
 		
 		{
 			JPanel buttonPane = new JPanel();
@@ -305,14 +262,14 @@ public class ListadoGeneral extends JDialog
 				buttonPane.add(btnModificar);
 			}
 			{
-				btnEliminar = new JButton("Eliminar");
-				btnEliminar.setEnabled(false);
-				btnEliminar.setActionCommand("OK");
-				buttonPane.add(btnEliminar);
-				getRootPane().setDefaultButton(btnEliminar);
-			}
-			{
 				btnCancelar = new JButton("Cancelar");
+				btnCancelar.addActionListener(new ActionListener() 
+				{
+					public void actionPerformed(ActionEvent arg0) 
+					{
+						dispose();
+					}
+				});
 				btnCancelar.setActionCommand("Cancel");
 				buttonPane.add(btnCancelar);
 			}
@@ -329,9 +286,9 @@ public class ListadoGeneral extends JDialog
 	public void datosPacientes ()
 	{
 		modelo.setRowCount(0);
-		pacientesRow = new Object[tablePaciente.getColumnCount()];
+		ArrayList<Paciente> aux = Clinica.getInstance().getMisPacientes();
 		
-		for ( Paciente paciente : Clinica.getInstance().pacientesSeleccionados() )
+		for ( Paciente paciente : aux )
 		{
 			pacientesRow[0] = paciente.getIdCodPaciente();
 			pacientesRow[1] = paciente.getCedula();
@@ -342,42 +299,49 @@ public class ListadoGeneral extends JDialog
 			pacientesRow[6] = paciente.getMiVacuna();
 		}
 		
+		modelo.addRow( pacientesRow );
+		
 	}
 	
 	public void datosDoctor ()
 	{
 		modelo1.setRowCount(0);
-		doctoresRow = new Object[tableDoctores.getColumnCount()];
+		ArrayList<Doctor> aux = Clinica.getInstance().getMisDoctores();
 		
-		for ( Doctor doctor : Clinica.getInstance().doctoresSeleccionados() )
+		for ( Doctor doctor : aux )
 		{
 			doctoresRow[0] = doctor.getCedula();
 			doctoresRow[1] = doctor.getNombre();
 			doctoresRow[2] = doctor.getApellido();
 			doctoresRow[3] = doctor.getEspecialidad();
 		}
+		
+		modelo1.addRow( doctoresRow );
+		
 	}
 	
 	public void datosSeguro ()
 	{
 		modelo2.setRowCount(0);
-		segurosRow = new Object[tableSeguro.getColumnCount()];
+		ArrayList<Seguro> aux = Clinica.getInstance().getMisSeguros();
 		
-		for ( Seguro seguro : Clinica.getInstance().segurosSeleccionados() )
+		for ( Seguro seguro : aux ) 
 		{
 			segurosRow[0] = seguro.getIdSeguro();
 			segurosRow[1] = seguro.getNombreEmpresa();
 			segurosRow[2] = seguro.getTipoDeSeguro();
 		}
 		
+		modelo2.addRow( segurosRow );
+		
 	}
 	
 	public void datosConsulta ()
 	{
 		modelo3.setRowCount(0);
-		consultasRow = new Object[tableConsulta.getColumnCount()];
+		ArrayList<Consulta> aux = Clinica.getInstance().getMisConsultas();
 		
-		for ( Consulta consulta : Clinica.getInstance().consultasSeleccionadas() )
+		for ( Consulta consulta : aux )
 		{
 			consultasRow[0] = consulta.getId();
 			consultasRow[1] = consulta.getEnfermedad();
@@ -386,24 +350,23 @@ public class ListadoGeneral extends JDialog
 			consultasRow[4] = consulta.isImportancia();
 		}
 		
+		modelo3.addRow( consultasRow );
+		
 	}
 	
 	public void datosCita ()
 	{
 		modelo4.setRowCount(0);
-		citasRow = new Object[tableCita.getColumnCount()];
+		ArrayList<Cita> aux = Clinica.getInstance().getMisCitas();
 		
-		for ( Cita cita : Clinica.getInstance().citasSeleccionadas() ) 
+		for ( Cita cita : aux ) 
 		{
 			citasRow[0] = cita.getDoctor();
 			citasRow[1] = cita.getPersona();
 			citasRow[2] = cita.getFechaCita();
 		}
 		
-	}
-	
-	public void clean ()
-	{
+		modelo4.addRow( citasRow );
 		
 	}
 }

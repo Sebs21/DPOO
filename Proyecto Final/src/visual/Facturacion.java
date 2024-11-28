@@ -11,6 +11,7 @@ import javax.swing.border.EmptyBorder;
 
 import logico.Clinica;
 import logico.Paciente;
+import logico.Seguro;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -175,16 +176,15 @@ public class Facturacion extends JDialog {
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				Paciente paciente = Clinica.getInstance().buscarPacienteByCedula( txtCedulaPaciente.getText() );
-				InicioSesion cedula;
 				
 				if ( paciente != null )
 				{
 					txtNombre.setText( paciente.getNombre() );
 					txtApellido.setText( paciente.getApellido() );
 					txtIdPaciente.setText( paciente.getIdCodPaciente() );
-					txtEdad.setText( paciente.getEdad() );
+					txtEdad.setText( String.valueOf(paciente.getEdad() ) );
 					txtEnfermedad.setText( paciente.getEnfermedad() );
-					txtSeguro.setText( paciente.getSeguro() );
+					txtSeguro.setText( paciente.getSeguro().getTipoDeSeguro() );
 					existePaciente = true;
 				}
 				else

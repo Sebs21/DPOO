@@ -143,6 +143,14 @@ public class Clinica
 		Clinica.idFactura = idFactura;
 	}
 	
+	public ArrayList<Seguro> getMisSeguros() {
+		return misSeguros;
+	}
+
+	public void setMisSeguros(ArrayList<Seguro> misSeguros) {
+		this.misSeguros = misSeguros;
+	}
+	
 	public Consulta buscarConsultaById ( String id )
 	{
 		
@@ -258,8 +266,6 @@ public class Clinica
 		
 	}
 	
-	/*
-	
 	public void eliminarPaciente( Paciente aux )
 	{
 		misPacientes.remove( aux );
@@ -285,7 +291,10 @@ public class Clinica
 		misCitas.remove( aux );
 	}
 	
-	*/
+	public void eliminarSeguro ( Seguro aux )
+	{
+		misSeguros.remove( aux );
+	}
 	
 	public void agregarDoctor ( Doctor aux )
 	{
@@ -492,6 +501,5 @@ public class Clinica
 		return seleccionadosArrayList;
 		
 	}
-	
 	
 }
