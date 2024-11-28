@@ -1,32 +1,27 @@
 package visual;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.SoftBevelBorder;
 
 import logico.Clinica;
 import logico.Paciente;
 import logico.Seguro;
-
-import javax.swing.JTabbedPane;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import java.awt.Font;
-import javax.swing.JTextField;
-import java.awt.Color;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.border.SoftBevelBorder;
-import javax.swing.border.BevelBorder;
 
 public class SeguroPaciente extends JDialog {
 
@@ -37,7 +32,7 @@ public class SeguroPaciente extends JDialog {
 	private JButton btnNo;
 	private JButton btnBuscar;
 	private JButton btnSi;
-	private JComboBox cbxTipoDeSeguro;
+	private JComboBox<String> cbxTipoDeSeguro;
 	private JButton btnConectar;
 	private JButton btnCancelar;
 
@@ -172,7 +167,7 @@ public class SeguroPaciente extends JDialog {
 		btnSi.setBounds(198, 88, 52, 25);
 		contentPanel.add(btnSi);
 		
-		cbxTipoDeSeguro = new JComboBox();
+		cbxTipoDeSeguro = new JComboBox<String>();
 		cbxTipoDeSeguro.setModel(new DefaultComboBoxModel(new String[] {"< Seleccione Seguro >", "Seguro de Responsabilidad M\u00E9dica", "Equipo Medico", "Salud para pacientes"}));
 		cbxTipoDeSeguro.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
 		cbxTipoDeSeguro.setEnabled(false);
