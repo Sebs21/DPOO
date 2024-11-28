@@ -8,7 +8,7 @@ public class vacunacion
 	private String tipo_Vacuna;
 	private Date fecha_Vacunacion;
 	private boolean verifica;
-
+//
 	public vacunacion(int cod_Vacu, String tipo_Vacuna, Date fecha_Vacunacion, boolean verifica) {
 		super();
 		this.cod_Vacu = cod_Vacu;

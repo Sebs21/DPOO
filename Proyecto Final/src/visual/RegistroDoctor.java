@@ -31,7 +31,7 @@ public class RegistroDoctor extends JDialog {
 	private JTextField txtNombre;
 	private JTextField txtApellido;
 	private JTextField txtEspecialidad;
-
+	//
 	/**
 	 * Launch the application.
 	 */

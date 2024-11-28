@@ -29,7 +29,7 @@ public class Reporte_control_enfermedades extends JFrame {
 	   
 	    private JTextField txt_nombre_paciente;
 	    private JButton btnGuardar;
-
+	    //
 	/**
 	 * Launch the application.
 	 */

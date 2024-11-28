@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class HistoriaClinica 
 {
-	
+	//
 	private ArrayList<Consulta>misConsultas;
 
 	public HistoriaClinica( ArrayList<Consulta> misConsultas ) 

@@ -39,7 +39,7 @@ public class Visual_Control_enfermedades extends JFrame {
 	    private JButton btnGuardar;
 	    private JLabel monitoreo;
 	    private JTextField txt_expecialidad;
-
+	    //
 	/**
 	 * Launch the application.
 	 */

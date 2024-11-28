@@ -28,7 +28,7 @@ public class InicioSesion extends JDialog {
 
 	/**
 	 * 
-	 */
+	 *///
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtNombre;
 	private JPasswordField txtCedula;
@@ -145,13 +145,13 @@ public class InicioSesion extends JDialog {
 				JButton okButton = new JButton("Iniciar Sesion");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-
-						if (Clinica.getInstance().buscarDoctorByCedula(txtCedula.getPassword().toString()) != null) {
-							InterfazDoctor interDoc = new InterfazDoctor();
+						String cedula = new String(txtCedula.getPassword());
+						InterfazDoctor interDoc = new InterfazDoctor();
+						if (Clinica.getInstance().buscarDoctorByCedula(cedula) != null) {
 							interDoc.setVisible(true);
 							interDoc.setModal(true);
-							interDoc.actualizarTablaConsultas(txtCedula.getPassword().toString());
-							//interDoc.NombreDoc(txtCedula.getPassword().toString());
+							interDoc.actualizarTablaConsultas(cedula);
+							
 						} else {
 							JOptionPane.showMessageDialog(null, "Debe ingresar una contraseña válida.");
 						}

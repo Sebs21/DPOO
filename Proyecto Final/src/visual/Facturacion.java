@@ -28,7 +28,7 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
 
 public class Facturacion extends JDialog {
-
+//
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtNombre;
 	private JTextField txtApellido;
@@ -279,6 +279,11 @@ public class Facturacion extends JDialog {
 			}
 			{
 				JButton btnCancelar = new JButton("Cancelar");
+				btnCancelar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+					dispose();
+					}
+				});
 				btnCancelar.setBackground(Color.CYAN);
 				btnCancelar.setForeground(Color.BLACK);
 				btnCancelar.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));

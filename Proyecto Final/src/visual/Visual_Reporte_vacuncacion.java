@@ -10,7 +10,7 @@ import javax.swing.border.EmptyBorder;
 public class Visual_Reporte_vacuncacion extends JFrame {
 
 	private JPanel contentPane;
-
+	//
 	/**
 	 * Launch the application.
 	 */

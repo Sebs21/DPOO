@@ -38,7 +38,7 @@ import java.awt.event.ActionEvent;
 
 public class ListadoGeneral extends JDialog 
 {
-
+//
 	private final JPanel contentPanel = new JPanel();
 	private Dimension dim;
 	

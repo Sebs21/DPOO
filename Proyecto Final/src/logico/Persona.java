@@ -2,7 +2,7 @@ package logico;
 
 public abstract class Persona 
 {
-	
+	//
 	protected String cedula;
 	protected String nombre;
 	protected String apellido;

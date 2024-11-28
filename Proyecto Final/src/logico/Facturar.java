@@ -2,7 +2,7 @@ package logico;
 
 public class Facturar 
 {
-	
+	//
 	private Consulta consulta;
 	private Seguro seguro;
 	private float montoPagar;

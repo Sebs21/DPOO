@@ -3,7 +3,7 @@ package logico;
 import java.util.ArrayList;
 
 public class Control_vacunacion 
-{
+{//
 	private Consulta consulta;
 	private ArrayList<vacunacion> vacuna;
 	private ArrayList<vacunacion> inve_vac;

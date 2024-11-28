@@ -2,7 +2,7 @@ package logico;
 
 public class Reporte_vigilancia 
 {
-	
+	//
 	private int codReporteVigi;
 	private float totalHoras;
 	

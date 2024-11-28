@@ -35,7 +35,7 @@ public class SeguroPaciente extends JDialog {
 	private JComboBox<String> cbxTipoDeSeguro;
 	private JButton btnConectar;
 	private JButton btnCancelar;
-
+	//
 	/**
 	 * Launch the application.
 	 */

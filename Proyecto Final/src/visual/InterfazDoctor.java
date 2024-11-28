@@ -28,7 +28,7 @@ import logico.HistoriaClinica;
 import logico.Paciente;
 
 public class InterfazDoctor extends JDialog {
-
+//
 	private final JPanel contentPanel = new JPanel();
 	private JTable tblPacientes;
 	private DefaultTableModel modelo;

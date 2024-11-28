@@ -18,7 +18,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class HistoriaXPaciente extends JDialog {
-
+//
 	private final JPanel contentPanel = new JPanel();
 	private JTable tblConsultas;
 	private DefaultTableModel modelo;

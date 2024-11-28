@@ -6,7 +6,7 @@ public class Bajo_vigilancia {
 	private String enfermedad;
 	private int tiempoVigilancia;
 	private String monitoreo;
-	
+	//
 	public Bajo_vigilancia(int codVigilancia, String enfermedad, int tiempoVigilancia, String monitoreo) 
 	{
 		super();

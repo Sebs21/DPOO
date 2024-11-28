@@ -26,7 +26,7 @@ import java.util.Calendar;
 import javax.swing.JRadioButton;
 
 public class Consultar extends JDialog {
-
+//
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtDoctor;
 	private JTextField txtIdConsulta;

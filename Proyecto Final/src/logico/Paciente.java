@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Paciente extends Persona 
 {	
-	
+	//
 	private String idCodPaciente;
 	private String enfermedad;
 	private int edad;

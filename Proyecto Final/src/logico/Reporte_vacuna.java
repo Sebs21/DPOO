@@ -2,7 +2,7 @@ package logico;
 
 public class Reporte_vacuna 
 {
-	
+	//
 	private int codReporteVacuna;
 	
 	public Reporte_vacuna( int codReporteVacuna ) 

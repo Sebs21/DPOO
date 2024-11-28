@@ -24,7 +24,7 @@ public class RegistroPaciente extends JDialog {
 	private JTextField txtApellido;
 	private JTextField txtEdad;
 	private JTextField txtSeguro;
-
+	//
 	/**
 	 * Launch the application.
 	 */

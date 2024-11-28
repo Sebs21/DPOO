@@ -13,7 +13,7 @@ public class Clinica
 	private ArrayList<Paciente> misPacientes;
 	private ArrayList<Doctor> misDoctores;
 	private ArrayList<Seguro> misSeguros;
-	
+	//
 	public static int idPersona;
 	public static int idConsulta;
 	public static int idFactura;

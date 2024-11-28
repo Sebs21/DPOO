@@ -33,7 +33,7 @@ public class Visual_vacunacion extends JFrame {
 	    private JTextField txt_nombre_paciente;
 	    private JTextField txt_numero_paciente;
 	    private JButton btnGuardar;
-
+	    //
 	 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
