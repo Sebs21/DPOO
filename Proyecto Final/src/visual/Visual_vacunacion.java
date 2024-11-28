@@ -117,7 +117,7 @@ public class Visual_vacunacion extends JFrame {
 			
 			 JComboBox<Object> tipo_queso = new JComboBox<>();
 		        tipo_queso.setModel(new DefaultComboBoxModel<Object>(new String[] {"<Seleccione>"}));
-		        tipo_queso.setBounds(117, 146, 200, 32);
+		        tipo_queso.setBounds(154, 146, 186, 32);
 		        contentPanel.add(tipo_queso);
 
 
