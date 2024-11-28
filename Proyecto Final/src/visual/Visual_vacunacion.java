@@ -25,20 +25,20 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Choice;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.SwingConstants;
 
 public class Visual_vacunacion extends JFrame {
 
 	 private final JPanel contentPanel = new JPanel();
-	    private JTextField txt_code_enfe;
+	    private JTextField txt_code_vacu;
 	    private JTextField txt_code_paciente;
 
 	   
 	    private JTextField txt_nombre_paciente;
 	    private JTextField txt_numero_paciente;
 	    private JButton btnGuardar;
-	    private JLabel monitoreo;
-	    private JTextField textField;
-	    private JTextField textField_1;
+	    private JTextField txt_vacuna;
+	    private JTextField txt_code_vacuna;
 
 	 
 	public static void main(String[] args) {
@@ -59,7 +59,7 @@ public class Visual_vacunacion extends JFrame {
 	 */
 	public Visual_vacunacion() {
 		setIconImage(new ImageIcon (getClass().getResource("/visual/SIGIC_logo.jpg")).getImage());
-		 setTitle("Registro Vigilancia");
+		 setTitle("Registro Vacuna");
 	        setBounds(100, 100, 868, 564);
 	        setLocationRelativeTo(null); 
 	        getContentPane().setLayout(new BorderLayout());
@@ -68,9 +68,9 @@ public class Visual_vacunacion extends JFrame {
 	        getContentPane().add(contentPanel, BorderLayout.CENTER);
 	        contentPanel.setLayout(null); 
 
-	        JLabel Codigo_fac = new JLabel("N.O" );
-	        Codigo_fac.setBounds(21, 32, 192, 26);
-	        contentPanel.add(Codigo_fac);
+	        JLabel Codigo_vacu = new JLabel("N.O" );
+	        Codigo_vacu.setBounds(21, 32, 192, 26);
+	        contentPanel.add(Codigo_vacu);
 
 	        JLabel lblCodigoDepaciente = new JLabel("Codigo de Paciente:");
 	        lblCodigoDepaciente.setBounds(21, 86, 192, 26);
@@ -80,70 +80,66 @@ public class Visual_vacunacion extends JFrame {
 	        lblCodigoDeEmpleado.setBounds(21, 149, 192, 26);
 	        contentPanel.add(lblCodigoDeEmpleado);
 
-	        JLabel cod_queso_jbl = new JLabel("Cantidad ml:");
-	        cod_queso_jbl.setBounds(21, 214, 192, 26);
-	        contentPanel.add(cod_queso_jbl);
+	        JLabel cant_ml = new JLabel("Cantidad ml:");
+	        cant_ml.setBounds(21, 216, 112, 26);
+	        contentPanel.add(cant_ml);
 
-	        txt_code_enfe = new JTextField();
-	        txt_code_enfe.setText("VA-");
-	        txt_code_enfe.setEditable(false);
-	        txt_code_enfe.setBounds(234, 29, 186, 32);
-	        contentPanel.add(txt_code_enfe);
+	        txt_code_vacu = new JTextField();
+	        txt_code_vacu.setText("VA-");
+	        txt_code_vacu.setEditable(false);
+	        txt_code_vacu.setBounds(154, 29, 186, 32);
+	        contentPanel.add(txt_code_vacu);
 
 	        txt_code_paciente = new JTextField();
-	        txt_code_paciente.setBounds(234, 83, 186, 32);
+	        txt_code_paciente.setBounds(154, 83, 186, 32);
 	        contentPanel.add(txt_code_paciente);
 
 	       
 	        txt_nombre_paciente = new JTextField();
 	        txt_nombre_paciente.setEditable(false);
-	        txt_nombre_paciente.setBounds(430, 83, 186, 32);
+	        txt_nombre_paciente.setBounds(350, 83, 186, 32);
 	        contentPanel.add(txt_nombre_paciente);
 
 	        txt_numero_paciente = new JTextField();
 	        txt_numero_paciente.setEditable(false);
-	        txt_numero_paciente.setBounds(630, 83, 186, 32);
+	        txt_numero_paciente.setBounds(546, 83, 186, 32);
 	        contentPanel.add(txt_numero_paciente);
 	        
-	        monitoreo = new JLabel("Monitoreo:");
-	        monitoreo.setBounds(21, 310, 192, 26);
-	        contentPanel.add(monitoreo);
+	        JButton btn_busqueda_vacu = new JButton();
+	        btn_busqueda_vacu.addActionListener(new ActionListener() {
+	        	public void actionPerformed(ActionEvent arg0) {
+	        		
+	        		
+	        		
+	        	}
+	        });
+	        btn_busqueda_vacu.setText("\"\r\n\"");
+	        btn_busqueda_vacu.setBounds(345, 145, 56, 35);
+	        contentPanel.add(btn_busqueda_vacu);
 	        
-	        JCheckBox chckbxNewCheckBox = new JCheckBox("Activo");
-	        chckbxNewCheckBox.setBounds(241, 306, 179, 35);
-	        contentPanel.add(chckbxNewCheckBox);
+	        txt_vacuna = new JTextField();
+	        txt_vacuna.setEditable(false);
+	        txt_vacuna.setBounds(423, 146, 186, 32);
+	        contentPanel.add(txt_vacuna);
 	        
-	        JCheckBox chckbxInactivo = new JCheckBox("Inactivo");
-	        chckbxInactivo.setBounds(430, 306, 179, 35);
-	        contentPanel.add(chckbxInactivo);
+	        txt_code_vacuna = new JTextField();
+	        txt_code_vacuna.setBounds(154, 146, 186, 32);
+	        contentPanel.add(txt_code_vacuna);
 	        
-	        JButton btnNewButton = new JButton("\" \"");
-	        btnNewButton.setBounds(430, 145, 56, 35);
-	        contentPanel.add(btnNewButton);
-	        
-	        textField = new JTextField();
-	        textField.setEditable(false);
-	        textField.setBounds(501, 146, 186, 32);
-	        contentPanel.add(textField);
-	        
-	        textField_1 = new JTextField();
-	        textField_1.setBounds(234, 146, 186, 32);
-	        contentPanel.add(textField_1);
-	        
-	        JSpinner spinner = new JSpinner();
-	        spinner.setBounds(234, 211, 186, 32);
-	        contentPanel.add(spinner);
+	        JSpinner spinner_cant_ml = new JSpinner();
+	        spinner_cant_ml.setBounds(117, 213, 61, 32);
+	        contentPanel.add(spinner_cant_ml);
 	        
 	        
 	        JLabel lblFecha = new JLabel("Fecha:");
 			lblFecha.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-			lblFecha.setBounds(32, 160, 91, 44);
-			panel.add(lblFecha);
+			lblFecha.setBounds(208, 206, 91, 44);
+			contentPanel.add(lblFecha);
 			
-			JSpinner spinner = new JSpinner();
-			spinner.setModel(new SpinnerDateModel(new Date(1732593600000L), new Date(1732593600000L), null, Calendar.DAY_OF_YEAR));
-			spinner.setBounds(133, 167, 165, 37);
-			panel.add(spinner);
+			JSpinner fecha_vacu = new JSpinner();
+			fecha_vacu.setModel(new SpinnerDateModel(new Date(1732593600000L), new Date(1732593600000L), null, Calendar.DAY_OF_YEAR));
+			fecha_vacu.setBounds(267, 211, 165, 37);
+			contentPanel.add(fecha_vacu);
 
 	        JPanel buttonPane = new JPanel();
 	        buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
