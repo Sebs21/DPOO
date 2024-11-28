@@ -29,6 +29,4 @@ public class Reporte_vigilancia
 		this.totalHoras = totalHoras;
 	}
 	
-	
-	
 }

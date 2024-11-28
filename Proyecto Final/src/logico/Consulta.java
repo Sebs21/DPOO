@@ -12,6 +12,7 @@ public class Consulta
 	private Seguro seguro;
 	private Doctor doctor;
 	private Paciente paciente;
+	
 	private boolean importancia;
 	private boolean noimportancia;
 	private boolean seleccionado;

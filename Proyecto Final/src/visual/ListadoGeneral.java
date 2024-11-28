@@ -368,7 +368,6 @@ public class ListadoGeneral extends JDialog
 			segurosRow[0] = seguro.getIdSeguro();
 			segurosRow[1] = seguro.getNombreEmpresa();
 			segurosRow[2] = seguro.getTipoDeSeguro();
-			segurosRow[3] = seguro.getPago();
 		}
 		
 	}

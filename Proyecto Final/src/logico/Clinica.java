@@ -135,6 +135,14 @@ public class Clinica
 		this.control_vacu = control_Vacu;
 	}
 	
+	public static int getIdFactura() {
+		return idFactura;
+	}
+
+	public static void setIdFactura(int idFactura) {
+		Clinica.idFactura = idFactura;
+	}
+	
 	public Consulta buscarConsultaById ( String id )
 	{
 		
@@ -250,6 +258,8 @@ public class Clinica
 		
 	}
 	
+	/*
+	
 	public void eliminarPaciente( Paciente aux )
 	{
 		misPacientes.remove( aux );
@@ -274,6 +284,8 @@ public class Clinica
 	{
 		misCitas.remove( aux );
 	}
+	
+	*/
 	
 	public void agregarDoctor ( Doctor aux )
 	{
@@ -306,6 +318,8 @@ public class Clinica
 		misSeguros.add( aux );
 		idSeguro++;
 	}
+	
+	/*
 	
 	public ArrayList<Paciente> pacientesNoSeleccionados ()
 	{
@@ -392,6 +406,8 @@ public class Clinica
 		
 	}
 	
+	*/
+	
 	public ArrayList<Paciente> pacientesSeleccionados ()
 	{
 		
@@ -458,14 +474,6 @@ public class Clinica
 		
 		return seleccionadosArrayList;
 		
-	}
-	
-	public static int getIdFactura() {
-		return idFactura;
-	}
-
-	public static void setIdFactura(int idFactura) {
-		Clinica.idFactura = idFactura;
 	}
 
 	public ArrayList<Seguro> segurosSeleccionados ()

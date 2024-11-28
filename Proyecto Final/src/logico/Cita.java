@@ -7,6 +7,7 @@ public class Cita
 	private Doctor doctor;
 	private Persona persona;
 	private Date fechaCita;
+	
 	private boolean seleccionado;
 
 	public Cita( Doctor doctor, Persona persona, Date fechaCita ) 

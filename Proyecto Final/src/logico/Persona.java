@@ -39,7 +39,4 @@ public abstract class Persona
 		this.apellido = apellido;
 	}
 	
-	
-	
-	
 }

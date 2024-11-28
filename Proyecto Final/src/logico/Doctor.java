@@ -6,8 +6,9 @@ public class Doctor extends Persona
 {
 	
 	private String especialidad;
-	private boolean seleccionado;
 	private ArrayList<Paciente>misPacientes;
+	
+	private boolean seleccionado;
 
 	public Doctor( String cedula, String nombre, String apellido, String especialidad ) 
 	{
