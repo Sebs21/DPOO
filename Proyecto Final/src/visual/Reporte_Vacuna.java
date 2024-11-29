@@ -4,7 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-public class Reporte_control_enfermedades extends JFrame {
+public class Reporte_Vacuna extends JFrame {
 
     private JPanel contentPanel;
     private JTextField txt_code_paciente;
@@ -15,7 +15,7 @@ public class Reporte_control_enfermedades extends JFrame {
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {
-                Reporte_control_enfermedades frame = new Reporte_control_enfermedades();
+                Reporte_Vacuna frame = new Reporte_Vacuna();
                 frame.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -23,8 +23,8 @@ public class Reporte_control_enfermedades extends JFrame {
         });
     }
 
-    public Reporte_control_enfermedades() {
-        setTitle("Reporte vigilancia");
+    public Reporte_Vacuna() {
+        setTitle("Reporte Vacuna");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 868, 564);
         setLocationRelativeTo(null);
@@ -75,7 +75,7 @@ public class Reporte_control_enfermedades extends JFrame {
         JPanel panelTabla = new JPanel(new BorderLayout());
 
         model = new DefaultTableModel();
-        String[] identificadores = {"Código", "Paciente", "Doctor", "Cantidad de hora", "Vigilancia", "Fecha"};
+        String[] identificadores = {"Código", "Paciente",  "Vacuna", "cantidad ml", "Fecha"};
         model.setColumnIdentifiers(identificadores);
 
         table = new JTable(model);
