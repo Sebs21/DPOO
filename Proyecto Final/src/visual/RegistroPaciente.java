@@ -66,11 +66,15 @@ public class RegistroPaciente extends JDialog {
 			panel.add(lblNewLabel_1);
 			
 			txtNombre = new JTextField();
+			txtNombre.setEnabled(false);
+			txtNombre.setEditable(false);
 			txtNombre.setBounds(232, 35, 108, 31);
 			panel.add(txtNombre);
 			txtNombre.setColumns(10);
 			
 			txtApellido = new JTextField();
+			txtApellido.setEnabled(false);
+			txtApellido.setEditable(false);
 			txtApellido.setColumns(10);
 			txtApellido.setBounds(572, 35, 108, 31);
 			panel.add(txtApellido);
@@ -91,6 +95,8 @@ public class RegistroPaciente extends JDialog {
 			panel.add(lblSeguro);
 			
 			txtSeguro = new JTextField();
+			txtSeguro.setEnabled(false);
+			txtSeguro.setEditable(false);
 			txtSeguro.setColumns(10);
 			txtSeguro.setBounds(572, 96, 108, 31);
 			panel.add(txtSeguro);

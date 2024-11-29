@@ -89,7 +89,7 @@ public class Principal extends JFrame {
 		mntmNewMenuItem_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
-				ListadoGeneral lista = new ListadoGeneral ();
+				ListadoGeneral lista = new ListadoGeneral();
 				lista.setVisible( true );
 				lista.setModal( true );
 			}

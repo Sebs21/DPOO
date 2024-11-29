@@ -48,17 +48,12 @@ public class ListadoGeneral extends JDialog
 	private static Object[] consultasRow;
 	private static Object[] citasRow;
 	
+	/*
 	private int indPacienteModificar = -1;
 	private int indDoctorModificar = -1;
 	private int indConsultaModificar = -1;
 	private int indSeguroModificar = -1;
-	private int indCitaModificar = -1; 
-	
-	private static DefaultTableModel modelo;
-	private static DefaultTableModel modelo1;
-	private static DefaultTableModel modelo2;
-	private static DefaultTableModel modelo3;
-	private static DefaultTableModel modelo4;
+	private int indCitaModificar = -1;
 	
 	private Paciente selected = null;
 	private Doctor selected01 = null;
@@ -66,7 +61,14 @@ public class ListadoGeneral extends JDialog
 	private Cita selected03 = null;
 	private Consulta selected04 = null;
 	
-	private JButton btnModificar;
+	*/ 
+	
+	private static DefaultTableModel modelo;
+	private static DefaultTableModel modelo1;
+	private static DefaultTableModel modelo2;
+	private static DefaultTableModel modelo3;
+	private static DefaultTableModel modelo4;
+	
 	private JButton btnCancelar;
 	
 	private JPanel panelDoctores;
@@ -125,9 +127,12 @@ public class ListadoGeneral extends JDialog
 		
 		tablePaciente = new JTable();
 		scrollPane.setViewportView( tablePaciente );
+		
 		modelo = new DefaultTableModel();
 		String[] identificadores = { "Codigo", "Cedula", "Nombre", "Apellido", "Edad", "Seguro", "Vacuna" };
 		modelo.setColumnIdentifiers( identificadores );
+		tablePaciente.setModel( modelo );
+		
 		{
 			panelDoctores = new JPanel();
 			panelDoctores.setBounds(12, 321, 697, 295);
@@ -144,6 +149,7 @@ public class ListadoGeneral extends JDialog
 					modelo1 = new DefaultTableModel();
 					String[] identificadores01 = { "Cedula", "Nombre", "Apellido", "Especialidad" };
 					modelo1.setColumnIdentifiers( identificadores01 );
+					tableDoctor.setModel( modelo1 );
 				}
 			}
 		}
@@ -162,6 +168,7 @@ public class ListadoGeneral extends JDialog
 		modelo2 = new DefaultTableModel();
 		String[] identificadores02 = { "ID Seguro", "Nombre de Empresa", "Tipo de Seguro" };
 		modelo2.setColumnIdentifiers( identificadores02 );
+		tableSeguro.setModel( modelo2 );
 		
 		JPanel panelConsulta = new JPanel();
 		panelConsulta.setBounds(721, 321, 691, 295);
@@ -178,6 +185,7 @@ public class ListadoGeneral extends JDialog
 		modelo3 = new DefaultTableModel();
 		String[] identificadores03 = { "ID", "Enfermedad", "Fecha Consulta", "Descripción", "Importancia" };
 		modelo3.setColumnIdentifiers( identificadores03 );
+		tableConsulta.setModel( modelo3 );
 		
 		JPanel panelCita = new JPanel();
 		panelCita.setBounds(359, 643, 768, 336);
@@ -194,6 +202,7 @@ public class ListadoGeneral extends JDialog
 		modelo4 = new DefaultTableModel();
 		String[] identificadores04 = { "Doctor", "Paciente", "Fecha de Cita" };
 		modelo4.setColumnIdentifiers( identificadores04 );
+		tableCita.setModel( modelo4 );
 		
 		JLabel lblNewLabel = new JLabel("Pacientes totales:");
 		lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 17));
@@ -256,12 +265,6 @@ public class ListadoGeneral extends JDialog
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				btnModificar = new JButton("Modificar");
-				btnModificar.setEnabled(false);
-				btnModificar.setActionCommand("OK");
-				buttonPane.add(btnModificar);
-			}
-			{
 				btnCancelar = new JButton("Cancelar");
 				btnCancelar.addActionListener(new ActionListener() 
 				{
@@ -286,6 +289,7 @@ public class ListadoGeneral extends JDialog
 	public void datosPacientes ()
 	{
 		modelo.setRowCount(0);
+		pacientesRow = new Object[7];
 		ArrayList<Paciente> aux = Clinica.getInstance().getMisPacientes();
 		
 		for ( Paciente paciente : aux )
@@ -297,15 +301,19 @@ public class ListadoGeneral extends JDialog
 			pacientesRow[4] = paciente.getEdad();
 			pacientesRow[5] = paciente.getSeguro();
 			pacientesRow[6] = paciente.getMiVacuna();
+			
+			modelo.addRow( pacientesRow );
+			
 		}
 		
-		modelo.addRow( pacientesRow );
+		txtPacientesTotales.setText( String.valueOf( aux.size() ) );
 		
 	}
 	
 	public void datosDoctor ()
 	{
 		modelo1.setRowCount(0);
+		doctoresRow = new Object[4];
 		ArrayList<Doctor> aux = Clinica.getInstance().getMisDoctores();
 		
 		for ( Doctor doctor : aux )
@@ -314,15 +322,19 @@ public class ListadoGeneral extends JDialog
 			doctoresRow[1] = doctor.getNombre();
 			doctoresRow[2] = doctor.getApellido();
 			doctoresRow[3] = doctor.getEspecialidad();
+			
+			modelo1.addRow( doctoresRow );
+			
 		}
 		
-		modelo1.addRow( doctoresRow );
+		txtDoctoresTotales.setText( String.valueOf( aux.size() ) );
 		
 	}
 	
 	public void datosSeguro ()
 	{
 		modelo2.setRowCount(0);
+		segurosRow = new Object[3];
 		ArrayList<Seguro> aux = Clinica.getInstance().getMisSeguros();
 		
 		for ( Seguro seguro : aux ) 
@@ -330,15 +342,19 @@ public class ListadoGeneral extends JDialog
 			segurosRow[0] = seguro.getIdSeguro();
 			segurosRow[1] = seguro.getNombreEmpresa();
 			segurosRow[2] = seguro.getTipoDeSeguro();
+			
+			modelo2.addRow( segurosRow );
+			
 		}
 		
-		modelo2.addRow( segurosRow );
+		txtSegurosTotales.setText( String.valueOf( aux.size() ) );
 		
 	}
 	
 	public void datosConsulta ()
 	{
 		modelo3.setRowCount(0);
+		consultasRow = new Object[5];
 		ArrayList<Consulta> aux = Clinica.getInstance().getMisConsultas();
 		
 		for ( Consulta consulta : aux )
@@ -348,15 +364,19 @@ public class ListadoGeneral extends JDialog
 			consultasRow[2] = consulta.getFechaConsulta();
 			consultasRow[3] = consulta.getDescripcion();
 			consultasRow[4] = consulta.isImportancia();
+			
+			modelo3.addRow( consultasRow );
+			
 		}
-		
-		modelo3.addRow( consultasRow );
+	
+		txtConsultasTotales.setText( String.valueOf( aux.size() ) );
 		
 	}
 	
 	public void datosCita ()
 	{
 		modelo4.setRowCount(0);
+		citasRow = new Object[3];
 		ArrayList<Cita> aux = Clinica.getInstance().getMisCitas();
 		
 		for ( Cita cita : aux ) 
@@ -364,9 +384,13 @@ public class ListadoGeneral extends JDialog
 			citasRow[0] = cita.getDoctor();
 			citasRow[1] = cita.getPersona();
 			citasRow[2] = cita.getFechaCita();
+			
+			modelo4.addRow( citasRow );
+			
 		}
 		
-		modelo4.addRow( citasRow );
+		txtCitasTotales.setText( String.valueOf( aux.size() ) );
 		
 	}
+	
 }
