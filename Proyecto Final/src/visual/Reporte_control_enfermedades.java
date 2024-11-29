@@ -13,11 +13,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.JToolBar;
 
 public class Reporte_control_enfermedades extends JFrame {
 
-    private final JPanel contentPanel = new JPanel(new CardLayout()); // CardLayout para cambiar vistas
+    private final JPanel contentPanel = new JPanel(new CardLayout());
     private JTextField txt_code_paciente;
     private JTextField txt_nombre_paciente;
     private JTable table;
@@ -43,7 +42,7 @@ public class Reporte_control_enfermedades extends JFrame {
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(contentPanel, BorderLayout.CENTER);
 
-        // Crear las vistas
+
         crearVistaFormulario();
         crearVistaTabla();
     }
