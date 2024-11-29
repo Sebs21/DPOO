@@ -31,6 +31,8 @@ public class Clinica
 		misDoctores = new ArrayList<>();
 		misConsultas = new ArrayList<>();
 		misFacturas = new ArrayList<>();
+		misSeguros = new ArrayList<>();
+		misCitas = new ArrayList<>();
 		control_enfer = new ArrayList<>();
 		control_vacu = new ArrayList<>();
 		
