@@ -1,9 +1,18 @@
 package logico;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Clinica 
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+public class Clinica implements Serializable 
 {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	private ArrayList<Consulta> misConsultas;
 	private ArrayList<Facturar> misFacturas;
@@ -13,7 +22,8 @@ public class Clinica
 	private ArrayList<Paciente> misPacientes;
 	private ArrayList<Doctor> misDoctores;
 	private ArrayList<Seguro> misSeguros;
-	//
+	private ArrayList<Persona> misUsuarios;
+	
 	public static int idPersona;
 	public static int idConsulta;
 	public static int idFactura;
@@ -21,6 +31,7 @@ public class Clinica
 	public static int idSeguro;
 	public static int controlEnfermerdad;
 	public static int controlVacuna;
+	private static Persona LoginUser;
 	
 	public static Clinica clinica = null;
 	
@@ -30,11 +41,12 @@ public class Clinica
 		misPacientes = new ArrayList<>();
 		misDoctores = new ArrayList<>();
 		misConsultas = new ArrayList<>();
-		misFacturas = new ArrayList<>();
+		misFacturas = new ArrayList<>();		
 		misSeguros = new ArrayList<>();
 		misCitas = new ArrayList<>();
 		control_enfer = new ArrayList<>();
 		control_vacu = new ArrayList<>();
+		misUsuarios = new ArrayList<>();
 		
 		idPersona = 1;
 		idConsulta = 1;
@@ -46,6 +58,22 @@ public class Clinica
 		
 	}
 	
+	public ArrayList<Persona> getMisUsuarios() {
+		return misUsuarios;
+	}
+
+	public void setMisUsuarios(ArrayList<Persona> misUsuarios) {
+		this.misUsuarios = misUsuarios;
+	}
+
+	public static Persona getLoginUser() {
+		return LoginUser;
+	}
+
+	public static void setLoginUser(Persona loginUser) {
+		LoginUser = loginUser;
+	}
+
 	public ArrayList<Cita> getMisCitas() {
 		return misCitas;
 	}
@@ -503,5 +531,20 @@ public class Clinica
 		return seleccionadosArrayList;
 		
 	}
-	
+
+	public boolean ConfirmarLogin(String Nombre, String Cedula) {
+		boolean aux = false;
+		for (Persona usuario : misUsuarios) {
+	        if(usuario.getNombre().equals(Nombre) && usuario.getCedula().equals(Cedula)) {
+	            LoginUser = usuario;
+	            aux = true;
+			}
+		}		
+		return aux;
+	}
+
+	public void registrarUsuario(String string, String string2, String string3, String string4) {
+		// TODO Auto-generated method stub
+		
+	}
 }

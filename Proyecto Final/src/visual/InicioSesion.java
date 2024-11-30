@@ -18,9 +18,17 @@ import logico.Clinica;
 
 import javax.swing.UIManager;
 import java.awt.Color;
+import java.awt.EventQueue;
+
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
 
@@ -37,6 +45,36 @@ public class InicioSesion extends JDialog {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		
+		EventQueue.invokeLater(new Runnable() {
+		    public void run() {
+		        FileInputStream clinicaInputStream = null;
+		        ObjectInputStream clinicaReader = null;
+		        FileOutputStream clinicaOutputStream = null;
+		        ObjectOutputStream clinicaWriter = null;
+
+		        try {		       
+		            clinicaInputStream = new FileInputStream("Clinica.dat");
+		            clinicaReader = new ObjectInputStream(clinicaInputStream);
+		            Clinica aux = (Clinica) clinicaReader.readObject();
+		            Clinica.setClinica(aux);
+		        } catch (FileNotFoundException e) {
+		            try {
+		                clinicaOutputStream = new FileOutputStream("Clinica.dat");
+		                clinicaWriter = new ObjectOutputStream(clinicaOutputStream);
+		                Clinica nuevaClinica = Clinica.getInstance();
+		                
+		                nuevaClinica.registrarUsuario("Admin", "Admin", "Admin", "Doctor");
+		                clinicaWriter.writeObject(nuevaClinica);
+		            } catch (IOException e1) {
+		                e1.printStackTrace();
+		            }
+		        } catch (IOException | ClassNotFoundException e) {
+		            e.printStackTrace();
+		        }
+		    }
+		});
+		
 		try {
 			InicioSesion dialog = new InicioSesion();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -53,7 +91,7 @@ public class InicioSesion extends JDialog {
 	{
 		setIconImage(new ImageIcon (getClass().getResource("/visual/SIGIC_logo.jpg")).getImage());
 		setTitle("Inicio de Sesion");
-		setBounds(100, 100, 1202, 514);
+		setBounds(100, 100, 492, 514);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -85,11 +123,11 @@ public class InicioSesion extends JDialog {
 										lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 22));
 										
 												JPanel panel_1 = new JPanel();
-												panel_1.setBounds(102, 220, 101, 51);
+												panel_1.setBounds(89, 220, 136, 51);
 												panel_4.add(panel_1);
 												panel_1.setBorder(new LineBorder(new Color(135, 206, 235), 3, true));
 												
-														JLabel lblCedula = new JLabel("Cedula:");
+														JLabel lblCedula = new JLabel("Contrase\u00F1a:");
 														panel_1.add(lblCedula);
 														lblCedula.setFont(new Font("Tahoma", Font.PLAIN, 23));
 														
@@ -102,41 +140,6 @@ public class InicioSesion extends JDialog {
 																		panel_3.setBounds(50, 124, 205, 75);
 																		panel_4.add(panel_3);
 																		panel_3.setBorder(new LineBorder(UIManager.getColor("activeCaption"), 3, true));
-		
-		JPanel panel_5 = new JPanel();
-		panel_5.setBorder(new TitledBorder(new LineBorder(new Color(70, 130, 180), 4, true), "Registrar Doctor", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_5.setBounds(453, 117, 332, 207);
-		contentPanel.add(panel_5);
-		panel_5.setLayout(new BorderLayout(0, 0));
-		
-		JButton btnRegistrar = new JButton("Registrar un nuevo Doctor");
-		btnRegistrar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				RegistroDoctor regisDoc = new RegistroDoctor();
-				regisDoc.setVisible(true);
-				regisDoc.setModal(true);
-			}
-		});
-		btnRegistrar.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		panel_5.add(btnRegistrar);
-		
-		JPanel panel_6 = new JPanel();
-		panel_6.setBorder(new TitledBorder(new LineBorder(new Color(70, 130, 180), 4, true), "Registrar Seguro", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_6.setBounds(797, 117, 332, 207);
-		contentPanel.add(panel_6);
-		panel_6.setLayout(new BorderLayout(0, 0));
-		
-		JButton btnRegistrarSuSeguro = new JButton("Registrar su Seguro Medico");
-		btnRegistrarSuSeguro.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) 
-			{
-				SeguroPaciente seguro = new SeguroPaciente ();
-				seguro.setVisible( true );
-				seguro.setModal( true );
-			}
-		});
-		btnRegistrarSuSeguro.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		panel_6.add(btnRegistrarSuSeguro, BorderLayout.CENTER);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -145,15 +148,11 @@ public class InicioSesion extends JDialog {
 				JButton okButton = new JButton("Iniciar Sesion");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						String cedula = new String(txtCedula.getPassword());
-						InterfazDoctor interDoc = new InterfazDoctor();
-						if (Clinica.getInstance().buscarDoctorByCedula(cedula) != null) {
-							interDoc.setVisible(true);
-							interDoc.setModal(true);
-							interDoc.actualizarTablaConsultas(cedula);
-							
-						} else {
-							JOptionPane.showMessageDialog(null, "Debe ingresar una contraseña válida.");
+						
+						if(Clinica.getInstance().ConfirmarLogin(txtNombre.getText(), txtCedula.getText())) {
+						Principal prin = new Principal();
+						dispose();
+						prin.setVisible(true);
 						}
 					}
 				});

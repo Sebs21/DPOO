@@ -1,18 +1,33 @@
 package logico;
 
-public abstract class Persona 
+import java.io.Serializable;
+
+public abstract class Persona implements Serializable 
 {
-	//
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected String cedula;
 	protected String nombre;
 	protected String apellido;
-	
-	public Persona( String cedula, String nombre, String apellido ) 
+	protected String tipo;
+
+	public Persona( String cedula, String nombre, String apellido, String tipo ) 
 	{
 		super();
 		this.cedula = cedula;
 		this.nombre = nombre;
 		this.apellido = apellido;
+		this.tipo = tipo;
+	}
+	
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 	
 	public String getCedula() {

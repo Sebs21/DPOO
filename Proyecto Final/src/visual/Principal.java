@@ -4,6 +4,11 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -15,10 +20,19 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+import com.sun.glass.events.WindowEvent;
+
+import logico.Clinica;
+
 public class Principal extends JFrame {
 
 	private JPanel contentPane;
 	private Dimension dim;
+	private JMenu btnResumenes;
+	private JMenu btnGenerarResumenese;
+	private JMenu btnEnfermedadesVigilancia;
+	private JMenu btnVacunacion;
+	private JMenu btnAdministracion;
 	//
 	/**
 	 * Launch the application.
@@ -40,6 +54,23 @@ public class Principal extends JFrame {
 	 * Create the frame.
 	 */
 	public Principal() {
+		addWindowListener(new WindowAdapter(){
+
+			public void windowClosing(WindowEvent e) {
+				FileOutputStream clinica;
+				ObjectOutputStream clinicaWrite;
+				try {
+					clinica = new FileOutputStream("Clinica.dat");
+					clinicaWrite = new ObjectOutputStream(clinica);
+					clinicaWrite.writeObject(Clinica.getInstance());
+				}catch(FileNotFoundException e1) {
+					e1.printStackTrace();
+				}catch(IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		
 		setTitle("SIGIC");
 		setIconImage(new ImageIcon (getClass().getResource("/visual/SIGIC_logo.jpg")).getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -50,7 +81,24 @@ public class Principal extends JFrame {
 		menuBar.setBackground(UIManager.getColor("activeCaption"));
 		setJMenuBar(menuBar);
 		
-		JMenu btnAdministracion = new JMenu("Administraci\u00F3n");
+		btnAdministracion = new JMenu("Administraci\u00F3n");
+		
+		btnAdministracion.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent arg0) {
+		        if (Clinica.getLoginUser().getTipo().equalsIgnoreCase("Paciente")) {
+		            btnAdministracion.setEnabled(false);
+		            btnResumenes.setEnabled(false);
+		            btnEnfermedadesVigilancia.setEnabled(false);
+		            btnVacunacion.setEnabled(true);
+		        } else {		   
+		            btnAdministracion.setEnabled(true);
+		            btnResumenes.setEnabled(true);		           
+		            btnEnfermedadesVigilancia.setEnabled(true);
+		            btnVacunacion.setEnabled(true);
+		        }
+		    }
+		});
+
 		btnAdministracion.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuBar.add(btnAdministracion);
 		
@@ -80,7 +128,7 @@ public class Principal extends JFrame {
 		mntmNewMenuItem.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		btnAdministracion.add(mntmNewMenuItem);
 		
-		JMenu btnResumenes = new JMenu("Datos Ingresados");
+		btnResumenes = new JMenu("Datos Ingresados");
 		btnResumenes.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuBar.add(btnResumenes);
 		
@@ -96,11 +144,11 @@ public class Principal extends JFrame {
 		});
 		btnResumenes.add(mntmNewMenuItem_2);
 		
-		JMenu menu = new JMenu("Generar Resumenes Consultas");
-		menu.setFont(new Font("Segoe UI", Font.BOLD, 16));
-		menuBar.add(menu);
+		btnGenerarResumenese = new JMenu("Generar Resumenes Consultas");
+		btnGenerarResumenese.setFont(new Font("Segoe UI", Font.BOLD, 16));
+		menuBar.add(btnGenerarResumenese);
 		
-		JMenu btnEnfermedadesVigilancia = new JMenu("Enfermedades Vigiladas");
+		btnEnfermedadesVigilancia = new JMenu("Enfermedades Vigiladas");
 		btnEnfermedadesVigilancia.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuBar.add(btnEnfermedadesVigilancia);
 		
@@ -125,7 +173,7 @@ public class Principal extends JFrame {
 		btn_Reporte_Vigilancia.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		btnEnfermedadesVigilancia.add(btn_Reporte_Vigilancia);
 		
-		JMenu btnVacunacion = new JMenu("Vacunaci\u00F3n");
+		btnVacunacion = new JMenu("Vacunaci\u00F3n");
 		btnVacunacion.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuBar.add(btnVacunacion);
 		contentPane = new JPanel();
