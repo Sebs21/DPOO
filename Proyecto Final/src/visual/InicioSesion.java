@@ -15,6 +15,7 @@ import java.awt.Font;
 import javax.swing.border.LineBorder;
 
 import logico.Clinica;
+import logico.User;
 
 import javax.swing.UIManager;
 import java.awt.Color;
@@ -48,30 +49,36 @@ public class InicioSesion extends JDialog {
 		
 		EventQueue.invokeLater(new Runnable() {
 		    public void run() {
-		        FileInputStream clinicaInputStream = null;
+		        FileInputStream clinicaInput = null;
 		        ObjectInputStream clinicaReader = null;
-		        FileOutputStream clinicaOutputStream = null;
-		        ObjectOutputStream clinicaWriter = null;
+		        FileOutputStream clinicaOutput = null;
+		        ObjectOutputStream clinicaWrite = null;
 
 		        try {		       
-		            clinicaInputStream = new FileInputStream("Clinica.dat");
-		            clinicaReader = new ObjectInputStream(clinicaInputStream);
+		        	clinicaInput = new FileInputStream("Clinica.dat");
+		            clinicaReader = new ObjectInputStream(clinicaInput);
 		            Clinica aux = (Clinica) clinicaReader.readObject();
 		            Clinica.setClinica(aux);
+		            clinicaInput.close();
+		            clinicaReader.close();
 		        } catch (FileNotFoundException e) {
 		            try {
-		                clinicaOutputStream = new FileOutputStream("Clinica.dat");
-		                clinicaWriter = new ObjectOutputStream(clinicaOutputStream);
-		                Clinica nuevaClinica = Clinica.getInstance();
-		                
-		                nuevaClinica.registrarUsuario("Admin", "Admin", "Admin", "Doctor");
-		                clinicaWriter.writeObject(nuevaClinica);
-		            } catch (IOException e1) {
-		                e1.printStackTrace();
-		            }
-		        } catch (IOException | ClassNotFoundException e) {
-		            e.printStackTrace();
-		        }
+		            	clinicaOutput = new FileOutputStream("Clinica.dat");
+		                clinicaWrite = new ObjectOutputStream(clinicaOutput);
+		                User aux = new User("Admin", "Admin", "Doctor");    
+		                Clinica.getInstance().agregarUsuario(aux);
+		                clinicaWrite.writeObject(Clinica.getInstance());
+		                clinicaOutput.close();
+		                clinicaWrite.close();
+		            } catch (FileNotFoundException e1) {
+		            }catch (IOException e1) {
+			            e1.printStackTrace();
+		            } 
+		        } catch (IOException e) {
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
 		    }
 		});
 		

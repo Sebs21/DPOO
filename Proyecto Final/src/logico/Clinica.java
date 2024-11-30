@@ -22,7 +22,7 @@ public class Clinica implements Serializable
 	private ArrayList<Paciente> misPacientes;
 	private ArrayList<Doctor> misDoctores;
 	private ArrayList<Seguro> misSeguros;
-	private ArrayList<Persona> misUsuarios;
+	private ArrayList<User> misUsuarios;
 	
 	public static int idPersona;
 	public static int idConsulta;
@@ -31,7 +31,7 @@ public class Clinica implements Serializable
 	public static int idSeguro;
 	public static int controlEnfermerdad;
 	public static int controlVacuna;
-	private static Persona LoginUser;
+	private static User LoginUser;
 	
 	public static Clinica clinica = null;
 	
@@ -57,23 +57,23 @@ public class Clinica implements Serializable
 		idSeguro = 1;
 		
 	}
-	
-	public ArrayList<Persona> getMisUsuarios() {
+
+	public ArrayList<User> getMisUsuarios() {
 		return misUsuarios;
 	}
 
-	public void setMisUsuarios(ArrayList<Persona> misUsuarios) {
+	public void setMisUsuarios(ArrayList<User> misUsuarios) {
 		this.misUsuarios = misUsuarios;
 	}
 
-	public static Persona getLoginUser() {
+	public static User getLoginUser() {
 		return LoginUser;
 	}
 
-	public static void setLoginUser(Persona loginUser) {
+	public static void setLoginUser(User loginUser) {
 		LoginUser = loginUser;
 	}
-
+	
 	public ArrayList<Cita> getMisCitas() {
 		return misCitas;
 	}
@@ -204,7 +204,7 @@ public class Clinica implements Serializable
 		
 	}
 	
-	public Paciente buscarPacienteById ( String id )
+	public Paciente buscarPacienteById ( int id )
 	{
 		
 		boolean findit = false;
@@ -213,7 +213,7 @@ public class Clinica implements Serializable
 		
 		while ( !findit && ind < misPacientes.size() )
 		{
-			if ( misPacientes.get( ind ).getIdCodPaciente().equalsIgnoreCase( id ) )
+			if ( misPacientes.get( ind ).getIdCodPaciente() == id )
 			{
 				aux = misPacientes.get( ind );
 				findit = true;
@@ -356,6 +356,10 @@ public class Clinica implements Serializable
 	{
 		misSeguros.add( aux );
 		idSeguro++;
+	}
+	
+	public void agregarUsuario(User user) {
+		misUsuarios.add(user);
 	}
 	
 	/*
@@ -534,17 +538,12 @@ public class Clinica implements Serializable
 
 	public boolean ConfirmarLogin(String Nombre, String Cedula) {
 		boolean aux = false;
-		for (Persona usuario : misUsuarios) {
-	        if(usuario.getNombre().equals(Nombre) && usuario.getCedula().equals(Cedula)) {
+		for (User usuario : misUsuarios) {
+	        if(usuario.getUsuario().equals(Nombre) && usuario.getPass().equals(Cedula)) {
 	            LoginUser = usuario;
 	            aux = true;
 			}
 		}		
 		return aux;
-	}
-
-	public void registrarUsuario(String string, String string2, String string3, String string4) {
-		// TODO Auto-generated method stub
-		
 	}
 }

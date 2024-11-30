@@ -4,20 +4,27 @@ import java.util.ArrayList;
 
 public class Doctor extends Persona 
 {
-	//
 	private String especialidad;
 	private ArrayList<Paciente>misPacientes;
+	private User user;
 	
 	private boolean seleccionado;
 
 	public Doctor( String cedula, String nombre, String apellido, String especialidad ) 
 	{
-		super( cedula, nombre, apellido );
+		super(cedula, nombre, apellido);
 		this.especialidad = especialidad;
 		this.misPacientes = new ArrayList<Paciente>();
 	}
+
+	public User getUser() {
+		return user;
+	}
 	
-	
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	public ArrayList<Paciente> getMisPacientes() {
 		return misPacientes;
 	}

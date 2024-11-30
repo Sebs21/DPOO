@@ -10,6 +10,11 @@ import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
+
+import logico.Clinica;
+import logico.Paciente;
+import logico.User;
+
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 import javax.swing.JLabel;
@@ -24,6 +29,7 @@ public class RegistroPaciente extends JDialog {
 	private JTextField txtApellido;
 	private JTextField txtEdad;
 	private JTextField txtSeguro;
+	private JTextField txtCedula;
 	//
 	/**
 	 * Launch the application.
@@ -42,7 +48,8 @@ public class RegistroPaciente extends JDialog {
 	 * Create the dialog.
 	 */
 	public RegistroPaciente() {
-		setBounds(100, 100, 780, 460);
+		setTitle("Registro Paciente");
+		setBounds(100, 100, 602, 390);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -51,76 +58,65 @@ public class RegistroPaciente extends JDialog {
 		{
 			JPanel panel = new JPanel();
 			panel.setBorder(new TitledBorder(new LineBorder(new Color(0, 128, 128), 4, true), "Informaci\u00F3n paciente", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-			panel.setBounds(10, 11, 744, 366);
+			panel.setBounds(10, 11, 566, 296);
 			contentPanel.add(panel);
 			panel.setLayout(null);
 			
 			JLabel lblNewLabel = new JLabel("Nombre:");
 			lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-			lblNewLabel.setBounds(62, 35, 108, 31);
+			lblNewLabel.setBounds(26, 39, 108, 31);
 			panel.add(lblNewLabel);
 			
 			JLabel lblNewLabel_1 = new JLabel("Apellido:");
 			lblNewLabel_1.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-			lblNewLabel_1.setBounds(402, 35, 108, 31);
+			lblNewLabel_1.setBounds(294, 39, 108, 31);
 			panel.add(lblNewLabel_1);
 			
 			txtNombre = new JTextField();
-			txtNombre.setEnabled(false);
-			txtNombre.setEditable(false);
-			txtNombre.setBounds(232, 35, 108, 31);
+			txtNombre.setBounds(160, 40, 108, 31);
 			panel.add(txtNombre);
 			txtNombre.setColumns(10);
 			
 			txtApellido = new JTextField();
-			txtApellido.setEnabled(false);
-			txtApellido.setEditable(false);
 			txtApellido.setColumns(10);
-			txtApellido.setBounds(572, 35, 108, 31);
+			txtApellido.setBounds(428, 40, 108, 31);
 			panel.add(txtApellido);
 			
 			JLabel lblEdad = new JLabel("Edad:");
 			lblEdad.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-			lblEdad.setBounds(62, 95, 108, 31);
+			lblEdad.setBounds(26, 128, 108, 31);
 			panel.add(lblEdad);
 			
 			txtEdad = new JTextField();
 			txtEdad.setColumns(10);
-			txtEdad.setBounds(232, 96, 108, 31);
+			txtEdad.setBounds(160, 129, 108, 31);
 			panel.add(txtEdad);
 			
 			JLabel lblSeguro = new JLabel("Seguro:");
 			lblSeguro.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-			lblSeguro.setBounds(402, 95, 108, 31);
+			lblSeguro.setBounds(294, 128, 108, 31);
 			panel.add(lblSeguro);
 			
 			txtSeguro = new JTextField();
-			txtSeguro.setEnabled(false);
-			txtSeguro.setEditable(false);
 			txtSeguro.setColumns(10);
-			txtSeguro.setBounds(572, 96, 108, 31);
+			txtSeguro.setBounds(428, 129, 108, 31);
 			panel.add(txtSeguro);
 			
-			JPanel PanelVacuna = new JPanel();
-			PanelVacuna.setBorder(new TitledBorder(new LineBorder(new Color(176, 224, 230), 4, true), "Vacunaci\u00F3n", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-			PanelVacuna.setBounds(62, 160, 278, 182);
-			panel.add(PanelVacuna);
-			PanelVacuna.setLayout(null);
+			JLabel lblCedula = new JLabel("Cedula:");
+			lblCedula.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
+			lblCedula.setBounds(116, 216, 108, 31);
+			panel.add(lblCedula);
 			
-			JLabel lblNewLabel_2 = new JLabel("\u00BFDesea Vacunarse?");
-			lblNewLabel_2.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-			lblNewLabel_2.setBounds(70, 28, 138, 23);
-			PanelVacuna.add(lblNewLabel_2);
+			txtCedula = new JTextField();
+			txtCedula.setColumns(10);
+			txtCedula.setBounds(340, 217, 108, 31);
+			panel.add(txtCedula);
 			
-			JRadioButton rdbtnSi = new JRadioButton("Si deseo");
-			rdbtnSi.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 14));
-			rdbtnSi.setBounds(84, 79, 109, 23);
-			PanelVacuna.add(rdbtnSi);
-			
-			JRadioButton rdbtnNo = new JRadioButton("No deseo");
-			rdbtnNo.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 14));
-			rdbtnNo.setBounds(84, 130, 109, 23);
-			PanelVacuna.add(rdbtnNo);
+			JLabel lblNewLabel_2 = new JLabel("Su nombre y cedula ser\u00E1 su contrase\u00F1a para iniciar sesi\u00F3n");
+			lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
+			lblNewLabel_2.setForeground(Color.RED);
+			lblNewLabel_2.setBounds(77, 271, 411, 14);
+			panel.add(lblNewLabel_2);
 		}
 		{
 			JPanel buttonPane = new JPanel();
@@ -128,6 +124,16 @@ public class RegistroPaciente extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("Registrar");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+					Clinica.getInstance();
+					Paciente paciente = new Paciente(txtCedula.getText(),txtNombre.getText(),txtApellido.getText(),Clinica.idPersona);
+					User aux = new User(txtNombre.getText(),txtCedula.getText(),"Paciente");
+					
+					Clinica.getInstance().agregarPaciente(paciente);
+					paciente.setUser(aux);
+					}
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);

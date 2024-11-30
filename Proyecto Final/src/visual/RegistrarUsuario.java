@@ -18,6 +18,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import logico.Clinica;
+import logico.Paciente;
+import logico.User;
+
 public class RegistrarUsuario extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
@@ -54,10 +58,10 @@ public RegistrarUsuario() {
 		contentPanel.setLayout(null);
 		setLocationRelativeTo(null);
 		
-		JComboBox cbxTipos = new JComboBox();
-		cbxTipos.setModel(new DefaultComboBoxModel(new String[] {"<Seleccione>", "Doctor", "Paciente"}));
-		cbxTipos.setBounds(124, 208, 110, 34);
-		contentPanel.add(cbxTipos);
+		JComboBox cbxTipo = new JComboBox();
+		cbxTipo.setModel(new DefaultComboBoxModel(new String[] {"<Seleccione>", "Doctor", "Paciente"}));
+		cbxTipo.setBounds(124, 208, 110, 34);
+		contentPanel.add(cbxTipo);
 		
 		JLabel lblTipoDeUsuario = new JLabel("Tipo de usuario:");
 		lblTipoDeUsuario.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
@@ -105,27 +109,25 @@ public RegistrarUsuario() {
 		lblNewLabel_1.setForeground(new Color(255, 0, 0));
 		lblNewLabel_1.setBounds(177, 260, 249, 40);
 		panel.add(lblNewLabel_1);
-		
-		txtUsuario = new JTextField();
-		txtUsuario.setBounds(112, 103, 86, 20);
-		panel.add(txtUsuario);
-		txtUsuario.setColumns(10);
-		
-		txtCedula = new JTextField();
-		txtCedula.setColumns(10);
-		txtCedula.setBounds(340, 103, 86, 20);
-		panel.add(txtCedula);
-		
-		txtConfirmarCedula = new JTextField();
-		txtConfirmarCedula.setColumns(10);
-		txtConfirmarCedula.setBounds(340, 193, 86, 20);
-		panel.add(txtConfirmarCedula);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("Registrar");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						
+						User usuario = new User(txtUsuario.getText(),txtCedula.getText(),cbxTipo.getSelectedItem().toString());
+						Clinica.getInstance().agregarUsuario(usuario);
+						
+						if(cbxTipo.getSelectedItem().equals("Paciente")) {
+							Paciente paciente = null;
+							paciente = Clinica.getInstance().buscarPacienteByCedula(txtCedula.getText());
+							paciente.setUser(usuario);
+						}
+					}
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);

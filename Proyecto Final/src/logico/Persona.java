@@ -11,23 +11,13 @@ public abstract class Persona implements Serializable
 	protected String cedula;
 	protected String nombre;
 	protected String apellido;
-	protected String tipo;
 
-	public Persona( String cedula, String nombre, String apellido, String tipo ) 
+	public Persona( String cedula, String nombre, String apellido) 
 	{
 		super();
 		this.cedula = cedula;
 		this.nombre = nombre;
 		this.apellido = apellido;
-		this.tipo = tipo;
-	}
-	
-	public String getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
 	}
 	
 	public String getCedula() {

@@ -54,8 +54,7 @@ public class Principal extends JFrame {
 	 * Create the frame.
 	 */
 	public Principal() {
-		addWindowListener(new WindowAdapter(){
-
+		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				FileOutputStream clinica;
 				ObjectOutputStream clinicaWrite;
@@ -70,7 +69,7 @@ public class Principal extends JFrame {
 				}
 			}
 		});
-		
+	
 		setTitle("SIGIC");
 		setIconImage(new ImageIcon (getClass().getResource("/visual/SIGIC_logo.jpg")).getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

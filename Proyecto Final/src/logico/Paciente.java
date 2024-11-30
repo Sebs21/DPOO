@@ -4,28 +4,30 @@ import java.util.ArrayList;
 
 public class Paciente extends Persona 
 {	
-	//
-	private String idCodPaciente;
+	private int idCodPaciente;
 	private String enfermedad;
 	private int edad;
 	private Seguro seguro;
 	private ArrayList<HistoriaClinica>miHistoriaClinica;
 	private ArrayList<vacunacion>miVacuna;
 	private ArrayList<Facturar> miFactura;
+	private User user;
 	
 	private boolean seleccionado;
 
-	public Paciente(String cedula, String nombre, String apellido, String idCodPaciente, String enfermedad, int edad,
-			Seguro seguro, ArrayList<HistoriaClinica> miHistoriaClinica, ArrayList<vacunacion> miVacuna) {
+	public Paciente(String cedula, String nombre, String apellido, int idCodPaciente) {
 		super(cedula, nombre, apellido);
 		this.idCodPaciente = idCodPaciente;
-		this.enfermedad = enfermedad;
-		this.edad = edad;
-		this.seguro = seguro;
-		this.miHistoriaClinica = miHistoriaClinica;
-		this.miVacuna = miVacuna;
 	}
 	
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	public boolean getSeleccionado() {
 		return seleccionado;
 	}
@@ -59,11 +61,11 @@ public class Paciente extends Persona
 		this.seguro = seguro;
 	}
 
-	public String getIdCodPaciente() {
+	public int getIdCodPaciente() {
 		return idCodPaciente;
 	}
 
-	public void setIdCodPaciente(String idCodPaciente) {
+	public void setIdCodPaciente(int idCodPaciente) {
 		this.idCodPaciente = idCodPaciente;
 	}
 
