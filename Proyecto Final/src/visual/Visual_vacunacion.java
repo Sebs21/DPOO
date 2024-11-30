@@ -21,6 +21,9 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 import javax.swing.border.EmptyBorder;
+
+import logico.vacunacion;
+
 import javax.swing.JComboBox;
 
 public class Visual_vacunacion extends JFrame {
@@ -33,6 +36,9 @@ public class Visual_vacunacion extends JFrame {
 	    private JTextField txt_nombre_paciente;
 	    private JTextField txt_numero_paciente;
 	    private JButton btnGuardar;
+	    private  JComboBox<Object> list_vacuna ;
+	    private JSpinner spinner_cant_ml ;
+	    
 	    //
 	 
 	public static void main(String[] args) {
@@ -99,8 +105,8 @@ public class Visual_vacunacion extends JFrame {
 	        txt_numero_paciente.setEditable(false);
 	        txt_numero_paciente.setBounds(546, 83, 186, 32);
 	        contentPanel.add(txt_numero_paciente);
-	        
-	        JSpinner spinner_cant_ml = new JSpinner();
+	    
+	        spinner_cant_ml = new JSpinner();
 	        spinner_cant_ml.setBounds(117, 213, 61, 32);
 	        contentPanel.add(spinner_cant_ml);
 	        
@@ -115,10 +121,10 @@ public class Visual_vacunacion extends JFrame {
 			fecha_vacu.setBounds(267, 211, 165, 37);
 			contentPanel.add(fecha_vacu);
 			
-			 JComboBox<Object> tipo_queso = new JComboBox<>();
-		        tipo_queso.setModel(new DefaultComboBoxModel<Object>(new String[] {"<Seleccione>"}));
-		        tipo_queso.setBounds(154, 146, 186, 32);
-		        contentPanel.add(tipo_queso);
+			 list_vacuna = new JComboBox<>();
+			 list_vacuna.setModel(new DefaultComboBoxModel<Object>(new String[] {"<Seleccione>"}));
+			 list_vacuna.setBounds(154, 146, 186, 32);
+		        contentPanel.add(list_vacuna);
 
 
 	        JPanel buttonPane = new JPanel();
@@ -131,12 +137,33 @@ public class Visual_vacunacion extends JFrame {
 	        btnGuardar.addActionListener(new ActionListener() {
 	        	public void actionPerformed(ActionEvent e) {
 	        		
+	        		try {
+	        			
+	        			int codigo =Integer.parseInt(txt_code_vacu.getText().replace("VA-", ""));
+	        			int codigo_paciente =Integer.parseInt(txt_code_paciente.getText());
+	        			String tipo_vacuna = list_vacuna.getSelectedItem().toString();
+	        			int cant_ml =(Integer)  spinner_cant_ml.getValue();
+	        			
+	        			//logico.vacunacion vacu = new vacunacion(codigo, tipo_Vacuna, fecha_Vacunacion, verifica)
+	        			
+	        			
+						
+					} catch (Exception e2) {
+						// TODO: handle exception
+					}
+	        		
 	        	}
 	        });
 	        btnGuardar.setActionCommand("Guardar");
 	        buttonPane.add(btnGuardar);
 	        
 	        JButton cancelButton = new JButton("Cancelar");
+	        cancelButton.addActionListener(new ActionListener() {
+	        	public void actionPerformed(ActionEvent arg0) {
+	        		dispose();
+	        		
+	        	}
+	        });
 	        cancelButton.setActionCommand("Cancel");
 	        buttonPane.add(cancelButton);
 

@@ -1,5 +1,7 @@
 package logico;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.ArrayList;
 
 public class Control_vacunacion 
@@ -7,6 +9,20 @@ public class Control_vacunacion
 	private Consulta consulta;
 	private ArrayList<vacunacion> vacuna;
 	private ArrayList<vacunacion> inve_vac;
+	
+	public void Guarda_vacuna(String guarda)
+	{
+		try(BufferedWriter writer = new BufferedWriter(new FileWriter(guarda ,true)) ) {
+			writer.write(this.toString());
+			writer.newLine();
+			
+			
+			
+		} catch (Exception e) {
+            System.out.println("Error al guarda la vacunacion : " + e.getMessage());
+		}
+		
+	}
 	
 	public Control_vacunacion( Consulta consulta, ArrayList<vacunacion> vacuna, ArrayList<vacunacion> inve_vac ) 
 	{
