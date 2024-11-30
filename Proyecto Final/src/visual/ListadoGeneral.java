@@ -239,13 +239,13 @@ public class ListadoGeneral extends JDialog
 		
 		JLabel lblCitasTotales = new JLabel("Citas totales:");
 		lblCitasTotales.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 17));
-		lblCitasTotales.setBounds(1604, 276, 135, 16);
+		lblCitasTotales.setBounds(1604, 269, 135, 16);
 		contentPanel.add(lblCitasTotales);
 		
 		txtCitasTotales = new JTextField();
 		txtCitasTotales.setEditable(false);
 		txtCitasTotales.setColumns(10);
-		txtCitasTotales.setBounds(1604, 305, 116, 22);
+		txtCitasTotales.setBounds(1614, 298, 116, 22);
 		contentPanel.add(txtCitasTotales);
 		
 		JLabel lblConsultasTotales = new JLabel("Consultas totales:");
@@ -256,7 +256,7 @@ public class ListadoGeneral extends JDialog
 		txtConsultasTotales = new JTextField();
 		txtConsultasTotales.setEditable(false);
 		txtConsultasTotales.setColumns(10);
-		txtConsultasTotales.setBounds(1604, 375, 116, 22);
+		txtConsultasTotales.setBounds(1611, 371, 116, 22);
 		contentPanel.add(txtConsultasTotales);
 		
 		{

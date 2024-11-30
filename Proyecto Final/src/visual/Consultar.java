@@ -140,10 +140,10 @@ public class Consultar extends JDialog {
 		lblFecha.setBounds(32, 160, 91, 44);
 		panel.add(lblFecha);
 		
-		JSpinner spinner = new JSpinner();
-		spinner.setModel(new SpinnerDateModel(new Date(1732593600000L), new Date(1732593600000L), null, Calendar.DAY_OF_YEAR));
-		spinner.setBounds(133, 167, 165, 37);
-		panel.add(spinner);
+		JSpinner spnFecha = new JSpinner();
+		spnFecha.setModel( new SpinnerDateModel( new Date(), null, null, Calendar.DAY_OF_MONTH ) );
+		spnFecha.setBounds(133, 167, 165, 37);
+		panel.add(spnFecha);
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setLayout(null);

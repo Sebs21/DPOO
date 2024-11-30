@@ -188,7 +188,7 @@ public class SeguroPaciente extends JDialog {
 							Seguro seguro = new Seguro ( txtIdSeguro.getText(), txtNombreEmpresa.getText(), cbxTipoDeSeguro.getSelectedItem().toString() );
 							Clinica.getInstance().agregarSeguro( seguro );
 							JOptionPane.showMessageDialog( null, "Seguro añadido a su sesión." );
-							clean();
+							dispose();
 						}
 					}
 				});

@@ -271,6 +271,12 @@ public class Facturacion extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton btnFacturar = new JButton("Facturar");
+				btnFacturar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) 
+					{
+						
+					}
+				});
 				btnFacturar.setBackground(Color.CYAN);
 				btnFacturar.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
 				btnFacturar.setActionCommand("OK");
@@ -279,9 +285,11 @@ public class Facturacion extends JDialog {
 			}
 			{
 				JButton btnCancelar = new JButton("Cancelar");
-				btnCancelar.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-					dispose();
+				btnCancelar.addActionListener(new ActionListener() 
+				{
+					public void actionPerformed(ActionEvent arg0) 
+					{
+						dispose();
 					}
 				});
 				btnCancelar.setBackground(Color.CYAN);

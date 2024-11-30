@@ -7,17 +7,30 @@ public class Paciente extends Persona
 	private int idCodPaciente;
 	private String enfermedad;
 	private int edad;
+	
 	private Seguro seguro;
-	private ArrayList<HistoriaClinica>miHistoriaClinica;
-	private ArrayList<vacunacion>miVacuna;
+	
+	private ArrayList<HistoriaClinica> miHistoriaClinica;
+	private ArrayList<vacunacion> miVacuna;
 	private ArrayList<Facturar> miFactura;
+	
 	private User user;
 	
 	private boolean seleccionado;
+	private boolean consultaPagada;
 
-	public Paciente(String cedula, String nombre, String apellido, int idCodPaciente) {
+	public Paciente( String cedula, String nombre, String apellido, int idCodPaciente ) 
+	{
 		super(cedula, nombre, apellido);
 		this.idCodPaciente = idCodPaciente;
+	}
+	
+	public boolean isConsultaPagada() {
+		return consultaPagada;
+	}
+
+	public void setConsultaPagada(boolean consultaPagada) {
+		this.consultaPagada = consultaPagada;
 	}
 	
 	public User getUser() {
@@ -77,7 +90,8 @@ public class Paciente extends Persona
 		this.miHistoriaClinica = miHistoriaClinica;
 	}
 	
-	public ArrayList<vacunacion> getMiVacuna() {
+	public ArrayList<vacunacion> getMiVacuna() 
+	{
 		return miVacuna;
 	}
 

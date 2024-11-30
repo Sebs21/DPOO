@@ -4,20 +4,31 @@ import java.util.Date;
 
 public class Cita 
 {
+	
+	private String idCita;
 	private Doctor doctor;
 	private Persona persona;
 	private Date fechaCita;
 	//
 	private boolean seleccionado;
 
-	public Cita( Doctor doctor, Persona persona, Date fechaCita ) 
+	public Cita( String idCita, Doctor doctor, Persona persona, Date fechaCita ) 
 	{
 		super();
+		this.idCita = idCita;
 		this.doctor = doctor;
 		this.persona = persona;
 		this.fechaCita = fechaCita;
 	}
 	
+	public String getIdCita() {
+		return idCita;
+	}
+
+	public void setIdCita(String idCita) {
+		this.idCita = idCita;
+	}
+
 	public boolean getSeleccionado() {
 		return seleccionado;
 	}
