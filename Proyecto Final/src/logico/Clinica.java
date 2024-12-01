@@ -3,9 +3,6 @@ package logico;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-
 public class Clinica implements Serializable 
 {
 	/**
@@ -24,7 +21,8 @@ public class Clinica implements Serializable
 	private ArrayList<Seguro> misSeguros;
 	private ArrayList<User> misUsuarios;
 	
-	public static int idPersona;
+	public static int idDoctor;
+	public static int idPaciente;
 	public static int idConsulta;
 	public static int idFactura;
 	public static int idCita;
@@ -32,6 +30,8 @@ public class Clinica implements Serializable
 	public static int idcontrolEnfermerdad;
 	public static int idcontrolVacuna;
 	public static int idVacuna;
+	public static int idUser;
+	
 	private static User LoginUser;
 	
 	public static Clinica clinica = null;
@@ -50,7 +50,8 @@ public class Clinica implements Serializable
 		misVacunas = new ArrayList<>();
 		misUsuarios = new ArrayList<>();
 		
-		idPersona = 1;
+		idPaciente = 1;
+		idDoctor = 1;
 		idConsulta = 1;
 		idFactura = 1;
 		idcontrolEnfermerdad = 1;
@@ -58,6 +59,7 @@ public class Clinica implements Serializable
 		idCita = 1;
 		idSeguro = 1;
 		idVacuna = 1;
+		idUser=1;
 		
 	}
 	
@@ -177,6 +179,62 @@ public class Clinica implements Serializable
 		this.control_vacu = control_Vacu;
 	}
 	
+	public static int getIdDoctor() {
+		return idDoctor;
+	}
+
+	public static void setIdDoctor(int idDoctor) {
+		Clinica.idDoctor = idDoctor;
+	}
+
+	public static int getIdPaciente() {
+		return idPaciente;
+	}
+
+	public static void setIdPaciente(int idPaciente) {
+		Clinica.idPaciente = idPaciente;
+	}
+
+	public static int getIdConsulta() {
+		return idConsulta;
+	}
+
+	public static void setIdConsulta(int idConsulta) {
+		Clinica.idConsulta = idConsulta;
+	}
+
+	public static int getIdCita() {
+		return idCita;
+	}
+
+	public static void setIdCita(int idCita) {
+		Clinica.idCita = idCita;
+	}
+
+	public static int getIdSeguro() {
+		return idSeguro;
+	}
+
+	public static void setIdSeguro(int idSeguro) {
+		Clinica.idSeguro = idSeguro;
+	}
+
+	public static int getIdVacuna() {
+		return idVacuna;
+	}
+
+	public static void setIdVacuna(int idVacuna) {
+		Clinica.idVacuna = idVacuna;
+	}
+
+	public static int getIdUser() {
+		return idUser;
+	}
+
+	public static void setIdUser(int idUser) {
+		Clinica.idUser = idUser;
+	}
+
 	public static int getIdFactura() {
 		return idFactura;
 	}
@@ -311,56 +369,67 @@ public class Clinica implements Serializable
 	public void eliminarPaciente( Paciente aux )
 	{
 		misPacientes.remove( aux );
+		idPaciente--;
 	}
 	
 	public void eliminarDoctor( Doctor aux )
 	{
 		misDoctores.remove( aux );
+		idDoctor--;
 	}
 	
 	public void eliminarConsulta( Consulta aux )
 	{
 		misConsultas.remove( aux );
+		idConsulta--;
 	}
 	
 	public void eliminarFactura( Facturar aux )
 	{
 		misFacturas.remove( aux );
+		idFactura--;
 	}
 	
 	public void eliminarCita ( Cita aux )
 	{
 		misCitas.remove( aux );
+		idCita--;
 	}
 	
 	public void eliminarSeguro ( Seguro aux )
 	{
 		misSeguros.remove( aux );
+		idSeguro--;
 	}
 	
 	public void eliminarVacuna ( vacunacion aux )
 	{
 		misVacunas.remove( aux );
+		idVacuna++;
 	}
 	
 	public void agregarDoctor ( Doctor aux )
 	{
 		misDoctores.add( aux );
+		idDoctor++;
 	}
 	
 	public void agregarPaciente ( Paciente aux )
 	{
 		misPacientes.add( aux );
+		idPaciente++;
 	}
 	
 	public void agregarConsulta ( Consulta aux )
 	{
 		misConsultas.add( aux );
+		idConsulta++;
 	}
 	
 	public void agregarCita ( Cita aux )
 	{
 		misCitas.add( aux );
+		idCita++;
 	}
 	
 	public void agregarFacturar ( Facturar aux )
@@ -377,6 +446,7 @@ public class Clinica implements Serializable
 	
 	public void agregarUsuario(User user) {
 		misUsuarios.add(user);
+		idUser++;
 	}
 	
 	public void agregarVacuna ( vacunacion aux )

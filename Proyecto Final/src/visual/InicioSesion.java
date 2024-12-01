@@ -9,7 +9,6 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import javax.swing.border.LineBorder;
@@ -22,7 +21,6 @@ import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JTextField;
-import javax.swing.JPasswordField;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -37,10 +35,14 @@ public class InicioSesion extends JDialog {
 
 	/**
 	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
+	 * 
 	 *///
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtNombre;
-	private JPasswordField txtCedula;
+	private JTextField txtPassword;
 
 	/**
 	 * Launch the application.
@@ -49,34 +51,38 @@ public class InicioSesion extends JDialog {
 		
 		EventQueue.invokeLater(new Runnable() {
 		    public void run() {
-		        FileInputStream clinicaInput = null;
-		        ObjectInputStream clinicaReader = null;
-		        FileOutputStream clinicaOutput = null;
-		        ObjectOutputStream clinicaWrite = null;
-
-		        try {		       
-		        	clinicaInput = new FileInputStream("Clinica.dat");
-		            clinicaReader = new ObjectInputStream(clinicaInput);
-		            Clinica aux = (Clinica) clinicaReader.readObject();
-		            Clinica.setClinica(aux);
-		            clinicaInput.close();
-		            clinicaReader.close();
+		        FileInputStream clinica;
+		        FileOutputStream clinica2;
+		        ObjectInputStream clinicaRead;
+		        ObjectOutputStream clinicaWrite;
+		    	
+		    	try {
+		        	clinica = new FileInputStream("clinica.dat");
+		        	clinicaRead = new ObjectInputStream(clinica);
+		        	Clinica aux = (Clinica) clinicaRead.readObject();
+		        	Clinica.setClinica(aux);
+		        	clinica.close();
+		        	clinicaRead.close();
 		        } catch (FileNotFoundException e) {
 		            try {
-		            	clinicaOutput = new FileOutputStream("Clinica.dat");
-		                clinicaWrite = new ObjectOutputStream(clinicaOutput);
-		                User aux = new User("Admin", "Admin", "Doctor");    
-		                Clinica.getInstance().agregarUsuario(aux);
-		                clinicaWrite.writeObject(Clinica.getInstance());
-		                clinicaOutput.close();
-		                clinicaWrite.close();
-		            } catch (FileNotFoundException e1) {
-		            }catch (IOException e1) {
-			            e1.printStackTrace();
-		            } 
+		            	clinica2 = new FileOutputStream("clinica.dat");
+		            	clinicaWrite = new ObjectOutputStream(clinica2);
+		            	User user = new User("Admin", "admin", "Administrador");
+		            	Clinica.getInstance().agregarUsuario(user);
+		            	clinicaWrite.writeObject(Clinica.getInstance());
+		            	clinica2.close();
+		            	clinicaWrite.close();
+		            	
+		            } catch (FileNotFoundException ex) {
+		               ex.printStackTrace();
+		            } catch (IOException e1) {
+						e1.printStackTrace();
+					}
+
 		        } catch (IOException e) {
-					e.printStackTrace();
-				} catch (ClassNotFoundException e) {
+		            e.printStackTrace();
+		        } catch (ClassNotFoundException e) {
+					
 					e.printStackTrace();
 				}
 		    }
@@ -115,10 +121,6 @@ public class InicioSesion extends JDialog {
 				txtNombre.setBounds(67, 134, 171, 52);
 				panel_4.add(txtNombre);
 				txtNombre.setColumns(10);
-				
-						txtCedula = new JPasswordField();
-						txtCedula.setBounds(67, 291, 171, 52);
-						panel_4.add(txtCedula);
 						
 								JPanel panel = new JPanel();
 								panel.setBounds(102, 61, 101, 52);
@@ -142,6 +144,12 @@ public class InicioSesion extends JDialog {
 																panel_2.setBounds(50, 282, 205, 69);
 																panel_4.add(panel_2);
 																panel_2.setBorder(new LineBorder(new Color(135, 206, 235), 3, true));
+																panel_2.setLayout(null);
+																
+																txtPassword = new JTextField();
+																txtPassword.setBounds(10, 11, 185, 47);
+																panel_2.add(txtPassword);
+																txtPassword.setColumns(10);
 																
 																		JPanel panel_3 = new JPanel();
 																		panel_3.setBounds(50, 124, 205, 75);
@@ -155,12 +163,12 @@ public class InicioSesion extends JDialog {
 				JButton okButton = new JButton("Iniciar Sesion");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						
-						if(Clinica.getInstance().ConfirmarLogin(txtNombre.getText(), txtCedula.getText())) {
-						Principal prin = new Principal();
-						dispose();
-						prin.setVisible(true);
-						}
+
+					    if (Clinica.getInstance().ConfirmarLogin(txtNombre.getText(), txtPassword.getText())) {
+					        Principal prin = new Principal();
+					        dispose(); 
+					        prin.setVisible(true); 
+					    }
 					}
 				});
 				okButton.setActionCommand("OK");
@@ -188,11 +196,4 @@ public class InicioSesion extends JDialog {
 		this.txtNombre = txtNombre;
 	}
 
-	public JPasswordField getTxtCedula() {
-		return txtCedula;
-	}
-
-	public void setTxtCedula(JPasswordField txtCedula) {
-		this.txtCedula = txtCedula;
-	}
 }

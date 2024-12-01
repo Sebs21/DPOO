@@ -2,8 +2,8 @@ package logico;
 
 import java.io.Serializable;
 
-public abstract class Persona implements Serializable 
-{
+public abstract class Persona implements Serializable{
+
 	/**
 	 * 
 	 */
@@ -11,15 +11,25 @@ public abstract class Persona implements Serializable
 	protected String cedula;
 	protected String nombre;
 	protected String apellido;
+	protected String edad;
 
-	public Persona( String cedula, String nombre, String apellido) 
+	public Persona( String cedula, String nombre, String apellido, String edad) 
 	{
 		super();
 		this.cedula = cedula;
 		this.nombre = nombre;
 		this.apellido = apellido;
+		this.edad= edad;
 	}
 	
+	public String getEdad() {
+		return edad;
+	}
+	
+	public void setEdad(String edad) {
+		this.edad = edad;
+	}
+
 	public String getCedula() {
 		return cedula;
 	}

@@ -1,8 +1,14 @@
 package logico;
 
-public class Reporte_vigilancia 
+import java.io.Serializable;
+
+public class Reporte_vigilancia implements Serializable
 {
-	//
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int codReporteVigi;
 	private float totalHoras;
 	

@@ -1,11 +1,16 @@
 package logico;
 
-public class Seguro 
+import java.io.Serializable;
+
+public class Seguro implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String idSeguro;
 	private String nombreEmpresa;
 	private String tipoDeSeguro;
-	//
 	private boolean seleccionado;
 
 	public Seguro ( String idSeguro, String nombreEmpresa, String tipoDeSeguro )

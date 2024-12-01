@@ -23,6 +23,7 @@ import javax.swing.border.EmptyBorder;
 import com.sun.glass.events.WindowEvent;
 
 import logico.Clinica;
+import java.awt.Color;
 
 public class Principal extends JFrame {
 
@@ -37,37 +38,28 @@ public class Principal extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Principal frame = new Principal();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+
 
 	/**
 	 * Create the frame.
 	 */
 	public Principal() {
-		addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				FileOutputStream clinica;
-				ObjectOutputStream clinicaWrite;
+		addWindowListener(new WindowAdapter() { 
+			public void windowClosing( WindowEvent e) {
+
+				FileOutputStream clinica2;
+		        ObjectOutputStream clinicaWrite;
 				try {
-					clinica = new FileOutputStream("Clinica.dat");
-					clinicaWrite = new ObjectOutputStream(clinica);
-					clinicaWrite.writeObject(Clinica.getInstance());
-				}catch(FileNotFoundException e1) {
-					e1.printStackTrace();
-				}catch(IOException e1) {
-					e1.printStackTrace();
-				}
-			}
+		        	clinica2 = new FileOutputStream("Clinica.dat");
+		        	clinicaWrite = new ObjectOutputStream(clinica2);
+		        	clinicaWrite.writeObject(Clinica.getInstance());
+		        	
+		        }catch(FileNotFoundException e1) {
+		        	e1.printStackTrace();
+		        }catch(IOException e1) {
+		        	e1.printStackTrace();
+		        }
+		    }
 		});
 	
 		setTitle("SIGIC");
@@ -81,6 +73,7 @@ public class Principal extends JFrame {
 		setJMenuBar(menuBar);
 		
 		btnAdministracion = new JMenu("Administraci\u00F3n");
+		btnAdministracion.setForeground(Color.CYAN);
 		
 		btnAdministracion.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent arg0) {
@@ -175,6 +168,19 @@ public class Principal extends JFrame {
 		btnVacunacion = new JMenu("Vacunaci\u00F3n");
 		btnVacunacion.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuBar.add(btnVacunacion);
+		
+		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Cerrar sesion");
+		mntmNewMenuItem_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CerrarSesion cerrar = new CerrarSesion();
+				cerrar.setVisible(true);
+				cerrar.setModal(true);
+				dispose();
+			}
+		});
+		mntmNewMenuItem_1.setForeground(Color.RED);
+		mntmNewMenuItem_1.setFont(new Font("Segoe UI", Font.BOLD, 16));
+		menuBar.add(mntmNewMenuItem_1);
 		contentPane = new JPanel();
 		contentPane.setBackground(UIManager.getColor("InternalFrame.inactiveTitleGradient"));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

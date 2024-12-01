@@ -1,10 +1,15 @@
 package logico;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Control_enfermedad 
-{//
+public class Control_enfermedad implements Serializable
+{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Consulta consulta;
 	private ArrayList<Bajo_vigilancia> vigilancia;
 	

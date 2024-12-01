@@ -2,10 +2,15 @@ package logico;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Control_vacunacion 
-{//
+public class Control_vacunacion implements Serializable
+{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Consulta consulta;
 	private ArrayList<vacunacion> vacuna;
 	private ArrayList<vacunacion> inve_vac;

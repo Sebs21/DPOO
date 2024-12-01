@@ -1,8 +1,13 @@
 package logico;
 
-public class Facturar 
+import java.io.Serializable;
+
+public class Facturar implements Serializable
 {
-	//
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Consulta consulta;
 	private Seguro seguro;
 	private float montoPagar;

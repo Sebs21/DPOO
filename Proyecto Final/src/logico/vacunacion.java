@@ -1,14 +1,18 @@
 package logico;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class vacunacion 
+public class vacunacion implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int cod_Vacu;
 	private String tipo_Vacuna;
 	private Date fecha_Vacunacion;
 	private boolean verifica;
-	//
 	public vacunacion( int cod_Vacu, String tipo_Vacuna, Date fecha_Vacunacion, boolean verifica ) 
 	{
 		super();

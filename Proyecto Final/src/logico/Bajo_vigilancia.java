@@ -1,7 +1,13 @@
 package logico;
 
-public class Bajo_vigilancia {
+import java.io.Serializable;
+
+public class Bajo_vigilancia implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int codVigilancia;
 	private String enfermedad;
 	private int tiempoVigilancia;

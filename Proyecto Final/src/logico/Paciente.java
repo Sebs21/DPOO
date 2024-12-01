@@ -4,9 +4,13 @@ import java.util.ArrayList;
 
 public class Paciente extends Persona 
 {	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8165472379545564107L;
 	private int idCodPaciente;
 	private String enfermedad;
-	private int edad;
+	private String edad;
 	
 	private Seguro seguro;
 	
@@ -19,10 +23,11 @@ public class Paciente extends Persona
 	private boolean seleccionado;
 	private boolean consultaPagada;
 
-	public Paciente( String cedula, String nombre, String apellido, int idCodPaciente ) 
+	public Paciente( String cedula, String nombre, String apellido, int idCodPaciente ,String edad, User user) 
 	{
-		super(cedula, nombre, apellido);
+		super(cedula, nombre, apellido, edad);
 		this.idCodPaciente = idCodPaciente;
+		this.user = user;
 	}
 	
 	public boolean isConsultaPagada() {
@@ -56,12 +61,12 @@ public class Paciente extends Persona
 	public void setEnfermedad(String enfermedad) {
 		this.enfermedad = enfermedad;
 	}
-
-	public int getEdad() {
+	
+	public String getEdad() {
 		return edad;
 	}
 
-	public void setEdad(int edad) {
+	public void setEdad(String edad) {
 		this.edad = edad;
 	}
 

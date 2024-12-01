@@ -2,21 +2,27 @@ package logico;
 
 import java.util.ArrayList;
 
-public class Doctor extends Persona 
+public class Doctor extends Persona  
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6727195506506526098L;
 	private String especialidad;
 	private ArrayList<Paciente>misPacientes;
 	private User user;
 	
 	private boolean seleccionado;
 
-	public Doctor( String cedula, String nombre, String apellido, String especialidad ) 
+	public Doctor( String cedula, String nombre, String apellido, String especialidad, String edad, User user ) 
 	{
-		super(cedula, nombre, apellido);
+		super(cedula, nombre, apellido,edad);
 		this.especialidad = especialidad;
 		this.misPacientes = new ArrayList<Paciente>();
+		this.user = user;
 	}
-
+	
+	
 	public User getUser() {
 		return user;
 	}
