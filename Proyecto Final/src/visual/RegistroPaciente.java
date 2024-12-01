@@ -14,6 +14,7 @@ import javax.swing.border.TitledBorder;
 import logico.Clinica;
 import logico.Paciente;
 import logico.User;
+import logico.vacunacion;
 
 import javax.swing.border.LineBorder;
 import java.awt.Color;
@@ -104,12 +105,12 @@ public class RegistroPaciente extends JDialog {
 			
 			JLabel lblCedula = new JLabel("Cedula:");
 			lblCedula.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-			lblCedula.setBounds(116, 216, 108, 31);
+			lblCedula.setBounds(294, 216, 108, 31);
 			panel.add(lblCedula);
 			
 			txtCedula = new JTextField();
 			txtCedula.setColumns(10);
-			txtCedula.setBounds(340, 217, 108, 31);
+			txtCedula.setBounds(428, 216, 108, 31);
 			panel.add(txtCedula);
 			
 			JLabel lblNewLabel_2 = new JLabel("Su nombre y cedula ser\u00E1 su contrase\u00F1a para iniciar sesi\u00F3n");
@@ -117,36 +118,68 @@ public class RegistroPaciente extends JDialog {
 			lblNewLabel_2.setForeground(Color.RED);
 			lblNewLabel_2.setBounds(77, 271, 411, 14);
 			panel.add(lblNewLabel_2);
+			
+			JLabel label = new JLabel("Vacunado:");
+			label.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
+			label.setBounds(26, 216, 68, 31);
+			panel.add(label);
+			
+			JButton btnSi = new JButton("Si");
+			btnSi.addActionListener(new ActionListener() 
+			{
+				public void actionPerformed(ActionEvent e) 
+				{
+					
+				}
+			});
+			btnSi.setActionCommand("OK");
+			btnSi.setBounds(100, 219, 43, 25);
+			panel.add(btnSi);
+			
+			JButton btnNo = new JButton("No");
+			btnNo.addActionListener(new ActionListener() 
+			{
+				public void actionPerformed(ActionEvent e) 
+				{
+					
+				}
+			});
+			btnNo.setActionCommand("OK");
+			btnNo.setBounds(146, 219, 53, 25);
+			panel.add(btnNo);
 		}
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("Registrar");
-				okButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-					Clinica.getInstance();
-					Paciente paciente = new Paciente(txtCedula.getText(),txtNombre.getText(),txtApellido.getText(),Clinica.idPersona);
-					User aux = new User(txtNombre.getText(),txtCedula.getText(),"Paciente");
+				JButton btnRegistrar = new JButton("Registrar");
+				btnRegistrar.addActionListener(new ActionListener() 
+				{
+					public void actionPerformed(ActionEvent arg0) 
+					{
+						Clinica.getInstance();
+						Paciente paciente = new Paciente(txtCedula.getText(),txtNombre.getText(),txtApellido.getText(),Clinica.idPersona);
+						User aux = new User(txtNombre.getText(),txtCedula.getText(),"Paciente");
 					
-					Clinica.getInstance().agregarPaciente(paciente);
-					paciente.setUser(aux);
+						Clinica.getInstance().agregarPaciente(paciente);
+						paciente.setUser(aux);
 					}
 				});
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
+				btnRegistrar.setActionCommand("OK");
+				buttonPane.add(btnRegistrar);
+				getRootPane().setDefaultButton(btnRegistrar);
 			}
 			{
-				JButton cancelButton = new JButton("Cancelar");
-				cancelButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-					dispose();
+				JButton btnCancelar = new JButton("Cancelar");
+				btnCancelar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) 
+					{
+						dispose();
 					}
 				});
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
+				btnCancelar.setActionCommand("Cancel");
+				buttonPane.add(btnCancelar);
 			}
 		}
 	}

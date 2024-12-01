@@ -181,7 +181,7 @@ public class Facturacion extends JDialog {
 				{
 					txtNombre.setText( paciente.getNombre() );
 					txtApellido.setText( paciente.getApellido() );
-					txtIdPaciente.setText( paciente.getIdCodPaciente() );
+					txtIdPaciente.setText( String.valueOf( paciente.getIdCodPaciente() ) );
 					txtEdad.setText( String.valueOf(paciente.getEdad() ) );
 					txtEnfermedad.setText( paciente.getEnfermedad() );
 					txtSeguro.setText( paciente.getSeguro().getTipoDeSeguro() );

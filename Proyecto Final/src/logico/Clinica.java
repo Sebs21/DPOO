@@ -8,7 +8,6 @@ import javax.swing.JTextField;
 
 public class Clinica implements Serializable 
 {
-	
 	/**
 	 * 
 	 */
@@ -17,6 +16,7 @@ public class Clinica implements Serializable
 	private ArrayList<Consulta> misConsultas;
 	private ArrayList<Facturar> misFacturas;
 	private ArrayList<Cita> misCitas;
+	private ArrayList<vacunacion> misVacunas;
 	private ArrayList<Control_enfermedad> control_enfer;
 	private ArrayList<Control_vacunacion> control_vacu;
 	private ArrayList<Paciente> misPacientes;
@@ -29,8 +29,9 @@ public class Clinica implements Serializable
 	public static int idFactura;
 	public static int idCita;
 	public static int idSeguro;
-	public static int controlEnfermerdad;
-	public static int controlVacuna;
+	public static int idcontrolEnfermerdad;
+	public static int idcontrolVacuna;
+	public static int idVacuna;
 	private static User LoginUser;
 	
 	public static Clinica clinica = null;
@@ -46,16 +47,42 @@ public class Clinica implements Serializable
 		misCitas = new ArrayList<>();
 		control_enfer = new ArrayList<>();
 		control_vacu = new ArrayList<>();
+		misVacunas = new ArrayList<>();
 		misUsuarios = new ArrayList<>();
 		
 		idPersona = 1;
 		idConsulta = 1;
 		idFactura = 1;
-		controlEnfermerdad = 1;
-		controlVacuna = 1;
+		idcontrolEnfermerdad = 1;
+		idcontrolVacuna = 1;
 		idCita = 1;
 		idSeguro = 1;
+		idVacuna = 1;
 		
+	}
+	
+	public ArrayList<vacunacion> getMisVacunas() {
+		return misVacunas;
+	}
+
+	public void setMisVacunas(ArrayList<vacunacion> misVacunas) {
+		this.misVacunas = misVacunas;
+	}
+
+	public ArrayList<Control_enfermedad> getControl_enfer() {
+		return control_enfer;
+	}
+
+	public void setControl_enfer(ArrayList<Control_enfermedad> control_enfer) {
+		this.control_enfer = control_enfer;
+	}
+
+	public ArrayList<Control_vacunacion> getControl_vacu() {
+		return control_vacu;
+	}
+
+	public void setControl_vacu(ArrayList<Control_vacunacion> control_vacu) {
+		this.control_vacu = control_vacu;
 	}
 
 	public ArrayList<User> getMisUsuarios() {
@@ -82,22 +109,6 @@ public class Clinica implements Serializable
 		this.misCitas = misCitas;
 	}
 
-	public static int getControlEnfermerdad() {
-		return controlEnfermerdad;
-	}
-
-	public static void setControlEnfermerdad(int controlEnfermerdad) {
-		Clinica.controlEnfermerdad = controlEnfermerdad;
-	}
-
-	public static int getControlVacuna() {
-		return controlVacuna;
-	}
-
-	public static void setControlVacuna(int controlVacuna) {
-		Clinica.controlVacuna = controlVacuna;
-	}
-
 	public static Clinica getClinica() {
 		return clinica;
 	}
@@ -108,6 +119,7 @@ public class Clinica implements Serializable
 
 	public static Clinica getInstance ()
 	{
+		
 		if ( clinica == null )
 		{
 			clinica = new Clinica();
@@ -326,6 +338,11 @@ public class Clinica implements Serializable
 		misSeguros.remove( aux );
 	}
 	
+	public void eliminarVacuna ( vacunacion aux )
+	{
+		misVacunas.remove( aux );
+	}
+	
 	public void agregarDoctor ( Doctor aux )
 	{
 		misDoctores.add( aux );
@@ -360,6 +377,18 @@ public class Clinica implements Serializable
 	
 	public void agregarUsuario(User user) {
 		misUsuarios.add(user);
+	}
+	
+	public void agregarVacuna ( vacunacion aux )
+	{
+		misVacunas.add( aux );
+		idVacuna++;
+	}
+	
+	public void agregarControlVacunacion ( Control_vacunacion aux )
+	{
+		control_vacu.add( aux );
+		idcontrolVacuna++;
 	}
 	
 	/*
