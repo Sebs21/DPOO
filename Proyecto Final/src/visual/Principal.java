@@ -38,28 +38,41 @@ public class Principal extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-
+	public static void main(String[] args) 
+	{
+		EventQueue.invokeLater(new Runnable() 
+		{
+			public void run() 
+			{
+				try 
+				{
+					Principal frame = new Principal();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
 	/**
 	 * Create the frame.
 	 */
 	public Principal() {
-		addWindowListener(new WindowAdapter() { 
-			public void windowClosing( WindowEvent e) {
-
-				FileOutputStream clinica2;
-		        ObjectOutputStream clinicaWrite;
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				FileOutputStream clinica;
+				ObjectOutputStream clinicaWrite;
 				try {
-		        	clinica2 = new FileOutputStream("Clinica.dat");
-		        	clinicaWrite = new ObjectOutputStream(clinica2);
-		        	clinicaWrite.writeObject(Clinica.getInstance());
-		        	
-		        }catch(FileNotFoundException e1) {
-		        	e1.printStackTrace();
-		        }catch(IOException e1) {
-		        	e1.printStackTrace();
-		        }
-		    }
+					clinica = new FileOutputStream("Clinica.dat");
+					clinicaWrite = new ObjectOutputStream(clinica);
+					clinicaWrite.writeObject(Clinica.getInstance());
+				}catch(FileNotFoundException e1) {
+					e1.printStackTrace();
+				}catch(IOException e1) {
+					e1.printStackTrace();
+				}
+			}
 		});
 	
 		setTitle("SIGIC");
@@ -73,16 +86,20 @@ public class Principal extends JFrame {
 		setJMenuBar(menuBar);
 		
 		btnAdministracion = new JMenu("Administraci\u00F3n");
-		btnAdministracion.setForeground(Color.CYAN);
 		
-		btnAdministracion.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent arg0) {
-		        if (Clinica.getLoginUser().getTipo().equalsIgnoreCase("Paciente")) {
+		btnAdministracion.addActionListener(new ActionListener() 
+		{
+		    public void actionPerformed(ActionEvent arg0) 
+		    {
+		        if (Clinica.getLoginUser().getTipo().equalsIgnoreCase("Paciente")) 
+		        {
 		            btnAdministracion.setEnabled(false);
 		            btnResumenes.setEnabled(false);
 		            btnEnfermedadesVigilancia.setEnabled(false);
 		            btnVacunacion.setEnabled(true);
-		        } else {		   
+		        } 
+		        else 
+		        {		   
 		            btnAdministracion.setEnabled(true);
 		            btnResumenes.setEnabled(true);		           
 		            btnEnfermedadesVigilancia.setEnabled(true);
@@ -95,8 +112,10 @@ public class Principal extends JFrame {
 		menuBar.add(btnAdministracion);
 		
 		JMenuItem btnIniciarSesion = new JMenuItem("Iniciar Sesion");
-		btnIniciarSesion.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnIniciarSesion.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 				
 				InicioSesion iniSe = new InicioSesion();
 				iniSe.setVisible(true);
@@ -119,6 +138,36 @@ public class Principal extends JFrame {
 		});
 		mntmNewMenuItem.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		btnAdministracion.add(mntmNewMenuItem);
+		
+		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Registrar Cita");
+		mntmNewMenuItem_1.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				Cita cita = new Cita();
+				cita.setVisible( true );
+				cita.setModal( true );
+			}
+		});
+		mntmNewMenuItem_1.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		btnAdministracion.add(mntmNewMenuItem_1);
+		
+		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Registrar Consulta");
+		mntmNewMenuItem_4.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		mntmNewMenuItem_4.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				Consultar consulta = new Consultar();
+				consulta.setVisible( true );
+				consulta.setModal( true );
+			}
+		});
+		btnAdministracion.add(mntmNewMenuItem_4);
+		
+		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Facturaci\u00F3n");
+		mntmNewMenuItem_3.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		btnAdministracion.add(mntmNewMenuItem_3);
 		
 		btnResumenes = new JMenu("Datos Ingresados");
 		btnResumenes.setFont(new Font("Segoe UI", Font.BOLD, 16));
@@ -155,10 +204,10 @@ public class Principal extends JFrame {
 		btnEnfermedadesVigilancia.add(btn_Registro_Vigilancia);
 		
 		JButton btn_Reporte_Vigilancia = new JButton("Reporte Vigilancia");
-		btn_Reporte_Vigilancia.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				
+		btn_Reporte_Vigilancia.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 				
 			}
 		});
@@ -169,18 +218,19 @@ public class Principal extends JFrame {
 		btnVacunacion.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuBar.add(btnVacunacion);
 		
-		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Cerrar sesion");
-		mntmNewMenuItem_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		JMenuItem mntmNewMenuItem_5 = new JMenuItem("Cerrar sesi\u00F3n");
+		mntmNewMenuItem_5.addActionListener(new ActionListener() 
+		{	
+			public void actionPerformed(ActionEvent arg0) 
+			{
 				CerrarSesion cerrar = new CerrarSesion();
 				cerrar.setVisible(true);
 				cerrar.setModal(true);
 				dispose();
 			}
 		});
-		mntmNewMenuItem_1.setForeground(Color.RED);
-		mntmNewMenuItem_1.setFont(new Font("Segoe UI", Font.BOLD, 16));
-		menuBar.add(mntmNewMenuItem_1);
+		mntmNewMenuItem_5.setForeground(Color.RED);
+		menuBar.add(mntmNewMenuItem_5);
 		contentPane = new JPanel();
 		contentPane.setBackground(UIManager.getColor("InternalFrame.inactiveTitleGradient"));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
