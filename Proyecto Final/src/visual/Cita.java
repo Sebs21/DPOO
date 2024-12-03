@@ -175,9 +175,19 @@ public class Cita extends JDialog {
 						else
 						{
 							
+							String idCita = txtIdCita.getText();
 							Doctor doctorSelect = ( Doctor ) cbxDoctor.getSelectedItem();
+							String cedulaPaciente = txtPacienteSesion.getText();
+							Paciente pacienteSelect = Clinica.getInstance().buscarPacienteByCedula( cedulaPaciente );
+							Date fechaCita = ( Date ) spnFechaCita.getValue();
 							
-							logico.Cita cita = new logico.Cita( txtIdCita.getText(), doctorSelect, txtPacienteSesion.getText(), ( Date ) spnFechaCita.getValue() );
+							if ( pacienteSelect == null )
+							{
+								JOptionPane.showMessageDialog( null, "Paciente no encontrado", "Error", JOptionPane.ERROR_MESSAGE );
+								return;
+							}
+							
+							logico.Cita cita = new logico.Cita( idCita, doctorSelect, pacienteSelect, fechaCita );
 							Clinica.getInstance().agregarCita( cita );
 							JOptionPane.showMessageDialog( null, " Registro Exitoso ", "Información", JOptionPane.INFORMATION_MESSAGE );
 							clean();
@@ -217,7 +227,7 @@ public class Cita extends JDialog {
 		
 		for ( Paciente paciente : aux ) 
 		{
-			//txtPacienteSesion.setText(  );
+			txtPacienteSesion.setText( paciente.getNombre() );
 			txtEdadPaciente.setText( String.valueOf( paciente.getEdad() ) );
 			txtEnfermedad.setText( paciente.getEnfermedad() );
 		}

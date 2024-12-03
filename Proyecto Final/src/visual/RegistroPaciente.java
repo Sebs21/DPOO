@@ -159,7 +159,7 @@ public class RegistroPaciente extends JDialog {
 					public void actionPerformed(ActionEvent arg0) 
 					{
 						Clinica.getInstance();
-						Paciente paciente = new Paciente(txtCedula.getText(),txtNombre.getText(),txtApellido.getText(),Clinica.idPersona);
+						Paciente paciente = new Paciente(txtCedula.getText(),txtNombre.getText(),txtApellido.getText(),Clinica.idPersona );
 						User aux = new User(txtNombre.getText(),txtCedula.getText(),"Paciente");
 					
 						Clinica.getInstance().agregarPaciente(paciente);
@@ -182,5 +182,45 @@ public class RegistroPaciente extends JDialog {
 				buttonPane.add(btnCancelar);
 			}
 		}
+	}
+
+	public JTextField getTxtNombre() {
+		return txtNombre;
+	}
+
+	public void setTxtNombre(JTextField txtNombre) {
+		this.txtNombre = txtNombre;
+	}
+
+	public JTextField getTxtApellido() {
+		return txtApellido;
+	}
+
+	public void setTxtApellido(JTextField txtApellido) {
+		this.txtApellido = txtApellido;
+	}
+
+	public JTextField getTxtEdad() {
+		return txtEdad;
+	}
+
+	public void setTxtEdad(JTextField txtEdad) {
+		this.txtEdad = txtEdad;
+	}
+
+	public JTextField getTxtSeguro() {
+		return txtSeguro;
+	}
+
+	public void setTxtSeguro(JTextField txtSeguro) {
+		this.txtSeguro = txtSeguro;
+	}
+
+	public JTextField getTxtCedula() {
+		return txtCedula;
+	}
+
+	public void setTxtCedula(JTextField txtCedula) {
+		this.txtCedula = txtCedula;
 	}
 }
