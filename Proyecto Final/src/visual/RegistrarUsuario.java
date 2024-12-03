@@ -54,7 +54,6 @@ public class RegistrarUsuario extends JDialog {
 	 */
 public RegistrarUsuario() {
 		
-		
 		setTitle("Registro de usuario");
 		setBounds(100, 100, 926, 475);
 		getContentPane().setLayout(new BorderLayout());

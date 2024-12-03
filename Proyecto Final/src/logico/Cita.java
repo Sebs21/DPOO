@@ -14,7 +14,6 @@ public class Cita implements Serializable
 	private Doctor doctor;
 	private Persona persona;
 	private Date fechaCita;
-	//
 	private boolean seleccionado;
 
 	public Cita( String idCita, Doctor doctor, Persona persona, Date fechaCita ) 

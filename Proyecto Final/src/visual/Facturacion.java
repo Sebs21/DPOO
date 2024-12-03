@@ -11,7 +11,6 @@ import javax.swing.border.EmptyBorder;
 
 import logico.Clinica;
 import logico.Paciente;
-import logico.Seguro;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -19,16 +18,16 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import javax.swing.JTextField;
 import java.awt.Color;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.border.SoftBevelBorder;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
 
 public class Facturacion extends JDialog {
-//
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtNombre;
 	private JTextField txtApellido;
@@ -71,6 +70,7 @@ public class Facturacion extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
+		setLocationRelativeTo(null);
 		
 		JLabel lblNewLabel = new JLabel("Cedula paciente:");
 		lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));

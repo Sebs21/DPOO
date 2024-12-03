@@ -1,3 +1,4 @@
+
 package visual;
 
 import java.awt.BorderLayout;
@@ -39,7 +40,7 @@ public class InicioSesion extends JDialog {
 	private static final long serialVersionUID = 1L;
 	/**
 	 * 
-	 *///
+	 */
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtNombre;
 	private JTextField txtPassword;
@@ -48,45 +49,68 @@ public class InicioSesion extends JDialog {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		
 		EventQueue.invokeLater(new Runnable() {
-		    public void run() {
-		        FileInputStream clinica;
-		        FileOutputStream clinica2;
-		        ObjectInputStream clinicaRead;
-		        ObjectOutputStream clinicaWrite;
-		    	
-		    	try {
-		        	clinica = new FileInputStream("clinica.dat");
-		        	clinicaRead = new ObjectInputStream(clinica);
-		        	Clinica aux = (Clinica) clinicaRead.readObject();
-		        	Clinica.setClinica(aux);
-		        	clinica.close();
-		        	clinicaRead.close();
-		        } catch (FileNotFoundException e) {
-		            try {
-		            	clinica2 = new FileOutputStream("clinica.dat");
-		            	clinicaWrite = new ObjectOutputStream(clinica2);
-		            	User user = new User("Admin", "admin", "Administrador");
-		            	Clinica.getInstance().agregarUsuario(user);
-		            	clinicaWrite.writeObject(Clinica.getInstance());
-		            	clinica2.close();
-		            	clinicaWrite.close();
-		            	
-		            } catch (FileNotFoundException ex) {
-		               ex.printStackTrace();
-		            } catch (IOException e1) {
-						e1.printStackTrace();
-					}
+	        public void run() {
+	            FileInputStream clinica = null;
+	            ObjectInputStream clinicaRead = null;
+	            FileOutputStream clinica2 = null;
+	            ObjectOutputStream clinicaWrite = null;
 
-		        } catch (IOException e) {
-		            e.printStackTrace();
-		        } catch (ClassNotFoundException e) {
-					
-					e.printStackTrace();
-				}
-		    }
-		});
+	            try {
+	                clinica = new FileInputStream("clinica.dat");
+	                clinicaRead = new ObjectInputStream(clinica);
+	                Clinica aux = (Clinica) clinicaRead.readObject();
+	                Clinica.setClinica(aux);
+	            } catch (FileNotFoundException e) {
+	                try {
+	                    clinica2 = new FileOutputStream("clinica.dat");
+	                    clinicaWrite = new ObjectOutputStream(clinica2);
+	                    User user = new User("Admin", "Admin", "Administrador"); 
+	                    Clinica.getInstance().agregarUsuario(user);
+	                    clinicaWrite.writeObject(Clinica.getInstance());
+	                } catch (IOException ex) {
+	                    
+	                    ex.printStackTrace();
+	                } finally {
+	                    
+	                    if (clinica2 != null) {
+	                        try {
+	                            clinica2.close();
+	                        } catch (IOException ex) {
+	                            ex.printStackTrace();
+	                        }
+	                    }
+	                    if (clinicaWrite != null) {
+	                        try {
+	                            clinicaWrite.close();
+	                        } catch (IOException ex) {
+	                            ex.printStackTrace();
+	                        }
+	                    }
+	                }
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            } catch (ClassNotFoundException e) {
+	                e.printStackTrace();
+	            } finally {
+	               
+	                if (clinica != null) {
+	                    try {
+	                        clinica.close();
+	                    } catch (IOException e) {
+	                        e.printStackTrace();
+	                    }
+	                }
+	                if (clinicaRead != null) {
+	                    try {
+	                        clinicaRead.close();
+	                    } catch (IOException e) {
+	                        e.printStackTrace();
+	                    }
+	                }
+	            }
+	        }
+	    });
 		
 		try {
 			InicioSesion dialog = new InicioSesion();
@@ -95,13 +119,14 @@ public class InicioSesion extends JDialog {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 	}
 
 	/**
 	 * Create the dialog.
 	 */
 	public InicioSesion() 
-	{
+	{	
 		setIconImage(new ImageIcon (getClass().getResource("/visual/SIGIC_logo.jpg")).getImage());
 		setTitle("Inicio de Sesion");
 		setBounds(100, 100, 492, 514);
