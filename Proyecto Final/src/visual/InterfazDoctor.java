@@ -3,10 +3,9 @@ package visual;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
+
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -16,27 +15,29 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import logico.Cita;
 import logico.Clinica;
-import logico.Consulta;
 import logico.Doctor;
-import logico.HistoriaClinica;
 import logico.Paciente;
 
 public class InterfazDoctor extends JDialog {
-//
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTable tblPacientes;
 	private DefaultTableModel modelo;
-	private JTable table;
-	private Doctor doc;
 	private JTable tblCitas;
 	private DefaultTableModel modeloCitas;
-	private Consulta consulta;
+	private Consultar consultar = null;
+	private Paciente paciente = null;
+	private Doctor doctor = null;
+	private Cita cita = null;
 	
 	/**
 	 * Launch the application.
@@ -59,7 +60,7 @@ public class InterfazDoctor extends JDialog {
 	
 	public InterfazDoctor() {
 		
-		//setTitle("Doctor" + doc.getNombre());
+		setTitle("Doctor " + doctor.getNombre());
 		setBounds(100, 100, 1275, 803);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -95,14 +96,11 @@ public class InterfazDoctor extends JDialog {
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-			
-			JButton btnInformacion = new JButton("M\u00E1s Informaci\u00F3n");
-			buttonPane.add(btnInformacion);
 			{
 				JButton cancelButton = new JButton("Cancelar");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-					dispose();
+						dispose();
 					}
 				});
 				
@@ -111,10 +109,10 @@ public class InterfazDoctor extends JDialog {
 				    public void actionPerformed(ActionEvent e) {
 				        int filaSeleccionada = tblCitas.getSelectedRow();
 				        if (filaSeleccionada != -1) {
-				        	Consultar consultar = new Consultar();
-				            Cita cita = Clinica.getInstance().getMisCitas().get(filaSeleccionada);
-				            Paciente paciente = (Paciente) cita.getPersona();
-				            Doctor doctor = cita.getDoctor();
+				        	 consultar = new Consultar();
+				             cita = Clinica.getInstance().getMisCitas().get(filaSeleccionada);
+				             paciente = cita.getPaciente();
+				             doctor = cita.getDoctor();
 		
 				            consultar.actualizarCampos(doctor, paciente);
 				            consultar.setVisible(true);
@@ -142,7 +140,9 @@ public class InterfazDoctor extends JDialog {
         String[] headersCitas = {"Edad", "Nombre", "Apellido", "Seguro"};
         modeloCitas.setColumnIdentifiers(headersCitas);
         tblCitas.setModel(modeloCitas);
-
+        
+        actualizarTablaConsultas(doctor.getCedula());
+        actualizarTablaCitas(doctor.getCedula());
 	}
 	
 	public void actualizarTablaCitas(String cedulaDoctor) {
@@ -152,13 +152,14 @@ public class InterfazDoctor extends JDialog {
 	    if (doctor != null) {
 	        for (Cita cita : Clinica.getInstance().getMisCitas()) {
 	            if (cita.getDoctor() == doctor) {
-	                Paciente paciente = (Paciente) cita.getPersona();
+	                Paciente paciente =  cita.getPaciente();
 	                Object[] fila = {    
 	                	paciente.getEdad(),
 	                	paciente.getNombre(),
-	                    paciente.getApellido(),
-	                    paciente.getSeguro().getNombreEmpresa()
+	                	paciente.getApellido(),
+	                	paciente.getSeguro().getNombreEmpresa()
 	                };
+	                
 	                modeloCitas.addRow(fila);
 	            }
 	        }
@@ -170,6 +171,7 @@ public class InterfazDoctor extends JDialog {
 		modelo.setColumnCount(0);
 		Doctor aux = Clinica.getInstance().buscarDoctorByCedula(CedulaDoc);
 			for (Paciente paciente : aux.getMisPacientes()) {
+				if(paciente.getSeleccionado()) {
 				Object[] fila = { 
 						paciente.getCedula(),
 						paciente.getEdad(),
@@ -179,6 +181,7 @@ public class InterfazDoctor extends JDialog {
 		            	paciente.getEnfermedad()
 		            };
 		            modelo.addRow(fila);
+				}
 			}
 		}
 

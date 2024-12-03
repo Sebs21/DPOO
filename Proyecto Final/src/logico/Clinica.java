@@ -468,6 +468,23 @@ public class Clinica implements Serializable
 		
 		for ( Paciente paciente : misPacientes )
 		{
+			if ( !paciente.getSeleccionado() )
+			{
+				seleccionadosArrayList.add( paciente );
+			}
+		}
+		
+		return seleccionadosArrayList;
+		
+	}
+	
+	public ArrayList<Paciente> pacientesNoSeleccionados ()
+	{
+		
+		ArrayList<Paciente> seleccionadosArrayList = new ArrayList<>();
+		
+		for ( Paciente paciente : misPacientes )
+		{
 			if ( paciente.getSeleccionado() )
 			{
 				seleccionadosArrayList.add( paciente );
@@ -477,6 +494,7 @@ public class Clinica implements Serializable
 		return seleccionadosArrayList;
 		
 	}
+	
 	
 	public ArrayList<Doctor> doctoresSeleccionados ()
 	{

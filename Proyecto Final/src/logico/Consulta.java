@@ -10,52 +10,35 @@ public class Consulta implements Serializable
 	 */
 	private static final long serialVersionUID = 1L;
 	private String id;
-	private String idFactura;
+	private int idFactura;
 	private String descripcion;
 	private String enfermedad;
 	private Date fechaConsulta;
-	private Seguro seguro;
+	private String seguro;
 	private Doctor doctor;
 	private Paciente paciente;
-	//
-	private boolean importancia;
-	private boolean noimportancia;
-	private boolean seleccionado;
-
-	public Consulta ( String id, String enfermedad, Date fechaConsulta, String descripcion, String idFactura, boolean importancia )
-	{
+	private boolean importancia; 
+	
+	public Consulta(String id, int idFactura, String descripcion, String enfermedad, Date fechaConsulta,
+			String seguro, Doctor doctor, Paciente paciente, boolean importancia) {
+		super();
 		this.id = id;
+		this.idFactura = idFactura;
+		this.descripcion = descripcion;
 		this.enfermedad = enfermedad;
 		this.fechaConsulta = fechaConsulta;
-		this.descripcion = descripcion;
-		this.idFactura = idFactura;
-		
-		if ( importancia == false )
-		{
-			noimportancia = true;
-		}
-		else
-		{
-			importancia = true;
-			noimportancia = false;
-		}
-		
+		this.seguro = seguro;
+		this.doctor = doctor;
+		this.paciente = paciente;
+		this.importancia = importancia;
 	}
-	
-	public String getIdFactura() {
+
+	public int getIdFactura() {
 		return idFactura;
 	}
 
-	public void setIdFactura(String idFactura) {
+	public void setIdFactura(int idFactura) {
 		this.idFactura = idFactura;
-	}
-
-	public boolean getSeleccionado() {
-		return seleccionado;
-	}
-
-	public void setSeleccionado(boolean seleccionado) {
-		this.seleccionado = seleccionado;
 	}
 
 	public Doctor getDoctor() {
@@ -98,11 +81,11 @@ public class Consulta implements Serializable
 		this.fechaConsulta = fechaConsulta;
 	}
 
-	public Seguro getSeguro() {
+	public String getSeguro() {
 		return seguro;
 	}
 
-	public void setSeguro(Seguro seguro) {
+	public void setSeguro(String seguro) {
 		this.seguro = seguro;
 	}
 
@@ -121,14 +104,5 @@ public class Consulta implements Serializable
 	public void setImportancia(boolean importancia) {
 		this.importancia = importancia;
 	}
-
-	public boolean isNoimportancia() {
-		return noimportancia;
-	}
-
-	public void setNoimportancia(boolean noimportancia) {
-		this.noimportancia = noimportancia;
-	}
-	
 	
 }

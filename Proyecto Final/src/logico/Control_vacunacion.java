@@ -20,9 +20,7 @@ public class Control_vacunacion implements Serializable
 		try(BufferedWriter writer = new BufferedWriter(new FileWriter(guarda ,true)) ) {
 			writer.write(this.toString());
 			writer.newLine();
-			
-			
-			
+
 		} catch (Exception e) {
             System.out.println("Error al guarda la vacunacion : " + e.getMessage());
 		}

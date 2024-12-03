@@ -18,10 +18,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class HistoriaXPaciente extends JDialog {
-//
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTable tblConsultas;
 	private DefaultTableModel modelo;
+
 	/**
 	 * Launch the application.
 	 */
@@ -52,43 +57,45 @@ public class HistoriaXPaciente extends JDialog {
 				JButton cancelButton = new JButton("Salir");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-					dispose();
+						dispose();
 					}
 				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
 		}
-		
+
 		modelo = new DefaultTableModel();
-        String[] headers = {"Doctor", "Nombre Paciente", "Fecha", "Enfermedad"};
-        modelo.setColumnIdentifiers(headers);
-        contentPanel.setLayout(null);
-        tblConsultas = new JTable(modelo);
-        
-        JScrollPane scrollPane = new JScrollPane(tblConsultas);
-        scrollPane.setBounds(10, 11, 788, 419);
-        contentPanel.add(scrollPane);
+		String[] headers = { "Doctor", "Nombre Paciente", "Fecha", "Enfermedad" };
+		modelo.setColumnIdentifiers(headers);
+		contentPanel.setLayout(null);
+		tblConsultas = new JTable(modelo);
+
+		JScrollPane scrollPane = new JScrollPane(tblConsultas);
+		scrollPane.setBounds(10, 11, 788, 419);
+		contentPanel.add(scrollPane);
 	}
-	
-	
+
 	public void actualizarTabla(String cedulaPaciente) {
-        modelo.setRowCount(0);
+		modelo.setRowCount(0);
 
-        Paciente paciente = Clinica.getInstance().buscarPacienteByCedula(cedulaPaciente);
-        if (paciente != null) {
-            ArrayList<Consulta> consultas = paciente.getMiHistoriaClinica().get(0).getMisConsultas();
-            for (Consulta consulta : consultas) {
-                Doctor doctor = consulta.getDoctor();
-                String nombreDoctor = doctor.getNombre() + " " + doctor.getApellido();
-                String nombrePaciente = paciente.getNombre() + " " + paciente.getApellido();
-                String fecha = consulta.getFechaConsulta().toString(); 
-                String enfermedad = consulta.getEnfermedad();
+		Paciente paciente = Clinica.getInstance().buscarPacienteByCedula(cedulaPaciente);
+		if (paciente != null) {
+			ArrayList<Consulta> consultas = paciente.getMiHistoriaClinica().get(0).getMisConsultas();
 
-                Object[] fila = {nombreDoctor, nombrePaciente, fecha, enfermedad};
-                modelo.addRow(fila);
-            }
-        }
-    }
+			for (Consulta consulta : consultas) {
+				if (consulta.isImportancia()) {
+					Doctor doctor = consulta.getDoctor();
+					String nombreDoctor = doctor.getNombre() + " " + doctor.getApellido();
+					String nombrePaciente = paciente.getNombre() + " " + paciente.getApellido();
+					String fecha = consulta.getFechaConsulta().toString();
+					String enfermedad = consulta.getEnfermedad();
+
+					Object[] fila = { nombreDoctor, nombrePaciente, fecha, enfermedad };
+					modelo.addRow(fila);
+				}
+			}
+		}
+	}
 
 }
