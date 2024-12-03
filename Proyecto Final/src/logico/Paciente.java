@@ -4,10 +4,7 @@ import java.util.ArrayList;
 
 public class Paciente extends Persona 
 {	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8165472379545564107L;
+
 	private int idCodPaciente;
 	private String enfermedad;
 	private String edad;

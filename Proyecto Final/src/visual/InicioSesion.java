@@ -57,13 +57,13 @@ public class InicioSesion extends JDialog {
 	            ObjectOutputStream clinicaWrite = null;
 
 	            try {
-	                clinica = new FileInputStream("clinica.dat");
+	                clinica = new FileInputStream("Clinica.dat");
 	                clinicaRead = new ObjectInputStream(clinica);
 	                Clinica aux = (Clinica) clinicaRead.readObject();
 	                Clinica.setClinica(aux);
 	            } catch (FileNotFoundException e) {
 	                try {
-	                    clinica2 = new FileOutputStream("clinica.dat");
+	                    clinica2 = new FileOutputStream("Clinica.dat");
 	                    clinicaWrite = new ObjectOutputStream(clinica2);
 	                    User user = new User("Admin", "Admin", "Administrador"); 
 	                    Clinica.getInstance().agregarUsuario(user);
