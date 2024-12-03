@@ -11,6 +11,7 @@ public class Seguro implements Serializable
 	private String idSeguro;
 	private String nombreEmpresa;
 	private String tipoDeSeguro;
+	
 	private boolean seleccionado;
 
 	public Seguro ( String idSeguro, String nombreEmpresa, String tipoDeSeguro )

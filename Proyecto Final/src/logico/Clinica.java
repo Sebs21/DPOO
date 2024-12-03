@@ -63,6 +63,18 @@ public class Clinica implements Serializable
 		
 	}
 	
+	public static Clinica getInstance ()
+	{
+		
+		if ( clinica == null )
+		{
+			clinica = new Clinica();
+		}
+		
+		return clinica;
+		
+	}
+	
 	public ArrayList<vacunacion> getMisVacunas() {
 		return misVacunas;
 	}
@@ -117,18 +129,6 @@ public class Clinica implements Serializable
 
 	public static void setClinica(Clinica clinica) {
 		Clinica.clinica = clinica;
-	}
-
-	public static Clinica getInstance ()
-	{
-		
-		if ( clinica == null )
-		{
-			clinica = new Clinica();
-		}
-		
-		return clinica;
-		
 	}
 
 	public ArrayList<Paciente> getMisPacientes() {
@@ -461,95 +461,6 @@ public class Clinica implements Serializable
 		idcontrolVacuna++;
 	}
 	
-	/*
-	
-	public ArrayList<Paciente> pacientesNoSeleccionados ()
-	{
-		
-		ArrayList<Paciente> noSeleccionadosArrayList = new ArrayList<>();
-		
-		for ( Paciente paciente : misPacientes )
-		{
-			if ( !paciente.getSeleccionado() )
-			{
-				noSeleccionadosArrayList.add( paciente );
-			}
-		}
-		
-		return noSeleccionadosArrayList;
-		
-	}
-	
-	public ArrayList<Doctor> doctoresNoSeleccionados ()
-	{
-		
-		ArrayList<Doctor> noSeleccionadosArrayList = new ArrayList<>();
-		
-		for ( Doctor doctor : misDoctores )
-		{
-			if ( !doctor.getSeleccionado() )
-			{
-				noSeleccionadosArrayList.add( doctor );
-			}
-		}
-		
-		return noSeleccionadosArrayList;
-		
-	}
-	
-	public ArrayList<Consulta> consultasNoSeleccionadas ()
-	{
-		
-		ArrayList<Consulta> noSeleccionadosArrayList = new ArrayList<>();
-		
-		for ( Consulta consulta : misConsultas )
-		{
-			if ( !consulta.getSeleccionado() )
-			{
-				noSeleccionadosArrayList.add( consulta );
-			}
-		}
-		
-		return noSeleccionadosArrayList;
-		
-	}
-	
-	public ArrayList<Cita> citasNoSeleccionadas ()
-	{
-		
-		ArrayList<Cita> noSeleccionadosArrayList = new ArrayList<>();
-		
-		for ( Cita cita : misCitas )
-		{
-			if ( !cita.getSeleccionado() )
-			{
-				noSeleccionadosArrayList.add( cita );
-			}
-		}
-		
-		return noSeleccionadosArrayList;
-		
-	}
-	
-	public ArrayList<Seguro> segurosNoSeleccionados ()
-	{
-		
-		ArrayList<Seguro> noSeleccionadosArrayList = new ArrayList<>();
-		
-		for ( Seguro seguro : misSeguros )
-		{
-			if ( !seguro.getSeleccionado() )
-			{
-				noSeleccionadosArrayList.add( seguro );
-			}
-		}
-		
-		return noSeleccionadosArrayList;
-		
-	}
-	
-	*/
-	
 	public ArrayList<Paciente> pacientesSeleccionados ()
 	{
 		
@@ -583,66 +494,21 @@ public class Clinica implements Serializable
 		return seleccionadosArrayList;
 		
 	}
-	
-	public ArrayList<Consulta> consultasSeleccionadas ()
-	{
-		
-		ArrayList<Consulta> seleccionadosArrayList = new ArrayList<>();
-		
-		for ( Consulta consulta : misConsultas )
-		{
-			if ( consulta.getSeleccionado() )
-			{
-				seleccionadosArrayList.add( consulta );
-			}
-		}
-		
-		return seleccionadosArrayList;
-		
-	}
-	
-	public ArrayList<Cita> citasSeleccionadas ()
-	{
-		
-		ArrayList<Cita> seleccionadosArrayList = new ArrayList<>();
-		
-		for ( Cita cita : misCitas )
-		{
-			if ( cita.getSeleccionado() )
-			{
-				seleccionadosArrayList.add( cita );
-			}
-		}
-		
-		return seleccionadosArrayList;
-		
-	}
 
-	public ArrayList<Seguro> segurosSeleccionados ()
+	public boolean ConfirmarLogin( String Nombre, String Cedula ) 
 	{
-		
-		ArrayList<Seguro> seleccionadosArrayList = new ArrayList<>();
-		
-		for ( Seguro seguro : misSeguros )
-		{
-			if ( seguro.getSeleccionado() )
-			{
-				seleccionadosArrayList.add( seguro );
-			}
-		}
-		
-		return seleccionadosArrayList;
-		
-	}
-
-	public boolean ConfirmarLogin(String Nombre, String Cedula) {
 		boolean aux = false;
-		for (User usuario : misUsuarios) {
-	        if(usuario.getUsuario().equals(Nombre) && usuario.getPass().equals(Cedula)) {
+		
+		for ( User usuario : misUsuarios ) 
+		{
+	        if ( usuario.getUsuario().equals( Nombre ) && usuario.getPass().equals( Cedula ) ) 
+	        {
 	            LoginUser = usuario;
 	            aux = true;
 			}
-		}		
+		}
+		
 		return aux;
+		
 	}
 }

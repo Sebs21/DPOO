@@ -13,12 +13,11 @@ public class Paciente extends Persona
 	private String edad;
 	
 	private Seguro seguro;
+	private User user;
 	
 	private ArrayList<HistoriaClinica> miHistoriaClinica;
 	private ArrayList<vacunacion> miVacuna;
 	private ArrayList<Facturar> miFactura;
-	
-	private User user;
 	
 	private boolean seleccionado;
 	private boolean consultaPagada;

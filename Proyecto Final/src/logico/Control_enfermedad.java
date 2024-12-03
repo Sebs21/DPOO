@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 public class Control_enfermedad implements Serializable
 {
-	
 	/**
 	 * 
 	 */
