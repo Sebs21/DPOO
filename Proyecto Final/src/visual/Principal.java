@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
@@ -45,18 +46,31 @@ public class Principal extends JFrame {
 	 */
 	public static void main(String[] args) {
 		try {
-			Principal Frame = new Principal();
-			Frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			Frame.setVisible(true);
+			
+			InicioSesion login = new InicioSesion();
+			login.setModal( true );
+			login.setVisible( true );
+			
+			if ( login.isLoginsuccesful() )
+			{
+				Principal Frame = new Principal();
+				Frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				Frame.setVisible(true);
+			}
+			else
+			{
+				JOptionPane.showConfirmDialog( null, "Inicio de sesión fallido." );
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
 	/**
 	 * Create the frame.
 	 */
-	public Principal() {
+	public Principal() 
+	{
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -89,22 +103,28 @@ public class Principal extends JFrame {
 		btnAdministracion = new JMenu("Administraci\u00F3n");
 		btnAdministracion.setForeground(Color.CYAN);
 
-		btnAdministracion.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if (Clinica.getLoginUser().getTipo().equalsIgnoreCase("Paciente")) {
-					
+		btnAdministracion.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				if (Clinica.getLoginUser().getTipo().equalsIgnoreCase("Paciente")) 
+				{
 					btnAdministracion.setEnabled(false);
 					btnResumenes.setEnabled(false);
 					btnEnfermedadesVigilancia.setEnabled(false);
 					btnVacunacion.setEnabled(true);
 					
-				} else if (Clinica.getLoginUser().getTipo().equalsIgnoreCase("Paciente")) {
+				} 
+				else if (Clinica.getLoginUser().getTipo().equalsIgnoreCase("Paciente")) 
+				{
 					btnAdministracion.setEnabled(true);
 					btnResumenes.setEnabled(true);
 					btnEnfermedadesVigilancia.setEnabled(true);
 					btnVacunacion.setEnabled(true);
 
-				}else if (Clinica.getLoginUser().getTipo().equalsIgnoreCase("Administracion")) {
+				}
+				else if (Clinica.getLoginUser().getTipo().equalsIgnoreCase("Administracion")) 
+				{
 					btnAdministracion.setEnabled(true);
 					btnResumenes.setEnabled(true);
 					btnEnfermedadesVigilancia.setEnabled(true);
@@ -117,8 +137,10 @@ public class Principal extends JFrame {
 		menuBar.add(btnAdministracion);
 
 		JMenuItem btnInterfaz = new JMenuItem("Listado de citas");
-		btnInterfaz.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnInterfaz.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 				InterfazDoctor interDoc = new InterfazDoctor();
 				interDoc.setVisible(true);
 				interDoc.setModal(true);
@@ -128,8 +150,10 @@ public class Principal extends JFrame {
 		btnAdministracion.add(btnInterfaz);
 
 		JMenuItem btnFacturar = new JMenuItem("Facturar");
-		btnFacturar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnFacturar.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 				Facturacion factura = new Facturacion();
 				factura.setVisible(true);
 				factura.setModal(true);
@@ -144,8 +168,10 @@ public class Principal extends JFrame {
 
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Lista General");
 		mntmNewMenuItem_2.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		mntmNewMenuItem_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		mntmNewMenuItem_2.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 				ListadoGeneral lista = new ListadoGeneral();
 				lista.setVisible(true);
 				lista.setModal(true);
@@ -163,16 +189,20 @@ public class Principal extends JFrame {
 
 		JButton btn_Registro_Vigilancia = new JButton("Registro Vigilancia");
 		btn_Registro_Vigilancia.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		btn_Registro_Vigilancia.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		btn_Registro_Vigilancia.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
 
 			}
 		});
 		btnEnfermedadesVigilancia.add(btn_Registro_Vigilancia);
 
 		JButton btn_Reporte_Vigilancia = new JButton("Reporte Vigilancia");
-		btn_Reporte_Vigilancia.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btn_Reporte_Vigilancia.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 
 			}
 		});
@@ -184,8 +214,10 @@ public class Principal extends JFrame {
 		menuBar.add(btnVacunacion);
 
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Cerrar sesion");
-		mntmNewMenuItem_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		mntmNewMenuItem_1.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 				CerrarSesion cerrar = new CerrarSesion();
 				cerrar.setVisible(true);
 				cerrar.setModal(true);
@@ -194,14 +226,16 @@ public class Principal extends JFrame {
 		});
 
 		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Realizar cita");
-		mntmNewMenuItem_3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		mntmNewMenuItem_3.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
 				Cita cita = new Cita();
 				cita.setVisible(true);
 				cita.setModal(true);
 			}
 		});
-		mntmNewMenuItem_3.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		mntmNewMenuItem_3.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuBar.add(mntmNewMenuItem_3);
 		mntmNewMenuItem_1.setForeground(Color.RED);
 		mntmNewMenuItem_1.setFont(new Font("Segoe UI", Font.BOLD, 16));
@@ -214,5 +248,7 @@ public class Principal extends JFrame {
 		dim = getToolkit().getScreenSize();
 		setSize(dim.width, dim.height - 35);
 		setLocationRelativeTo(null);
+		
 	}
+	
 }

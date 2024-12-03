@@ -27,14 +27,14 @@ public class SeguroPaciente extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtIdSeguro;
-	private JTextField txtNombreEmpresa;
-	private JTextField txtIdPaciente;
+	private JTextField txtCedulaPaciente;
 	private JButton btnNo;
 	private JButton btnBuscar;
 	private JButton btnSi;
 	private JComboBox<String> cbxTipoDeSeguro;
 	private JButton btnConectar;
 	private JButton btnCancelar;
+	private JComboBox<String> cbxNombreEmpresa;
 	//
 	/**
 	 * Launch the application.
@@ -56,7 +56,7 @@ public class SeguroPaciente extends JDialog {
 	{
 		
 		setTitle("Seguro del paciente");
-		setBounds(100, 100, 529, 583);
+		setBounds(100, 100, 529, 506);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -69,43 +69,36 @@ public class SeguroPaciente extends JDialog {
 		
 		JLabel lblNombreDeLa = new JLabel("Nombre de la empresa:");
 		lblNombreDeLa.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
-		lblNombreDeLa.setBounds(171, 257, 211, 16);
+		lblNombreDeLa.setBounds(158, 224, 211, 16);
 		contentPanel.add(lblNombreDeLa);
 		
 		JLabel lblTipoDeSeguro = new JLabel("Tipo de seguro:");
 		lblTipoDeSeguro.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
-		lblTipoDeSeguro.setBounds(180, 390, 148, 16);
+		lblTipoDeSeguro.setBounds(181, 307, 148, 16);
 		contentPanel.add(lblTipoDeSeguro);
 		
 		txtIdSeguro = new JTextField();
 		txtIdSeguro.setEditable(false);
 		txtIdSeguro.setEnabled(false);
-		txtIdSeguro.setBounds(138, 169, 244, 44);
+		txtIdSeguro.setBounds(138, 169, 237, 30);
 		contentPanel.add(txtIdSeguro);
 		txtIdSeguro.setColumns(10);
-		
-		txtNombreEmpresa = new JTextField();
-		txtNombreEmpresa.setEditable(false);
-		txtNombreEmpresa.setEnabled(false);
-		txtNombreEmpresa.setColumns(10);
-		txtNombreEmpresa.setBounds(138, 307, 244, 44);
-		contentPanel.add(txtNombreEmpresa);
 		
 		JLabel lblIdPaciente = new JLabel("Cedula paciente:");
 		lblIdPaciente.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
 		lblIdPaciente.setBounds(28, 35, 141, 30);
 		contentPanel.add(lblIdPaciente);
 		
-		txtIdPaciente = new JTextField();
-		txtIdPaciente.setBounds(181, 41, 116, 22);
-		contentPanel.add(txtIdPaciente);
-		txtIdPaciente.setColumns(10);
+		txtCedulaPaciente = new JTextField();
+		txtCedulaPaciente.setBounds(181, 41, 116, 22);
+		contentPanel.add(txtCedulaPaciente);
+		txtCedulaPaciente.setColumns(10);
 		
 		btnBuscar = new JButton("Buscar");
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				Paciente paciente = Clinica.getInstance().buscarPacienteByCedula( txtIdPaciente.getText() );
+				Paciente paciente = Clinica.getInstance().buscarPacienteByCedula( txtCedulaPaciente.getText() );
 				
 				if ( paciente != null )
 				{
@@ -115,6 +108,7 @@ public class SeguroPaciente extends JDialog {
 				else
 				{
 					JOptionPane.showMessageDialog( null, "Ingresa la cedula denuevo." );
+					clearCedula();
 				}
 				
 			}
@@ -152,8 +146,8 @@ public class SeguroPaciente extends JDialog {
 			{
 				txtIdSeguro.setEnabled( true );
 				txtIdSeguro.setEditable( true );
-				txtNombreEmpresa.setEnabled( true );
-				txtNombreEmpresa.setEditable( true );
+				cbxNombreEmpresa.setEnabled( true );
+				cbxNombreEmpresa.setEditable( true );
 				cbxTipoDeSeguro.setEnabled( true );
 				cbxTipoDeSeguro.setEditable( true );
 				btnConectar.setEnabled( true );
@@ -171,8 +165,15 @@ public class SeguroPaciente extends JDialog {
 		cbxTipoDeSeguro.setModel(new DefaultComboBoxModel(new String[] {"< Seleccione Seguro >", "Seguro de Responsabilidad M\u00E9dica", "Equipo Medico", "Salud para pacientes"}));
 		cbxTipoDeSeguro.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
 		cbxTipoDeSeguro.setEnabled(false);
-		cbxTipoDeSeguro.setBounds(138, 436, 244, 22);
+		cbxTipoDeSeguro.setBounds(133, 336, 259, 22);
 		contentPanel.add(cbxTipoDeSeguro);
+		
+		cbxNombreEmpresa = new JComboBox<String>();
+		cbxNombreEmpresa.setModel(new DefaultComboBoxModel(new String[] {"< Seleccione Nombre de Empresa >", "ARS Humano", "ARS Universal", "Seguro Reservas"}));
+		cbxNombreEmpresa.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
+		cbxNombreEmpresa.setEnabled(false);
+		cbxNombreEmpresa.setBounds(133, 253, 254, 22);
+		contentPanel.add(cbxNombreEmpresa);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
@@ -185,7 +186,7 @@ public class SeguroPaciente extends JDialog {
 					{
 						if ( btnConectar == null )
 						{
-							Seguro seguro = new Seguro ( txtIdSeguro.getText(), txtNombreEmpresa.getText(), cbxTipoDeSeguro.getSelectedItem().toString() );
+							Seguro seguro = new Seguro ( txtIdSeguro.getText(), cbxNombreEmpresa.getSelectedItem().toString(), cbxTipoDeSeguro.getSelectedItem().toString() );
 							Clinica.getInstance().agregarSeguro( seguro );
 							JOptionPane.showMessageDialog( null, "Seguro añadido a su sesión." );
 							dispose();
@@ -217,10 +218,15 @@ public class SeguroPaciente extends JDialog {
 	
 	public void clean ()
 	{
-		txtIdPaciente.setText("");
+		txtCedulaPaciente.setText("");
 		txtIdSeguro.setText("");
-		txtNombreEmpresa.setText("");
-		cbxTipoDeSeguro.setSelectedItem( "<Seleccione Seguro>");
+		cbxNombreEmpresa.setSelectedItem( " < Seleccione Nombre de Empresa > " );
+		cbxTipoDeSeguro.setSelectedItem( " < Seleccione Seguro > ");
+	}
+	
+	public void clearCedula ()
+	{
+		txtCedulaPaciente.setText("");
 	}
 	
 }

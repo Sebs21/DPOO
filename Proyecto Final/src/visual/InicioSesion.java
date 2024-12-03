@@ -32,8 +32,8 @@ import java.io.ObjectOutputStream;
 import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
 
-public class InicioSesion extends JDialog {
-
+public class InicioSesion extends JDialog 
+{
 	/**
 	 * 
 	 */
@@ -44,7 +44,7 @@ public class InicioSesion extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtNombre;
 	private JTextField txtPassword;
-
+	private boolean loginsuccesful = false;
 	/**
 	 * Launch the application.
 	 */
@@ -189,8 +189,10 @@ public class InicioSesion extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 
-					    if (Clinica.getInstance().ConfirmarLogin(txtNombre.getText(), txtPassword.getText())) {
+					    if (Clinica.getInstance().ConfirmarLogin(txtNombre.getText(), txtPassword.getText())) 
+					    {
 					        Principal prin = new Principal();
+					        loginsuccesful = true;
 					        dispose(); 
 					        prin.setVisible(true); 
 					    }
@@ -219,6 +221,14 @@ public class InicioSesion extends JDialog {
 
 	public void setTxtNombre(JTextField txtNombre) {
 		this.txtNombre = txtNombre;
+	}
+
+	public boolean isLoginsuccesful() {
+		return loginsuccesful;
+	}
+
+	public void setLoginsuccesful(boolean loginsuccesful) {
+		this.loginsuccesful = loginsuccesful;
 	}
 
 }
