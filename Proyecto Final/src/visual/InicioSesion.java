@@ -44,7 +44,7 @@ public class InicioSesion extends JDialog {
 	private JTextField txtNombre;
 	private JTextField txtPassword;
 	private boolean loginsuccesful = false;
-	private static final String clinica_info ="Clinica_info";
+	private static final String clinica_info ="Clinica_info.dat";
 	/**
 	 * Launch the application.
 	 */
