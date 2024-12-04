@@ -111,7 +111,6 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				InterfazDoctor interDoc = new InterfazDoctor();
 				interDoc.setVisible(true);
-				interDoc.setModal(true);
 			}
 		});
 		btnInterfaz.setFont(new Font("Segoe UI", Font.PLAIN, 16));
@@ -122,7 +121,6 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Facturacion factura = new Facturacion();
 				factura.setVisible(true);
-				factura.setModal(true);
 			}
 		});
 		btnFacturar.setFont(new Font("Segoe UI", Font.PLAIN, 16));
@@ -138,7 +136,7 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				ListadoGeneral lista = new ListadoGeneral();
 				lista.setVisible(true);
-				lista.setModal(true);
+				 
 			}
 		});
 		btnResumenes.add(mntmNewMenuItem_2);
@@ -173,8 +171,7 @@ public class Principal extends JFrame {
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CerrarSesion cerrar = new CerrarSesion();
-				cerrar.setVisible(true);
-				cerrar.setModal(true);
+				cerrar.setVisible(true); 
 				dispose();
 			}
 		});
@@ -184,7 +181,6 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				Cita cita = new Cita();
 				cita.setVisible(true);
-				cita.setModal(true);
 			}
 		});
 
@@ -194,7 +190,6 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				SeguroPaciente segPaciente = new SeguroPaciente();
 				segPaciente.setVisible(true);
-				segPaciente.setModal(true);
 			}
 		});
 		menuBar.add(btnSeguro);

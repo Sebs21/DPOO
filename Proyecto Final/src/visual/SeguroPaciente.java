@@ -64,6 +64,7 @@ public class SeguroPaciente extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		setLocationRelativeTo( null );
+		setModal(true);
 		
 		JLabel lblNewLabel = new JLabel("ID seguro:");
 		lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
@@ -191,40 +192,10 @@ public class SeguroPaciente extends JDialog {
 				btnConectar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) 
 					{
-						if ( txtIdSeguro.getText().isEmpty() || cbxNombreEmpresa.getSelectedIndex() == 0 || cbxTipoDeSeguro.getSelectedIndex() == 0 )
-						{
-							JOptionPane.showMessageDialog( null, "Debe completar todos los campos para poder conectar.", "Error", JOptionPane.ERROR_MESSAGE );
-							return;
-						}
-						
-						String idSeguro = txtIdSeguro.getText();
-						String nombreEmpresa = cbxNombreEmpresa.getSelectedItem().toString();
-						String tipoSeguro = cbxTipoDeSeguro.getSelectedItem().toString();
-						double descuento = 0.0;
-						
-						switch ( tipoSeguro )
-						{
-							case "Seguro de Responsabilidad Médica":
-								descuento = 0.40;
-								break;
-							case "Equipo Médico":
-								descuento = 0.60;
-								break;
-							case "Salud para pacientes":
-								descuento = 0.75;
-								break;
-							default:
-								JOptionPane.showMessageDialog( null, "Seleccione un tipo de seguro.", "Error", JOptionPane.ERROR_MESSAGE );
-								return;		
-						}
-						
-						Seguro seguro = new Seguro ( idSeguro, nombreEmpresa, tipoSeguro, descuento );
-						Clinica.getInstance().agregarSeguro( seguro );
-						JOptionPane.showMessageDialog( null, "Seguro agregado a su sesión." + ( descuento * 100 ) + "%." );
-						
+						agregarSeguro();
 						clean();
-						dispose();
 						
+						dispose();
 					}
 				});
 				btnConectar.setEnabled(false);
@@ -248,6 +219,40 @@ public class SeguroPaciente extends JDialog {
 				buttonPane.add(btnCancelar);
 			}
 		}
+	}
+	
+	private void agregarSeguro() {
+		if ( txtIdSeguro.getText().isEmpty() || cbxNombreEmpresa.getSelectedIndex() == 0 || cbxTipoDeSeguro.getSelectedIndex() == 0 )
+		{
+			JOptionPane.showMessageDialog( null, "Debe completar todos los campos para poder conectar.", "Error", JOptionPane.ERROR_MESSAGE );
+			return;
+		}
+		
+		String idSeguro = txtIdSeguro.getText();
+		String nombreEmpresa = cbxNombreEmpresa.getSelectedItem().toString();
+		String tipoSeguro = cbxTipoDeSeguro.getSelectedItem().toString();
+		double descuento = 0.0;
+		
+		switch ( tipoSeguro )
+		{
+			case "Seguro de Responsabilidad Médica":
+				descuento = 0.40;
+				break;
+			case "Equipo Médico":
+				descuento = 0.60;
+				break;
+			case "Salud para pacientes":
+				descuento = 0.75;
+				break;
+			default:
+				JOptionPane.showMessageDialog( null, "Seleccione un tipo de seguro.", "Error", JOptionPane.ERROR_MESSAGE );
+				return;		
+		}
+		
+		Seguro seguro = new Seguro ( idSeguro, nombreEmpresa, tipoSeguro, descuento );
+		Clinica.getInstance().agregarSeguro( seguro );
+		JOptionPane.showMessageDialog( null, "Seguro agregado a su sesión. " + ( descuento * 100 ) + "%." );
+		
 	}
 	
 	public void clean ()

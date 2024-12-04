@@ -11,16 +11,28 @@ public class Seguro implements Serializable
 	private String idSeguro;
 	private String nombreEmpresa;
 	private String tipoDeSeguro;
-	
+	private double descuento;
 	private boolean seleccionado;
 
-	public Seguro ( String idSeguro, String nombreEmpresa, String tipoDeSeguro )
+	public Seguro ( String idSeguro, String nombreEmpresa, String tipoDeSeguro, double descuento )
 	{
 		this.idSeguro = idSeguro;
 		this.nombreEmpresa = nombreEmpresa;
 		this.tipoDeSeguro = tipoDeSeguro;
+		this.descuento = descuento;
 	}
 	
+	
+	public double getDescuento() {
+		return descuento;
+	}
+
+
+	public void setDescuento(double descuento) {
+		this.descuento = descuento;
+	}
+
+
 	public boolean getSeleccionado() {
 		return seleccionado;
 	}

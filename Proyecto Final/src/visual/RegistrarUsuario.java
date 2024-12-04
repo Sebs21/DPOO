@@ -190,7 +190,6 @@ public class RegistrarUsuario extends JDialog {
 						dispose();
 						InicioSesion iniSe = new InicioSesion();
 						iniSe.setVisible(true);
-						iniSe.setModal(true);
 					}
 				});
 				btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -241,6 +240,10 @@ public class RegistrarUsuario extends JDialog {
 		txtUsuario.setText("");
 		txtApellido.setText("");
 		cbxTipo.setSelectedItem("<Seleccione>");
+		txtConfirmarCedula.setText("");
+		txtEspecialidad.setText("");
+		txtEdad.setText("");
+		txtCedula.setText("");
 
 	}
 }

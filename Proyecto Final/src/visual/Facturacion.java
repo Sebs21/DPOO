@@ -71,6 +71,7 @@ public class Facturacion extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		setLocationRelativeTo(null);
+		setModal(true);
 		
 		JLabel lblNewLabel = new JLabel("Cedula paciente:");
 		lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));

@@ -42,11 +42,10 @@ public class Cita extends JDialog
 	private JSpinner spnFechaCita;
 	private JComboBox cbxDoctor;
 	
-	private boolean existePaciente;
 	private JTextField txtIdCita;
 	private JTextField txtPacienteSesion;
 	
-	private User pacienteSelect = Clinica.getInstance().getLoginUser();
+	private User pacienteSelect = Clinica.getLoginUser();
 	private Paciente pacienteCita = Clinica.getInstance().buscarPacienteByCedula( pacienteSelect.getPass() );
 
 	/**
@@ -82,6 +81,7 @@ public class Cita extends JDialog
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		setLocationRelativeTo( null );
+		setModal(true);
 		
 		JLabel lblNewLabel = new JLabel("Doctor:");
 		lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));

@@ -105,6 +105,7 @@ public class InicioSesion extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		setLocationRelativeTo(null);
+		setModal(true);
 
 		JPanel panel_4 = new JPanel();
 		panel_4.setBorder(new TitledBorder(new LineBorder(new Color(95, 158, 160), 4, true), "Iniciar Sesion",
@@ -165,11 +166,11 @@ public class InicioSesion extends JDialog {
 							loginsuccesful = true;
 					
 							dispose();
-							Clinica clinica = Clinica.cargarClinica(clinica_info);
+							//Clinica clinica = Clinica.cargarClinica(clinica_info);
 							
-							if(clinica !=null){
-								Clinica.setClinica(clinica);
-							}
+							//if(clinica !=null){
+							//	Clinica.setClinica(clinica);
+							//}
 							
 							prin.setVisible(true);
 						}	

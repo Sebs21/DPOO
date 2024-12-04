@@ -112,6 +112,7 @@ public class ListadoGeneral extends JDialog
 		dim = getToolkit().getScreenSize();
 		setSize( dim.width, dim.height );
 		setLocationRelativeTo(null);
+		setModal(true);
 		
 		JPanel panelPacientes = new JPanel();
 		panelPacientes.setBorder(new TitledBorder(new LineBorder(new Color(224, 255, 255), 4, true), "Pacientes", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));

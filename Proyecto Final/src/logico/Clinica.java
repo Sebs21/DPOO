@@ -123,18 +123,7 @@ public class Clinica implements Serializable
 	    public ArrayList<Control_vacunacion> obtener_vaunacion() {
 	        return control_vacu;
 	        
-	    }
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
+	    }    
 	
 	public static Clinica getInstance ()
 	{
