@@ -79,7 +79,8 @@ public class Clinica implements Serializable
 		
 	}
 	//guarda informacion 
-	 public void guardarClinica() {
+	 public void guardarClinica() 
+	 {
 	        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Clinica_info.dat"))) {
 	            oos.writeObject(this);
 	          
@@ -90,18 +91,20 @@ public class Clinica implements Serializable
 	    }
 
 	   
-	    public static Clinica cargarClinica() {
-	        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("Clinica_info.dat"))) {
-	            return (Clinica) ois.readObject();
-	        } catch (IOException e) {
-	            
-	            
-	        } catch (ClassNotFoundException e) {
-	          
-	        }
-	        return null;
-	    }
-	    
+	 public static Clinica cargarClinica() 
+	 {
+		 
+		    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("Clinica_info.dat"))) {
+		    	
+		        clinica = (Clinica) ois.readObject();
+		        System.out.println("Archivo no encontrado");
+
+		        return clinica;
+		    } catch (IOException | ClassNotFoundException e) {
+		        e.printStackTrace();
+		        return null;
+		    }
+		}
 	    
 	    //agregar paciente.
 	    
@@ -415,6 +418,8 @@ public class Clinica implements Serializable
 	public void setMisSeguros(ArrayList<Seguro> misSeguros) {
 		this.misSeguros = misSeguros;
 	}
+	
+	
 	
 	public Consulta buscarConsultaById ( String id )
 	{

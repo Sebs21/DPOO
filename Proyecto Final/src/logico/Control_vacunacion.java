@@ -17,12 +17,12 @@ public class Control_vacunacion implements Serializable
 		public static int code_vacu =1;
 	
 	
-	    public Control_vacunacion() {
-	        this.pacientes = new HashMap<>();
-	        Control_vacunacion.vacunaciones = new ArrayList<>();
-	        
-	    }
-	    
+		public Control_vacunacion() {
+		    this.pacientes = new HashMap<>();
+		    Control_vacunacion.vacunaciones = new ArrayList<>();
+		    Control_vacunacion.panc = new ArrayList<>();
+		}
+
 	    
 	
 	 public Consulta getConsulta() {
