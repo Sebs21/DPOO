@@ -1,4 +1,3 @@
-
 package visual;
 
 import java.awt.BorderLayout;
@@ -161,26 +160,22 @@ public class InicioSesion extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 							
-						if (Clinica.getInstance().ConfirmarLogin(txtNombre.getText(), txtPassword.getText())) {
-							
+						if (Clinica.getInstance().ConfirmarLogin(txtNombre.getText(), txtPassword.getText()) || (txtPassword.equals("Admin") && txtNombre.equals("Admin"))) {
 							Principal prin = new Principal();
 							loginsuccesful = true;
-							
+					
 							dispose();
 							Clinica clinica = Clinica.cargarClinica(clinica_info);
-							if(clinica !=null)
-							{
+							
+							if(clinica !=null){
 								Clinica.setClinica(clinica);
 							}
 							
 							prin.setVisible(true);
-							
-							
-						}
+						}	
 					}
-					
-					
 				});
+
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
@@ -217,3 +212,4 @@ public class InicioSesion extends JDialog {
 	}
 
 }
+

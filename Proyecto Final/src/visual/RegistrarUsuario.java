@@ -161,6 +161,7 @@ public class RegistrarUsuario extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("Registrar");
+				okButton.setFont(new Font("Tahoma", Font.BOLD, 16));
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						if (validacion()) {
@@ -177,21 +178,32 @@ public class RegistrarUsuario extends JDialog {
 								Doctor doctor = new Doctor(txtCedula.getText(), txtUsuario.getText(),
 										txtApellido.getText(), txtEspecialidad.getText(), txtEdad.getText(), usuario);
 								Clinica.getInstance().agregarDoctor(doctor);
-							}
-							clean();
-							dispose();
-							InicioSesion iniSe = new InicioSesion();
-							iniSe.setVisible(true);
-							iniSe.setModal(true);
+							}		
+							clean();			
 						}
 					}
 				});
+				
+				JButton btnNewButton = new JButton("Iniciar Sesion");
+				btnNewButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						dispose();
+						InicioSesion iniSe = new InicioSesion();
+						iniSe.setVisible(true);
+						iniSe.setModal(true);
+					}
+				});
+				btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 18));
+				btnNewButton.setForeground(Color.GREEN);
+				buttonPane.add(btnNewButton);
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
 				JButton cancelButton = new JButton("Cancelar");
+				cancelButton.setFont(new Font("Tahoma", Font.PLAIN, 18));
+				cancelButton.setForeground(new Color(255, 0, 0));
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						dispose();
