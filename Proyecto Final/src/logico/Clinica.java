@@ -71,27 +71,68 @@ public class Clinica implements Serializable
 	
 	
 	
-	 public void guardarClinica(String filePath) {
-	        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
+	 public void guardarClinica() {
+	        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Clinica_info.dat"))) {
 	            oos.writeObject(this);
-	            System.out.println("Datos guardados exitosamente en " + filePath);
+	          
 	        } catch (IOException e) {
-	            System.err.println("Error al guardar los datos: " + e.getMessage());
+	          
 	            e.printStackTrace();
 	        }
 	    }
 
 	   
-	    public static Clinica cargarClinica(String filePath) {
-	        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath))) {
+	    public static Clinica cargarClinica() {
+	        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("Clinica_info.dat"))) {
 	            return (Clinica) ois.readObject();
 	        } catch (IOException e) {
-	            System.err.println("Error al cargar los datos: " + e.getMessage());
+	            
+	            
 	        } catch (ClassNotFoundException e) {
-	            System.err.println("Error: Clase no encontrada al cargar los datos.");
+	          
 	        }
 	        return null;
 	    }
+	    
+	    
+	    public void agregar_control_enfermdedad(Control_enfermedad control)
+	    {
+	    	if(control_enfer == null)
+	    	{
+	    		control_enfer = new ArrayList<>();
+	    		
+	    	}
+	    	control_enfer.add(control);
+	    }
+	    public ArrayList<Control_enfermedad> obtener_control_enfermedad() {
+	        return control_enfer;
+	        
+	    }
+	    
+	    public void agregar_control_vacunacion(Control_vacunacion vacun)
+	    {
+	    	if(control_vacu == null)
+	    	{
+	    		control_vacu = new ArrayList<>();
+	    		
+	    	}
+	    	control_vacu.add(vacun);
+	    }
+	    
+	    
+	    public ArrayList<Control_vacunacion> obtener_vaunacion() {
+	        return control_vacu;
+	        
+	    }
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
 	    
 	    
 	

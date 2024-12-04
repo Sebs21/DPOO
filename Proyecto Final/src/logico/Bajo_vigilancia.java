@@ -53,4 +53,5 @@ public class Bajo_vigilancia implements Serializable {
 	public void setMonitoreo(String monitoreo) {
 		this.monitoreo = monitoreo;
 	}
+	
 }
