@@ -39,8 +39,10 @@ public class SeguroPaciente extends JDialog {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		try {
+	public static void main(String[] args) 
+	{
+		try 
+		{
 			SeguroPaciente dialog = new SeguroPaciente();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
@@ -61,6 +63,7 @@ public class SeguroPaciente extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
+		setLocationRelativeTo( null );
 		
 		JLabel lblNewLabel = new JLabel("ID seguro:");
 		lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
@@ -98,10 +101,14 @@ public class SeguroPaciente extends JDialog {
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) 
 			{
+				
 				Paciente paciente = Clinica.getInstance().buscarPacienteByCedula( txtCedulaPaciente.getText() );
 				
 				if ( paciente != null )
 				{
+					
+					JOptionPane.showMessageDialog( null, "Paciente encontrado:" +paciente.getNombre() );
+					
 					btnSi.setEnabled( true );
 					btnNo.setEnabled( true );
 				}
@@ -184,13 +191,40 @@ public class SeguroPaciente extends JDialog {
 				btnConectar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) 
 					{
-						if ( btnConectar == null )
+						if ( txtIdSeguro.getText().isEmpty() || cbxNombreEmpresa.getSelectedIndex() == 0 || cbxTipoDeSeguro.getSelectedIndex() == 0 )
 						{
-							Seguro seguro = new Seguro ( txtIdSeguro.getText(), cbxNombreEmpresa.getSelectedItem().toString(), cbxTipoDeSeguro.getSelectedItem().toString() );
-							Clinica.getInstance().agregarSeguro( seguro );
-							JOptionPane.showMessageDialog( null, "Seguro añadido a su sesión." );
-							dispose();
+							JOptionPane.showMessageDialog( null, "Debe completar todos los campos para poder conectar.", "Error", JOptionPane.ERROR_MESSAGE );
+							return;
 						}
+						
+						String idSeguro = txtIdSeguro.getText();
+						String nombreEmpresa = cbxNombreEmpresa.getSelectedItem().toString();
+						String tipoSeguro = cbxTipoDeSeguro.getSelectedItem().toString();
+						double descuento = 0.0;
+						
+						switch ( tipoSeguro )
+						{
+							case "Seguro de Responsabilidad Médica":
+								descuento = 0.40;
+								break;
+							case "Equipo Médico":
+								descuento = 0.60;
+								break;
+							case "Salud para pacientes":
+								descuento = 0.75;
+								break;
+							default:
+								JOptionPane.showMessageDialog( null, "Seleccione un tipo de seguro.", "Error", JOptionPane.ERROR_MESSAGE );
+								return;		
+						}
+						
+						Seguro seguro = new Seguro ( idSeguro, nombreEmpresa, tipoSeguro, descuento );
+						Clinica.getInstance().agregarSeguro( seguro );
+						JOptionPane.showMessageDialog( null, "Seguro agregado a su sesión." + ( descuento * 100 ) + "%." );
+						
+						clean();
+						dispose();
+						
 					}
 				});
 				btnConectar.setEnabled(false);
@@ -230,3 +264,4 @@ public class SeguroPaciente extends JDialog {
 	}
 	
 }
+

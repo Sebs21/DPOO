@@ -26,6 +26,7 @@ import javax.swing.border.EmptyBorder;
 
 import logico.Control_vacunacion;
 import logico.vacunacion;
+import javax.swing.SpinnerNumberModel;
 
 public class Visual_vacunacion extends JFrame {
 
@@ -38,8 +39,8 @@ public class Visual_vacunacion extends JFrame {
 	    private JTextField txt_numero_paciente;
 	    private JButton btnGuardar;
 	    private  JComboBox<Object> list_vacuna ;
-	    private JSpinner spinner_cant_ml ;
 	    private JSpinner fecha_vacu ;
+	    private JSpinner spn_cant_ml;
 	    
 	    //
 	 
@@ -107,10 +108,6 @@ public class Visual_vacunacion extends JFrame {
 	        txt_numero_paciente.setEditable(false);
 	        txt_numero_paciente.setBounds(546, 83, 186, 32);
 	        contentPanel.add(txt_numero_paciente);
-	    
-	        spinner_cant_ml = new JSpinner();
-	        spinner_cant_ml.setBounds(117, 213, 61, 32);
-	        contentPanel.add(spinner_cant_ml);
 	        
 	        
 	        JLabel lblFecha = new JLabel("Fecha:");
@@ -119,14 +116,19 @@ public class Visual_vacunacion extends JFrame {
 			contentPanel.add(lblFecha);
 
 			fecha_vacu = new JSpinner();
-			fecha_vacu.setModel(new SpinnerDateModel(new Date(1732593600000L), new Date(1732593600000L), null, Calendar.DAY_OF_YEAR));
+			fecha_vacu.setModel( new SpinnerDateModel( new Date(), null, null, Calendar.DAY_OF_MONTH ) );
 			fecha_vacu.setBounds(267, 211, 165, 37);
 			contentPanel.add(fecha_vacu);
 			
 			 list_vacuna = new JComboBox<>();
-			 list_vacuna.setModel(new DefaultComboBoxModel<Object>(new String[] {"<Seleccione>"}));
+			 list_vacuna.setModel(new DefaultComboBoxModel(new String[] {"<Seleccione>", "Influenza", "Papiloma Humano", "Neumon\u00EDa", "Meningitis"}));
 			 list_vacuna.setBounds(154, 146, 186, 32);
 		        contentPanel.add(list_vacuna);
+		        
+		        spn_cant_ml = new JSpinner();
+		        spn_cant_ml.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		        spn_cant_ml.setBounds(108, 218, 66, 22);
+		        contentPanel.add(spn_cant_ml);
 
 
 	        JPanel buttonPane = new JPanel();
@@ -178,9 +180,9 @@ public class Visual_vacunacion extends JFrame {
 	        
 	        JButton cancelButton = new JButton("Cancelar");
 	        cancelButton.addActionListener(new ActionListener() {
-	        	public void actionPerformed(ActionEvent arg0) {
+	        	public void actionPerformed(ActionEvent arg0) 
+	        	{
 	        		dispose();
-	        		
 	        	}
 	        });
 	        cancelButton.setActionCommand("Cancel");
@@ -194,4 +196,10 @@ public class Visual_vacunacion extends JFrame {
 	            }
 	        });
 	}
+	
+	public void niñosVacuna ()
+	{
+		
+	}
 }
+

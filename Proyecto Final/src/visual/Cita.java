@@ -30,7 +30,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
 
-public class Cita extends JDialog {
+public class Cita extends JDialog 
+{
 
 	/**
 	 * 
@@ -44,6 +45,9 @@ public class Cita extends JDialog {
 	private boolean existePaciente;
 	private JTextField txtIdCita;
 	private JTextField txtPacienteSesion;
+	
+	private User pacienteSelect = Clinica.getInstance().getLoginUser();
+	private Paciente pacienteCita = Clinica.getInstance().buscarPacienteByCedula( pacienteSelect.getPass() );
 
 	/**
 	 * Launch the application.
@@ -63,6 +67,14 @@ public class Cita extends JDialog {
 	 */
 	public Cita() 
 	{
+		
+		if ( Clinica.getInstance().getMisDoctores().isEmpty() || Clinica.getInstance().getMisPacientes().isEmpty() )
+		{
+			JOptionPane.showMessageDialog( null, "Debe haber registrado un doctor y un paciente para poder proceder a cita." );
+			dispose();
+			return;
+		}
+		
 		setTitle("Registrar Cita");
 		setBounds(100, 100, 334, 368);
 		getContentPane().setLayout(new BorderLayout());
@@ -87,6 +99,7 @@ public class Cita extends JDialog {
 		contentPanel.add(lblEdad);
 		
 		txtEdadPaciente = new JTextField();
+		txtEdadPaciente.setText( pacienteCita.getEdad() );
 		txtEdadPaciente.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
 		txtEdadPaciente.setEditable(false);
 		txtEdadPaciente.setEnabled(false);
@@ -127,7 +140,7 @@ public class Cita extends JDialog {
 		contentPanel.add(txtIdCita);
 		
 		txtPacienteSesion = new JTextField();
-		txtPacienteSesion.setText("");
+		txtPacienteSesion.setText( pacienteSelect.getUsuario() );
 		txtPacienteSesion.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
 		txtPacienteSesion.setEnabled(false);
 		txtPacienteSesion.setEditable(false);
@@ -154,17 +167,16 @@ public class Cita extends JDialog {
 							
 							String idCita = txtIdCita.getText();
 							Doctor doctorSelect = ( Doctor ) cbxDoctor.getSelectedItem();
-							String cedulaPaciente = txtPacienteSesion.getText();
-							Paciente pacienteSelect = Clinica.getInstance().buscarPacienteByCedula( cedulaPaciente );
+							String cedulaPaciente = pacienteCita.getCedula();
 							Date fechaCita = ( Date ) spnFechaCita.getValue();
 							
-							if ( pacienteSelect == null )
+							if ( pacienteCita == null )
 							{
 								JOptionPane.showMessageDialog( null, "Paciente no encontrado", "Error", JOptionPane.ERROR_MESSAGE );
 								return;
 							}
 							
-							logico.Cita cita = new logico.Cita( idCita, doctorSelect, pacienteSelect, fechaCita );
+							logico.Cita cita = new logico.Cita( idCita, doctorSelect, pacienteCita, fechaCita );
 							Clinica.getInstance().agregarCita( cita );
 							JOptionPane.showMessageDialog( null, " Registro Exitoso ", "Información", JOptionPane.INFORMATION_MESSAGE );
 							clean();
@@ -199,38 +211,39 @@ public class Cita extends JDialog {
 	
 	public void datos() 
 	{	
+		
 		User user = Clinica.getLoginUser();
 		
 		if ( user == null ) 
 		{
-		   JOptionPane.showMessageDialog(null, "No hay un usuario autenticado.", "Error", JOptionPane.ERROR_MESSAGE);
-		        return;
+		   JOptionPane.showMessageDialog( null, "No se ha encontrado el usuario.", "Error", JOptionPane.ERROR_MESSAGE );
+		   return;
 		}
 
 		    String cedula = user.getPass();
 		    
-		    if (cedula == null || cedula.isEmpty()) 
+		    if ( cedula == null || cedula.isEmpty() ) 
 		    {
-		        JOptionPane.showMessageDialog(null, "El usuario no tiene una cédula válida.", "Error", JOptionPane.ERROR_MESSAGE);
+		        JOptionPane.showMessageDialog( null, "La cédula del usuario no es correcta.", "Error", JOptionPane.ERROR_MESSAGE );
 		        return;
 		    }
 
-		    Paciente paciente = Clinica.getInstance().buscarPacienteByCedula(cedula);
+		    Paciente paciente = Clinica.getInstance().buscarPacienteByCedula( cedula );
 		    
 		    if ( paciente == null ) 
 		    {
-		        JOptionPane.showMessageDialog(null, "Paciente no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
+		        JOptionPane.showMessageDialog( null, "Paciente no encontrado.", "Error", JOptionPane.ERROR_MESSAGE );
 		        return;
 		    }
 
-		    txtPacienteSesion.setText(paciente.getNombre());
-		    txtEdadPaciente.setText(String.valueOf(paciente.getEdad()));
+		    txtPacienteSesion.setText( paciente.getNombre() );
+		    txtEdadPaciente.setText( String.valueOf( paciente.getEdad() ) );
+		    
 	}
 	
 	private void updateCombosBox ()
 	{
 		
-		ArrayList<Paciente> pacientes = Clinica.getInstance().getMisPacientes();
 		ArrayList<Doctor> doctores = Clinica.getInstance().getMisDoctores();
 		cbxDoctor.removeAllItems();
 		cbxDoctor.addItem( " < Seleccione > " );
@@ -250,3 +263,4 @@ public class Cita extends JDialog {
 		txtEdadPaciente.setText("");
 	}
 }
+

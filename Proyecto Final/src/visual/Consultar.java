@@ -28,8 +28,8 @@ import java.util.Date;
 import java.util.Calendar;
 import javax.swing.JRadioButton;
 
-public class Consultar extends JDialog {
-
+public class Consultar extends JDialog 
+{
 	/**
 	 * 
 	 */

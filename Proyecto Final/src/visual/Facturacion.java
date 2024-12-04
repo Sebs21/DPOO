@@ -271,7 +271,8 @@ public class Facturacion extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton btnFacturar = new JButton("Facturar");
-				btnFacturar.addActionListener(new ActionListener() {
+				btnFacturar.addActionListener(new ActionListener() 
+				{
 					public void actionPerformed(ActionEvent arg0) 
 					{
 						
