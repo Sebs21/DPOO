@@ -1,7 +1,5 @@
 package logico;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -81,25 +79,7 @@ public class Control_vacunacion implements Serializable
     }
     
     
-    public void Guarda_vacuna(String rutaArchivo) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(rutaArchivo, true))) {
-            for (vacunacion vac : vacunaciones) {
-                Paciente paciente = pacientes.get(vac.getCodigoPaciente());
-                String nombrePaciente =  paciente.getNombre() ;
-                
-                
-                String registro = "Vacunación: " + vac.getCodVacu() +
-                                  ", Paciente: " + nombrePaciente +
-                                  ", Vacuna: " + vac.getTipoVacuna() +
-                                  ", Fecha: " + vac.getFechaVacunacion();
-                writer.write(registro);
-                writer.newLine();
-            }
-        } catch (Exception e) {
-            System.out.println("Error al guardar la vacunación: " + e.getMessage());
-        }
-    }
-	
+    
 	 public void code_vacu (vacunacion C1)
 		{
 			vacunaciones.add(C1);

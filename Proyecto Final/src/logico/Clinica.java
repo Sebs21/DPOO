@@ -15,12 +15,11 @@ public class Clinica implements Serializable
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private ArrayList<Consulta> misConsultas;
+	private ArrayList<Consulta> misConsultas;//
 	private ArrayList<Facturar> misFacturas;
 	private ArrayList<Cita> misCitas;
-	private ArrayList<vacunacion> misVacunas;
-	private ArrayList<Control_enfermedad> control_enfer;
-	private ArrayList<Control_vacunacion> control_vacu;
+	private ArrayList<Control_enfermedad> control_enfer;//
+	private ArrayList<Control_vacunacion> control_vacu;//
 	private ArrayList<Paciente> misPacientes;
 	private ArrayList<Doctor> misDoctores;
 	private ArrayList<Seguro> misSeguros;
@@ -30,7 +29,7 @@ public class Clinica implements Serializable
 	public static int idPaciente;
 	public static int idConsulta;
 	public static int idFactura;
-	public static int idCita;
+	public static int idCita;	
 	public static int idSeguro;
 	public static int idcontrolEnfermerdad;
 	public static int idcontrolVacuna;
@@ -38,7 +37,6 @@ public class Clinica implements Serializable
 	public static int idUser;
 	
 	private static User LoginUser;
-	
 	public static Clinica clinica = null;
 
 	
@@ -53,7 +51,7 @@ public class Clinica implements Serializable
 		misCitas = new ArrayList<>();
 		control_enfer = new ArrayList<>();
 		control_vacu = new ArrayList<>();
-		misVacunas = new ArrayList<>();
+		
 		misUsuarios = new ArrayList<>();
 		
 		idPaciente = 1;
@@ -69,8 +67,18 @@ public class Clinica implements Serializable
 		
 	}
 	
-	
-	
+	public static Clinica getInstance ()
+	{
+		
+		if ( clinica == null )
+		{
+			clinica = new Clinica();
+		}
+		
+		return clinica;
+		
+	}
+	//guarda informacion 
 	 public void guardarClinica() {
 	        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Clinica_info.dat"))) {
 	            oos.writeObject(this);
@@ -93,6 +101,114 @@ public class Clinica implements Serializable
 	        }
 	        return null;
 	    }
+	    
+	    
+	    //agregar paciente.
+	    
+	    public void agregar_Paciente(Paciente con)
+	    {
+	    	if(misPacientes == null)
+	    	{
+	    		misPacientes = new ArrayList<>();
+	    		
+	    	}
+	    	misPacientes.add(con);
+	    }
+	    
+	    
+	    public ArrayList<Paciente> obtener_Paciente() {
+	        return misPacientes;
+	        
+	    }    
+	    
+	    
+	
+	    public void agregar_doctor(Doctor con)
+	    {
+	    	if(misDoctores == null)
+	    	{
+	    		misDoctores = new ArrayList<>();
+	    		
+	    	}
+	    	misDoctores.add(con);
+	    }
+	    
+	    
+	    public ArrayList<Doctor> obtener_doctor() {
+	        return misDoctores;
+	        
+	    }    
+	    
+	
+	    public void agregar_seguro(Seguro con)
+	    {
+	    	if(misSeguros == null)
+	    	{
+	    		misSeguros = new ArrayList<>();
+	    		
+	    	}
+	    	misSeguros.add(con);
+	    }
+	    
+	    
+	    public ArrayList<Seguro> obtener_seguro() {
+	        return misSeguros;
+	        
+	    }    
+	
+	   
+	
+	    public void agregar_cita(Cita con)
+	    {
+	    	if(misCitas == null)
+	    	{
+	    		misCitas = new ArrayList<>();
+	    		
+	    	}
+	    	misCitas.add(con);
+	    }
+	    
+	    
+	    public ArrayList<Cita> obtener_cita() {
+	        return misCitas;
+	        
+	    }    
+	
+	    public void agregar_Factura(Facturar con)
+	    {
+	    	if(misFacturas == null)
+	    	{
+	    		misFacturas = new ArrayList<>();
+	    		
+	    	}
+	    	misFacturas.add(con);
+	    }
+	    
+	    
+	    public ArrayList<Facturar> obtener_facturar() {
+	        return misFacturas;
+	        
+	    }    
+	
+	    
+	    
+	    
+	    public void agregar_consulta(Consulta con)
+	    {
+	    	if(misConsultas == null)
+	    	{
+	    		misConsultas = new ArrayList<>();
+	    		
+	    	}
+	    	misConsultas.add(con);
+	    }
+	    
+	    
+	    public ArrayList<Consulta> obtener_consulta() {
+	        return misConsultas;
+	        
+	    }    
+	
 	    
 	    
 	    public void agregar_control_enfermdedad(Control_enfermedad control)
@@ -124,26 +240,13 @@ public class Clinica implements Serializable
 	        return control_vacu;
 	        
 	    }    
+	    
+	    //terminar de agregar paciente
+	    
 	
-	public static Clinica getInstance ()
-	{
-		
-		if ( clinica == null )
-		{
-			clinica = new Clinica();
-		}
-		
-		return clinica;
-		
-	}
 	
-	public ArrayList<vacunacion> getMisVacunas() {
-		return misVacunas;
-	}
-
-	public void setMisVacunas(ArrayList<vacunacion> misVacunas) {
-		this.misVacunas = misVacunas;
-	}
+	
+	
 
 	public ArrayList<Control_enfermedad> getControl_enfer() {
 		return control_enfer;
@@ -464,11 +567,7 @@ public class Clinica implements Serializable
 		idSeguro--;
 	}
 	
-	public void eliminarVacuna ( vacunacion aux )
-	{
-		misVacunas.remove( aux );
-		idVacuna++;
-	}
+
 	
 	public void agregarDoctor ( Doctor aux )
 	{
@@ -511,11 +610,6 @@ public class Clinica implements Serializable
 		idUser++;
 	}
 	
-	public void agregarVacuna ( vacunacion aux )
-	{
-		misVacunas.add( aux );
-		idVacuna++;
-	}
 	
 	public void agregarControlVacunacion ( Control_vacunacion aux )
 	{
