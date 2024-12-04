@@ -14,17 +14,18 @@ import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 import javax.swing.border.EmptyBorder;
 
+import logico.Control_vacunacion;
 import logico.vacunacion;
-
-import javax.swing.JComboBox;
 
 public class Visual_vacunacion extends JFrame {
 
@@ -38,6 +39,7 @@ public class Visual_vacunacion extends JFrame {
 	    private JButton btnGuardar;
 	    private  JComboBox<Object> list_vacuna ;
 	    private JSpinner spinner_cant_ml ;
+	    private JSpinner fecha_vacu ;
 	    
 	    //
 	 
@@ -86,7 +88,7 @@ public class Visual_vacunacion extends JFrame {
 	        contentPanel.add(cant_ml);
 
 	        txt_code_vacu = new JTextField();
-	        txt_code_vacu.setText("VA-");
+	        txt_code_vacu.setText("VA-" + logico.Control_vacunacion.code_vacu);
 	        txt_code_vacu.setEditable(false);
 	        txt_code_vacu.setBounds(154, 29, 186, 32);
 	        contentPanel.add(txt_code_vacu);
@@ -115,8 +117,8 @@ public class Visual_vacunacion extends JFrame {
 			lblFecha.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
 			lblFecha.setBounds(208, 206, 91, 44);
 			contentPanel.add(lblFecha);
-			
-			JSpinner fecha_vacu = new JSpinner();
+
+			fecha_vacu = new JSpinner();
 			fecha_vacu.setModel(new SpinnerDateModel(new Date(1732593600000L), new Date(1732593600000L), null, Calendar.DAY_OF_YEAR));
 			fecha_vacu.setBounds(267, 211, 165, 37);
 			contentPanel.add(fecha_vacu);
@@ -140,16 +142,33 @@ public class Visual_vacunacion extends JFrame {
 	        		try {
 	        			
 	        			int codigo =Integer.parseInt(txt_code_vacu.getText().replace("VA-", ""));
-	        			int codigo_paciente =Integer.parseInt(txt_code_paciente.getText());
+	        			 String codigo_paciente = txt_code_paciente.getText();
 	        			String tipo_vacuna = list_vacuna.getSelectedItem().toString();
-	        			int cant_ml =(Integer)  spinner_cant_ml.getValue();
-	        			
-	        			//logico.vacunacion vacu = new vacunacion(codigo, tipo_Vacuna, fecha_Vacunacion, verifica)
-	        			
-	        			
+	        			float cant_ml =(float)  spinner_cant_ml.getValue();
+	                    Date fecha_Vacunacion = (Date) ((SpinnerDateModel) fecha_vacu.getModel()).getValue();
+
+	                    if ("<Seleccione>".equals(tipo_vacuna)) {
+	                        throw new IllegalArgumentException("Debe seleccionar algun tipo de vacuna.");
+	                    }
+	                     Control_vacunacion.verificar_code_paciente(codigo_paciente);
+	                     if(codigo_paciente==null)
+	                     {
+	                    	 JOptionPane.showMessageDialog(null, "No existe.", "Error", JOptionPane.ERROR_MESSAGE);
+	                         return;
+	                     }
+	                     vacunacion newvacu = new vacunacion(codigo, tipo_vacuna, fecha_Vacunacion, true, codigo_paciente, cant_ml);
+	                     Control_vacunacion.getVacunaciones().add(newvacu);
+	                     String rutaArchivo = "registro_vacunacion.txt";
+	                     Control_vacunacion guar = new Control_vacunacion();
+	                     guar.Guarda_vacuna(rutaArchivo);
+	                     
+	                     JOptionPane.showMessageDialog(null, "Vacunación registrada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+	                        			
+	  
 						
 					} catch (Exception e2) {
-						// TODO: handle exception
+	                    JOptionPane.showMessageDialog(null, "Error al guardar la vacunación: " + e2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 					}
 	        		
 	        	}

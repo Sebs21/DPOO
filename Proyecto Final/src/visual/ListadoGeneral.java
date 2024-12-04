@@ -38,7 +38,6 @@ import java.awt.event.ActionEvent;
 
 public class ListadoGeneral extends JDialog 
 {
-//
 	private final JPanel contentPanel = new JPanel();
 	private Dimension dim;
 	
@@ -382,7 +381,7 @@ public class ListadoGeneral extends JDialog
 		for ( Cita cita : aux ) 
 		{
 			citasRow[0] = cita.getDoctor();
-			citasRow[1] = cita.getPersona();
+			citasRow[1] = cita.getPaciente();
 			citasRow[2] = cita.getFechaCita();
 			
 			modelo4.addRow( citasRow );
