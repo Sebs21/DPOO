@@ -60,7 +60,7 @@ public class InterfazDoctor extends JDialog {
 	
 	public InterfazDoctor() {
 		
-		setTitle("Doctor " + doctor.getNombre());
+		setTitle("Listado del Doctor");
 		setBounds(100, 100, 1275, 803);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));

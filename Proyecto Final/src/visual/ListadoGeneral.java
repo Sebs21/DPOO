@@ -20,21 +20,19 @@ import logico.Paciente;
 import logico.Seguro;
 
 import javax.swing.border.BevelBorder;
-import javax.swing.JRadioButton;
 import java.awt.Font;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.border.TitledBorder;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
+import javax.swing.JComboBox;
 
 public class ListadoGeneral extends JDialog 
 {
@@ -116,12 +114,12 @@ public class ListadoGeneral extends JDialog
 		setLocationRelativeTo(null);
 		
 		JPanel panelPacientes = new JPanel();
+		panelPacientes.setBorder(new TitledBorder(new LineBorder(new Color(224, 255, 255), 4, true), "Pacientes", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panelPacientes.setBounds(12, 13, 697, 295);
 		contentPanel.add(panelPacientes);
-		panelPacientes.setLayout(null);
+		panelPacientes.setLayout(new BorderLayout(0, 0));
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 0, 697, 295);
 		panelPacientes.add(scrollPane);
 		
 		tablePaciente = new JTable();
@@ -134,12 +132,12 @@ public class ListadoGeneral extends JDialog
 		
 		{
 			panelDoctores = new JPanel();
+			panelDoctores.setBorder(new TitledBorder(new LineBorder(new Color(224, 255, 255), 4, true), "Doctores", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 			panelDoctores.setBounds(12, 321, 697, 295);
 			contentPanel.add(panelDoctores);
-			panelDoctores.setLayout(null);
+			panelDoctores.setLayout(new BorderLayout(0, 0));
 			{
 				scrollPane_1 = new JScrollPane();
-				scrollPane_1.setBounds(0, 0, 697, 295);
 				panelDoctores.add(scrollPane_1);
 				
 				tableDoctor = new JTable();
@@ -154,12 +152,12 @@ public class ListadoGeneral extends JDialog
 		}
 		
 		JPanel panelSeguros = new JPanel();
+		panelSeguros.setBorder(new TitledBorder(new LineBorder(new Color(224, 255, 255), 4, true), "Seguros", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panelSeguros.setBounds(721, 13, 697, 295);
 		contentPanel.add(panelSeguros);
-		panelSeguros.setLayout(null);
+		panelSeguros.setLayout(new BorderLayout(0, 0));
 		
 		JScrollPane scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBounds(0, 0, 697, 295);
 		panelSeguros.add(scrollPane_2);
 		
 		tableSeguro = new JTable();
@@ -170,12 +168,12 @@ public class ListadoGeneral extends JDialog
 		tableSeguro.setModel( modelo2 );
 		
 		JPanel panelConsulta = new JPanel();
+		panelConsulta.setBorder(new TitledBorder(new LineBorder(new Color(224, 255, 255), 4, true), "Consultas", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panelConsulta.setBounds(721, 321, 691, 295);
 		contentPanel.add(panelConsulta);
-		panelConsulta.setLayout(null);
+		panelConsulta.setLayout(new BorderLayout(0, 0));
 		
 		JScrollPane scrollPane_3 = new JScrollPane();
-		scrollPane_3.setBounds(0, 0, 691, 295);
 		panelConsulta.add(scrollPane_3);
 		
 		tableConsulta = new JTable();
@@ -187,12 +185,12 @@ public class ListadoGeneral extends JDialog
 		tableConsulta.setModel( modelo3 );
 		
 		JPanel panelCita = new JPanel();
+		panelCita.setBorder(new TitledBorder(new LineBorder(new Color(224, 255, 255), 4, true), "Citas", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panelCita.setBounds(359, 643, 768, 336);
 		contentPanel.add(panelCita);
-		panelCita.setLayout(null);
+		panelCita.setLayout(new BorderLayout(0, 0));
 		
 		JScrollPane scrollPane_4 = new JScrollPane();
-		scrollPane_4.setBounds(0, 0, 768, 336);
 		panelCita.add(scrollPane_4);
 		
 		tableCita = new JTable();
@@ -391,5 +389,4 @@ public class ListadoGeneral extends JDialog
 		txtCitasTotales.setText( String.valueOf( aux.size() ) );
 		
 	}
-	
 }

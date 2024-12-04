@@ -11,8 +11,6 @@ public class Paciente extends Persona
 	private static final long serialVersionUID = 1L;
 	private int idCodPaciente;
 	private String enfermedad;
-	private String edad;
-	
 	private Seguro seguro;
 	private User user;
 	

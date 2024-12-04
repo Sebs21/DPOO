@@ -159,7 +159,7 @@ public class InicioSesion extends JDialog {
 				JButton okButton = new JButton("Iniciar Sesion");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-
+							
 						if (Clinica.getInstance().ConfirmarLogin(txtNombre.getText(), txtPassword.getText())) {
 							Principal prin = new Principal();
 							loginsuccesful = true;
@@ -184,6 +184,8 @@ public class InicioSesion extends JDialog {
 			}
 		}
 	}
+	
+	
 
 	public JTextField getTxtNombre() {
 		return txtNombre;
