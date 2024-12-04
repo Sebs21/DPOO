@@ -3,7 +3,7 @@ package logico;
 import java.io.Serializable;
 import java.util.Date;
 
-public class vacunacion implements Serializable
+public class vacunacion extends Control_vacunacion implements Serializable
 {
 	/**
 	 * 
@@ -13,13 +13,22 @@ public class vacunacion implements Serializable
 	private String tipo_Vacuna;
 	private Date fecha_Vacunacion;
 	private boolean verifica;
-	public vacunacion( int cod_Vacu, String tipo_Vacuna, Date fecha_Vacunacion, boolean verifica ) 
-	{
+	 private String codigoPaciente; 
+	 private float cant_ml;
+	
+
+	
+	
+
+	public vacunacion(int cod_Vacu, String tipo_Vacuna, Date fecha_Vacunacion, boolean verifica, String codigo_paciente,
+			float cant_ml) {
 		super();
 		this.cod_Vacu = cod_Vacu;
 		this.tipo_Vacuna = tipo_Vacuna;
 		this.fecha_Vacunacion = fecha_Vacunacion;
 		this.verifica = verifica;
+		this.codigoPaciente = codigo_paciente;
+		this.setCant_ml(cant_ml);
 	}
 
 	public int getCodVacu() {
@@ -53,6 +62,23 @@ public class vacunacion implements Serializable
 	public void setVerifica(boolean verifica) {
 		this.verifica = verifica;
 	}
+
+	public String getCodigoPaciente() {
+		return codigoPaciente;
+	}
+
+	public void setCodigoPaciente(String codigoPaciente) {
+		this.codigoPaciente = codigoPaciente;
+	}
+
+	public float getCant_ml() {
+		return cant_ml;
+	}
+
+	public void setCant_ml(float cant_ml) {
+		this.cant_ml = cant_ml;
+	}
+	
 	
 	
 }
