@@ -44,6 +44,7 @@ public class InicioSesion extends JDialog {
 	private JTextField txtNombre;
 	private JTextField txtPassword;
 	private boolean loginsuccesful = false;
+	private static final String clinica_info ="Clinica_info";
 	/**
 	 * Launch the application.
 	 */
@@ -161,12 +162,24 @@ public class InicioSesion extends JDialog {
 					public void actionPerformed(ActionEvent e) {
 							
 						if (Clinica.getInstance().ConfirmarLogin(txtNombre.getText(), txtPassword.getText())) {
+							
 							Principal prin = new Principal();
 							loginsuccesful = true;
+							
 							dispose();
+							Clinica clinica = Clinica.cargarClinica(clinica_info);
+							if(clinica !=null)
+							{
+								Clinica.setClinica(clinica);
+							}
+							
 							prin.setVisible(true);
+							
+							
 						}
 					}
+					
+					
 				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
