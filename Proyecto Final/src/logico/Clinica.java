@@ -1,5 +1,10 @@
 package logico;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -35,6 +40,7 @@ public class Clinica implements Serializable
 	private static User LoginUser;
 	
 	public static Clinica clinica = null;
+
 	
 	public Clinica() 
 	{
@@ -62,6 +68,32 @@ public class Clinica implements Serializable
 		idUser=1;
 		
 	}
+	
+	
+	
+	 public void guardarClinica(String filePath) {
+	        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
+	            oos.writeObject(this);
+	            System.out.println("Datos guardados exitosamente en " + filePath);
+	        } catch (IOException e) {
+	            System.err.println("Error al guardar los datos: " + e.getMessage());
+	            e.printStackTrace();
+	        }
+	    }
+
+	   
+	    public static Clinica cargarClinica(String filePath) {
+	        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath))) {
+	            return (Clinica) ois.readObject();
+	        } catch (IOException e) {
+	            System.err.println("Error al cargar los datos: " + e.getMessage());
+	        } catch (ClassNotFoundException e) {
+	            System.err.println("Error: Clase no encontrada al cargar los datos.");
+	        }
+	        return null;
+	    }
+	    
+	    
 	
 	public static Clinica getInstance ()
 	{
@@ -529,6 +561,10 @@ public class Clinica implements Serializable
 		return aux;
 		
 	}
+	
+	
+	
+	
 }
 
 
