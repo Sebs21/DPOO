@@ -57,7 +57,7 @@ public class Principal extends JFrame {
 				Frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				Frame.setVisible(true);
 			}
-			else
+			else 
 			{
 				JOptionPane.showConfirmDialog( null, "Inicio de sesión fallido." );
 			}
