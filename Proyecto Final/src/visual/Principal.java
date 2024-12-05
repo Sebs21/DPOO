@@ -25,6 +25,7 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import logico.Clinica;
+import logico.User;
 
 public class Principal extends JFrame {
 
@@ -255,6 +256,5 @@ public class Principal extends JFrame {
 			btnCita.setEnabled(false);
 			btnSeguro.setEnabled(false);
 		}
-
 	}
 }
