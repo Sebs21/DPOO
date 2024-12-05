@@ -3,7 +3,7 @@ package logico;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Bajo_vigilancia implements Serializable {
+public class Bajo_vigilancia extends Control_enfermedad implements Serializable {
 	
 	/**
 	 * 

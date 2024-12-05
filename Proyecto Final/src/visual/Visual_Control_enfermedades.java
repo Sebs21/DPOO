@@ -228,6 +228,9 @@ public class Visual_Control_enfermedades extends JFrame {
 	            }
 			Bajo_vigilancia enfe = new Bajo_vigilancia(codigo_enfer, name_enfemer, cant_hora, code_pacien, code_doctor, fecha_enferme);
 			Control_enfermedad.getVigilancia().add(enfe);
+			paciente.agregarenfermedad(enfe);
+			
+			
 			JOptionPane.showMessageDialog(null, " registrada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             clean();
 			

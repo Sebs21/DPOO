@@ -17,6 +17,7 @@ public class Paciente extends Persona
 	private ArrayList<HistoriaClinica> miHistoriaClinica;
 	private ArrayList<vacunacion> miVacuna;
 	private ArrayList<Facturar> miFactura;
+	private ArrayList<Bajo_vigilancia>vigi;
 	
 	private boolean seleccionado;
 	private boolean consultaPagada;
@@ -113,6 +114,10 @@ public class Paciente extends Persona
 	public void agregarVacuna(vacunacion newVacu) {
 		
 		miVacuna.add(newVacu);
+	}
+public void agregarenfermedad(Bajo_vigilancia neewnfe) {
+		
+		vigi.add(neewnfe);
 	}
 	
 }
