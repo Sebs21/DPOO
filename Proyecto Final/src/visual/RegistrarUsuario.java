@@ -170,7 +170,7 @@ public class RegistrarUsuario extends JDialog {
 							Clinica.getInstance().agregarUsuario(usuario);
 
 							if (cbxTipo.getSelectedItem().equals("Paciente")) {
-								int codPaciente = Clinica.getIdPaciente();
+								int codPaciente = Clinica.getInstance().getIdPaciente();
 								Paciente paciente = new Paciente(txtCedula.getText(), txtUsuario.getText(),
 										txtApellido.getText(), codPaciente, txtEdad.getText().toString(), usuario);
 								Clinica.getInstance().agregarPaciente(paciente);
@@ -191,6 +191,7 @@ public class RegistrarUsuario extends JDialog {
 						InicioSesion iniSe = new InicioSesion();
 						iniSe.setVisible(true);
 						setModal(true);
+						
 					}
 				});
 				btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 18));

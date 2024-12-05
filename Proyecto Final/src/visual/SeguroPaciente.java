@@ -65,6 +65,7 @@ public class SeguroPaciente extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		setLocationRelativeTo( null );
+		setModal(true);
 		
 		JLabel lblNewLabel = new JLabel("ID seguro:");
 		lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
