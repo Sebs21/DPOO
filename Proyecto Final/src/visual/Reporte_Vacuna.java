@@ -36,7 +36,7 @@ public class Reporte_Vacuna extends JDialog {
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {
-                Reporte_Vacuna dialog = new Reporte_Vacuna(null, true); 
+                Reporte_Vacuna dialog = new Reporte_Vacuna(); 
                 dialog.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -45,8 +45,7 @@ public class Reporte_Vacuna extends JDialog {
     }
 
  
-    public Reporte_Vacuna(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public Reporte_Vacuna() {
         setTitle("Reporte Vacuna");
         setBounds(100, 100, 868, 564);
         setLocationRelativeTo(null);
@@ -54,6 +53,7 @@ public class Reporte_Vacuna extends JDialog {
 
         contentPanel = new JPanel(new CardLayout());
         getContentPane().add(contentPanel, BorderLayout.CENTER);
+        
 
         initFormularioPanel();
         initTablaPanel();

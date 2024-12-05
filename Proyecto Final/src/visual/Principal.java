@@ -1,4 +1,3 @@
-
 package visual;
 
 import java.awt.Color;
@@ -20,6 +19,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
@@ -152,6 +152,7 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				Visual_Control_enfermedades enfe = new Visual_Control_enfermedades();
 				enfe.setVisible(true);
+				enfe.setModal(true);
 			}
 		});
 		btnEnfermedadesVigilancia.add(btn_Registro_Vigilancia);
@@ -159,8 +160,9 @@ public class Principal extends JFrame {
 		JButton btn_Reporte_Vigilancia = new JButton("Reporte Vigilancia");
 		btn_Reporte_Vigilancia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Reporte_control_enfermedades repor_enfe  = new Reporte_control_enfermedades(null, rootPaneCheckingEnabled);
+				Reporte_control_enfermedades repor_enfe  = new Reporte_control_enfermedades();
 				repor_enfe.setVisible(true);
+				repor_enfe.setModal(true);
 			}
 		});
 		btn_Reporte_Vigilancia.setFont(new Font("Segoe UI", Font.PLAIN, 16));
@@ -174,7 +176,8 @@ public class Principal extends JFrame {
 		btnregistro_vacuna.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Visual_vacunacion vacu = new Visual_vacunacion();
-				vacu.setVisible(true);				
+				vacu.setVisible(true);		
+				vacu.setModal(true);
 			}
 		});
 		btnregistro_vacuna.setFont(new Font("Segoe UI", Font.PLAIN, 16));
@@ -183,8 +186,9 @@ public class Principal extends JFrame {
 		btnReporteDeVacuna= new JButton("Reporte de vacuna");
 		btnReporteDeVacuna.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Reporte_Vacuna repor = new Reporte_Vacuna(null, rootPaneCheckingEnabled);
+				Reporte_Vacuna repor = new Reporte_Vacuna();
 				repor.setVisible(true);
+				repor.setModal(true);
 			}
 		});
 		btnReporteDeVacuna.setFont(new Font("Segoe UI", Font.PLAIN, 16));
@@ -256,3 +260,4 @@ public class Principal extends JFrame {
 		}
 	}
 }
+

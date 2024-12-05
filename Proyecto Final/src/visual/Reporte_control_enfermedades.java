@@ -1,3 +1,5 @@
+
+
 package visual;
 
 import java.awt.BorderLayout;
@@ -35,7 +37,7 @@ public class Reporte_control_enfermedades extends JDialog {
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {
-                Reporte_control_enfermedades dialog = new Reporte_control_enfermedades(null, true);
+                Reporte_control_enfermedades dialog = new Reporte_control_enfermedades();
                 dialog.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -44,8 +46,8 @@ public class Reporte_control_enfermedades extends JDialog {
     }
 
    
-    public Reporte_control_enfermedades(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public Reporte_control_enfermedades() {
+   
         setTitle("Reporte vigilancia");
         setBounds(100, 100, 868, 564);
         setLocationRelativeTo(null);

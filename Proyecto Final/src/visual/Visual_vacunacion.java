@@ -1,3 +1,4 @@
+
 package visual;
 
 import java.awt.BorderLayout;
@@ -43,7 +44,6 @@ public class Visual_vacunacion extends JDialog {
         setTitle("Registro Vacuna");
         setBounds(100, 100, 868, 564);
         setLocationRelativeTo(null);
-        setModal(true); 
         getContentPane().setLayout(new BorderLayout());
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         getContentPane().add(contentPanel, BorderLayout.CENTER);
