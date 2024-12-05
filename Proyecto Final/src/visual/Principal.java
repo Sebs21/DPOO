@@ -20,12 +20,10 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import logico.Clinica;
-import logico.User;
 
 public class Principal extends JFrame {
 
@@ -161,7 +159,7 @@ public class Principal extends JFrame {
 		JButton btn_Reporte_Vigilancia = new JButton("Reporte Vigilancia");
 		btn_Reporte_Vigilancia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Reporte_control_enfermedades repor_enfe  = new Reporte_control_enfermedades();
+				Reporte_control_enfermedades repor_enfe  = new Reporte_control_enfermedades(null, rootPaneCheckingEnabled);
 				repor_enfe.setVisible(true);
 			}
 		});
@@ -185,7 +183,7 @@ public class Principal extends JFrame {
 		btnReporteDeVacuna= new JButton("Reporte de vacuna");
 		btnReporteDeVacuna.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Reporte_Vacuna repor = new Reporte_Vacuna();
+				Reporte_Vacuna repor = new Reporte_Vacuna(null, rootPaneCheckingEnabled);
 				repor.setVisible(true);
 			}
 		});
