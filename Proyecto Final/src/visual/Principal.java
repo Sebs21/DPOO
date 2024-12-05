@@ -1,6 +1,7 @@
 
 package visual;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -18,15 +19,11 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import logico.Clinica;
-import logico.User;
-
-import java.awt.Color;
 
 public class Principal extends JFrame {
 
@@ -43,6 +40,8 @@ public class Principal extends JFrame {
 	private JMenuItem btnSeguro;
 	private JMenuItem btnCita;
 	private JMenuItem mntmNewMenuItem;
+	private JButton btnReporteDeVacuna ;
+	private JButton btnregistro_vacuna ;
 
 	//
 	/**
@@ -149,6 +148,8 @@ public class Principal extends JFrame {
 		btn_Registro_Vigilancia.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		btn_Registro_Vigilancia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				Visual_Control_enfermedades enfe = new Visual_Control_enfermedades();
+				enfe.setVisible(true);
 
 			}
 		});
@@ -157,6 +158,8 @@ public class Principal extends JFrame {
 		JButton btn_Reporte_Vigilancia = new JButton("Reporte Vigilancia");
 		btn_Reporte_Vigilancia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Reporte_control_enfermedades repor_enfe  = new Reporte_control_enfermedades();
+				repor_enfe.setVisible(true);
 
 			}
 		});
@@ -166,6 +169,30 @@ public class Principal extends JFrame {
 		btnVacunacion = new JMenu("Vacunaci\u00F3n");
 		btnVacunacion.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuBar.add(btnVacunacion);
+		
+		btnregistro_vacuna = new JButton("Registro vacuna");
+		btnregistro_vacuna.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Visual_vacunacion vacu = new Visual_vacunacion();
+				vacu.setVisible(true);
+				
+				
+				
+			}
+		});
+		btnregistro_vacuna.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		btnVacunacion.add(btnregistro_vacuna);
+		
+		btnReporteDeVacuna= new JButton("Reporte de vacuna");
+		btnReporteDeVacuna.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Reporte_Vacuna repor = new Reporte_Vacuna();
+				repor.setVisible(true);
+				
+			}
+		});
+		btnReporteDeVacuna.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		btnVacunacion.add(btnReporteDeVacuna);
 
 		mntmNewMenuItem = new JMenuItem("Cerrar sesion");
 		mntmNewMenuItem.addActionListener(new ActionListener() {
@@ -200,7 +227,8 @@ public class Principal extends JFrame {
 		mntmNewMenuItem.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuBar.add(mntmNewMenuItem);
 
-		if (Clinica.getLoginUser().getTipo().equalsIgnoreCase("Paciente") ) {
+		if (Clinica.getLoginUser().getTipo().equalsIgnoreCase("Paciente") )
+		{
 			btnAdministracion.setEnabled(false);
 			btnResumenes.setEnabled(false);
 			btnEnfermedadesVigilancia.setEnabled(false);
