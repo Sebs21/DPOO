@@ -10,15 +10,27 @@ public class Control_enfermedad implements Serializable
 	 */
 	private static final long serialVersionUID = 1L;
 	private Consulta consulta;
-	private ArrayList<Bajo_vigilancia> vigilancia;
+	private static ArrayList<Paciente> pacientes; 
+	private static ArrayList<Bajo_vigilancia> vigilancia;
 	
-	public Control_enfermedad( Consulta consulta, ArrayList<Bajo_vigilancia> vigilancia ) 
+	public static int code_enfe =1;
+	public Control_enfermedad()
 	{
-		super();
-		this.consulta = consulta;
-		this.vigilancia = vigilancia;
+		Control_enfermedad.setPacientes(new ArrayList<>());
+		Control_enfermedad.vigilancia = new ArrayList<>();
 	}
 	
+	
+	public static ArrayList<Paciente> getPacientes() {
+		return pacientes;
+	}
+
+
+	public static void setPacientes(ArrayList<Paciente> pacientes) {
+		Control_enfermedad.pacientes = pacientes;
+	}
+
+
 	public Consulta getConsulta() {
 		return consulta;
 	}
@@ -29,7 +41,30 @@ public class Control_enfermedad implements Serializable
 		return vigilancia;
 	}
 	public void setVigilancia(ArrayList<Bajo_vigilancia> vigilancia) {
-		this.vigilancia = vigilancia;
+		Control_enfermedad.vigilancia = vigilancia;
 	}
+	
+	 public void code_enfe (Bajo_vigilancia C1)
+		{
+		 vigilancia.add(C1);
+		 code_enfe++;
+		}
+	 
+	 public static Paciente verificar_code_paciente(String codigo)
+	 {
+		 for(Paciente pac: pacientes)
+		 {
+			 if(pac.getCedula().equalsIgnoreCase(codigo))
+			 {
+				 return pac;
+				 
+			 }
+		 }
+		 return null;
+		 
+	 }
+	 
+	 
+	 
 	
 }

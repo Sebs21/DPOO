@@ -149,12 +149,12 @@ public class Visual_vacunacion extends JFrame {
         try {
             String codigoPaciente = txtCodePaciente.getText();
             String tipoVacuna = listVacuna.getSelectedItem().toString();
-            float cantMl = ((Number) spnCantMl.getValue()).floatValue();
+            float cantMl = ((Integer) spnCantMl.getValue()).floatValue();
             int codigo =Integer.parseInt(txtCodeVacu.getText().replace("VA-", ""));
             Date fechaVacunacion = (Date) fechaVacu.getValue();
 
             if (codigoPaciente.isEmpty()) {
-                throw new IllegalArgumentException("El codigo de paciente no puede estar vacío.");
+                throw new IllegalArgumentException("El espacio de codigo de paciente esta vacio.");
             }
             if ("<Seleccione>".equals(tipoVacuna)) {
                 throw new IllegalArgumentException("Debe seleccionar algún tipo de vacuna.");

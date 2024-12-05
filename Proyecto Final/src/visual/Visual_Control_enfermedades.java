@@ -23,6 +23,8 @@ import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 
+import com.sun.javafx.geom.transform.CanTransformVec3d;
+
 public class Visual_Control_enfermedades extends JFrame {
 
 	  private final JPanel contentPanel = new JPanel();
@@ -32,13 +34,14 @@ public class Visual_Control_enfermedades extends JFrame {
 
 	   
 	    private JTextField txt_nombre_paciente;
-	    private JTextField txt_numero_paciente;
 	    private JTextField txt_nombre_doctor;
-	    private JTextField txt_item_producto;
-	    private JTextField txt_costo_producto;
+	    private JTextField txt_name_enfemedad;
 	    private JButton btnGuardar;
 	    private JLabel monitoreo;
 	    private JTextField txt_expecialidad;
+	    private JSpinner cant_spinner;
+	    private JLabel lbl_Cant_hora ;
+	    private JSpinner fecha_enfermeda ;
 	    //
 	/**
 	 * Launch the application.
@@ -70,22 +73,27 @@ public class Visual_Control_enfermedades extends JFrame {
 	        contentPanel.setLayout(null); 
 
 	        JLabel Codigo_fac = new JLabel("N.O" );
+	        Codigo_fac.setFont(new Font("Times New Roman", Font.PLAIN, 21));
 	        Codigo_fac.setBounds(21, 32, 192, 26);
 	        contentPanel.add(Codigo_fac);
 
 	        JLabel lblCodigoDepaciente = new JLabel("Codigo de Paciente:");
+	        lblCodigoDepaciente.setFont(new Font("Times New Roman", Font.PLAIN, 21));
 	        lblCodigoDepaciente.setBounds(21, 86, 192, 26);
 	        contentPanel.add(lblCodigoDepaciente);
 
 	        JLabel lblCodigoDeEmpleado = new JLabel("Codigo de Doctor:");
+	        lblCodigoDeEmpleado.setFont(new Font("Times New Roman", Font.PLAIN, 21));
 	        lblCodigoDeEmpleado.setBounds(21, 208, 192, 26);
 	        contentPanel.add(lblCodigoDeEmpleado);
 
 	        JLabel cod_queso_jbl = new JLabel("Enfermedad:");
+	        cod_queso_jbl.setFont(new Font("Times New Roman", Font.PLAIN, 21));
 	        cod_queso_jbl.setBounds(21, 149, 192, 26);
 	        contentPanel.add(cod_queso_jbl);
 
 	        txt_code_enfe = new JTextField();
+	        txt_code_enfe.setFont(new Font("Times New Roman", Font.PLAIN, 21));
 	        txt_code_enfe.setText("VI-");
 	        txt_code_enfe.setEditable(false);
 	        txt_code_enfe.setBounds(234, 29, 186, 32);
@@ -105,44 +113,38 @@ public class Visual_Control_enfermedades extends JFrame {
 	        txt_nombre_paciente.setBounds(430, 83, 186, 32);
 	        contentPanel.add(txt_nombre_paciente);
 
-	        txt_numero_paciente = new JTextField();
-	        txt_numero_paciente.setEditable(false);
-	        txt_numero_paciente.setBounds(630, 83, 186, 32);
-	        contentPanel.add(txt_numero_paciente);
-
 	        txt_nombre_doctor = new JTextField();
 	        txt_nombre_doctor.setEditable(false);
 	        txt_nombre_doctor.setBounds(430, 202, 186, 32);
 	        contentPanel.add(txt_nombre_doctor);
 
-	        txt_item_producto = new JTextField();
-	        txt_item_producto.setEditable(false);
-	        txt_item_producto.setBounds(234, 146, 186, 32);
-	        contentPanel.add(txt_item_producto);
+	        txt_name_enfemedad = new JTextField();
+	        txt_name_enfemedad.setEditable(false);
+	        txt_name_enfemedad.setBounds(234, 146, 186, 32);
+	        contentPanel.add(txt_name_enfemedad);
 
-	        txt_costo_producto = new JTextField();
-	        txt_costo_producto.setEditable(false);
-	        txt_costo_producto.setBounds(430, 146, 186, 32);
-	        contentPanel.add(txt_costo_producto);
-
-	        JLabel lbl_Cant_hora = new JLabel("Cantidad hora:");
+	        lbl_Cant_hora = new JLabel("Cantidad hora:");
+	        lbl_Cant_hora.setFont(new Font("Times New Roman", Font.PLAIN, 21));
 	        lbl_Cant_hora.setBounds(21, 261, 192, 26);
 	        contentPanel.add(lbl_Cant_hora);
 
-	        JSpinner cant_spinner = new JSpinner();
+	        cant_spinner = new JSpinner();
 	        cant_spinner.setModel(new SpinnerNumberModel(new Integer(1), null, null, new Integer(1)));
 	        cant_spinner.setBounds(234, 258, 186, 32);
 	        contentPanel.add(cant_spinner);
 	        
 	        monitoreo = new JLabel("Monitoreo:");
+	        monitoreo.setFont(new Font("Times New Roman", Font.PLAIN, 21));
 	        monitoreo.setBounds(21, 310, 192, 26);
 	        contentPanel.add(monitoreo);
 	        
 	        JCheckBox chckbxNewCheckBox = new JCheckBox("Activo");
+	        chckbxNewCheckBox.setFont(new Font("Times New Roman", Font.PLAIN, 21));
 	        chckbxNewCheckBox.setBounds(241, 306, 179, 35);
 	        contentPanel.add(chckbxNewCheckBox);
 	        
 	        JCheckBox chckbxInactivo = new JCheckBox("Inactivo");
+	        chckbxInactivo.setFont(new Font("Times New Roman", Font.PLAIN, 21));
 	        chckbxInactivo.setBounds(430, 306, 179, 35);
 	        contentPanel.add(chckbxInactivo);
 	        
@@ -156,10 +158,11 @@ public class Visual_Control_enfermedades extends JFrame {
 	        label.setBounds(440, 255, 91, 44);
 	        contentPanel.add(label);
 	        
-	    	JSpinner fecha_vacu = new JSpinner();
-			fecha_vacu.setModel(new SpinnerDateModel(new Date(1732593600000L), new Date(1732593600000L), null, Calendar.DAY_OF_YEAR));
-			fecha_vacu.setBounds(510, 256, 165, 37);
-			contentPanel.add(fecha_vacu);
+	        fecha_enfermeda = new JSpinner();
+	    	fecha_enfermeda.setFont(new Font("Times New Roman", Font.PLAIN, 21));
+			fecha_enfermeda.setModel(new SpinnerDateModel(new Date(1732593600000L), new Date(1732593600000L), null, Calendar.DAY_OF_YEAR));
+			fecha_enfermeda.setBounds(510, 256, 165, 37);
+			contentPanel.add(fecha_enfermeda);
 
 
 	        JPanel buttonPane = new JPanel();
@@ -168,9 +171,16 @@ public class Visual_Control_enfermedades extends JFrame {
 
 	     
 	        
-	        btnGuardar = new JButton("Guardar");
+	        btnGuardar = new JButton("Registrar");
+	        btnGuardar.setFont(new Font("Times New Roman", Font.PLAIN, 21));
 	        btnGuardar.addActionListener(new ActionListener() {
 	        	public void actionPerformed(ActionEvent e) {
+	        		
+	        		
+	        		
+	        		
+	        		
+	        		
 	        		
 	        	}
 	        });
@@ -178,6 +188,13 @@ public class Visual_Control_enfermedades extends JFrame {
 	        buttonPane.add(btnGuardar);
 	        
 	        JButton cancelButton = new JButton("Cancelar");
+	        cancelButton.setFont(new Font("Times New Roman", Font.PLAIN, 21));
+	        cancelButton.addActionListener(new ActionListener() {
+	        	public void actionPerformed(ActionEvent arg0) {
+	        		dispose();
+	        		
+	        	}
+	        });
 	        cancelButton.setActionCommand("Cancel");
 	        buttonPane.add(cancelButton);
 
@@ -195,5 +212,34 @@ public class Visual_Control_enfermedades extends JFrame {
 	                //buscarEmpleado(txt_code_empleado.getText());
 	            }
 	        });
+	}
+	
+	private void guardad_enfermeda(ActionEvent e)
+	{
+		try {
+			String codigo_enfer = txt_code_enfe.getText();
+			String code_pacien = txt_code_paciente.getText();
+			String code_doctor = txt_code_doctor.getText();
+			String name_enfemer = txt_name_enfemedad.getText();
+			float cant_hora = ((Integer)cant_spinner.getValue()).floatValue();
+			Date fecha_enferme =(Date)fecha_enfermeda.getValue();
+			
+			
+			if(code_pacien.isEmpty())
+			{
+			       throw new IllegalArgumentException("El espacio de codigo de paciente esta vacio.");
+			}
+			if(code_doctor.isEmpty())
+			{
+			       throw new IllegalArgumentException("El espacio de codigo de doctor esta vacio.");
+
+			}
+			
+			
+			
+			
+		} catch (Exception e2) {
+			// TODO: handle exception
+		}
 	}
 }
