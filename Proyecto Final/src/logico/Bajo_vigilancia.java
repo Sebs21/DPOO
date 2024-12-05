@@ -1,6 +1,7 @@
 package logico;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Bajo_vigilancia implements Serializable {
 	
@@ -8,25 +9,59 @@ public class Bajo_vigilancia implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private int codVigilancia;
+	private String codVigilancia;
 	private String enfermedad;
-	private int tiempoVigilancia;
-	private String monitoreo;
+	private float tiempoVigilancia;
+	 private String codigoPaciente; 
+	 private String codigodoctor; 
+	 private Date fecha_Vacunacion;
 	//
-	public Bajo_vigilancia(int codVigilancia, String enfermedad, int tiempoVigilancia, String monitoreo) 
-	{
+	
+	 
+	 
+	 
+
+	public String getCodVigilancia() {
+		return codVigilancia;
+	}
+
+	
+
+	public Bajo_vigilancia(String codVigilancia, String enfermedad, float tiempoVigilancia, 
+			String codigoPaciente, String codigodoctor, Date fecha_Vacunacion) {
 		super();
 		this.codVigilancia = codVigilancia;
 		this.enfermedad = enfermedad;
 		this.tiempoVigilancia = tiempoVigilancia;
-		this.monitoreo = monitoreo;
+	
+		this.codigoPaciente = codigoPaciente;
+		this.codigodoctor = codigodoctor;
+		this.fecha_Vacunacion = fecha_Vacunacion;
 	}
 
-	public int getCodVigilancia() {
-		return codVigilancia;
+
+
+	public String getCodigoPaciente() {
+		return codigoPaciente;
 	}
 
-	public void setCodVigilancia(int codVigilancia) {
+	public void setCodigoPaciente(String codigoPaciente) {
+		this.codigoPaciente = codigoPaciente;
+	}
+
+	public String getCodigodoctor() {
+		return codigodoctor;
+	}
+
+	public void setCodigodoctor(String codigodoctor) {
+		this.codigodoctor = codigodoctor;
+	}
+
+	public void setTiempoVigilancia(float tiempoVigilancia) {
+		this.tiempoVigilancia = tiempoVigilancia;
+	}
+
+	public void setCodVigilancia(String codVigilancia) {
 		this.codVigilancia = codVigilancia;
 	}
 
@@ -38,7 +73,7 @@ public class Bajo_vigilancia implements Serializable {
 		this.enfermedad = enfermedad;
 	}
 
-	public int getTiempoVigilancia() {
+	public float getTiempoVigilancia() {
 		return tiempoVigilancia;
 	}
 
@@ -46,12 +81,14 @@ public class Bajo_vigilancia implements Serializable {
 		this.tiempoVigilancia = tiempoVigilancia;
 	}
 
-	public String getMonitoreo() {
-		return monitoreo;
+
+
+	public Date getFecha_Vacunacion() {
+		return fecha_Vacunacion;
 	}
 
-	public void setMonitoreo(String monitoreo) {
-		this.monitoreo = monitoreo;
+	public void setFecha_Vacunacion(Date fecha_Vacunacion) {
+		this.fecha_Vacunacion = fecha_Vacunacion;
 	}
 	
 }

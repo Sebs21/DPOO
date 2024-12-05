@@ -180,7 +180,7 @@ public class Visual_vacunacion extends JFrame {
         }
     }
 
-    private void buscarPaciente(String codigoPaciente)//aqui
+    private void buscarPaciente(String codigoPaciente)
     {
         Paciente paciente = Control_vacunacion.verificar_code_paciente(codigoPaciente);//aqui
         if (paciente != null) {

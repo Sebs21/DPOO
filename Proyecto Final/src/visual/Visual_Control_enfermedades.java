@@ -13,9 +13,9 @@ import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
@@ -23,7 +23,10 @@ import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 
-import com.sun.javafx.geom.transform.CanTransformVec3d;
+import logico.Bajo_vigilancia;
+import logico.Control_enfermedad;
+import logico.Doctor;
+import logico.Paciente;
 
 public class Visual_Control_enfermedades extends JFrame {
 
@@ -37,11 +40,11 @@ public class Visual_Control_enfermedades extends JFrame {
 	    private JTextField txt_nombre_doctor;
 	    private JTextField txt_name_enfemedad;
 	    private JButton btnGuardar;
-	    private JLabel monitoreo;
 	    private JTextField txt_expecialidad;
 	    private JSpinner cant_spinner;
 	    private JLabel lbl_Cant_hora ;
 	    private JSpinner fecha_enfermeda ;
+	   
 	    //
 	/**
 	 * Launch the application.
@@ -72,7 +75,7 @@ public class Visual_Control_enfermedades extends JFrame {
 	        getContentPane().add(contentPanel, BorderLayout.CENTER);
 	        contentPanel.setLayout(null); 
 
-	        JLabel Codigo_fac = new JLabel("N.O" );
+	        JLabel Codigo_fac = new JLabel("N.O");
 	        Codigo_fac.setFont(new Font("Times New Roman", Font.PLAIN, 21));
 	        Codigo_fac.setBounds(21, 32, 192, 26);
 	        contentPanel.add(Codigo_fac);
@@ -94,7 +97,7 @@ public class Visual_Control_enfermedades extends JFrame {
 
 	        txt_code_enfe = new JTextField();
 	        txt_code_enfe.setFont(new Font("Times New Roman", Font.PLAIN, 21));
-	        txt_code_enfe.setText("VI-");
+	        txt_code_enfe.setText("VI-" + Control_enfermedad.code_enfe);
 	        txt_code_enfe.setEditable(false);
 	        txt_code_enfe.setBounds(234, 29, 186, 32);
 	        contentPanel.add(txt_code_enfe);
@@ -133,20 +136,7 @@ public class Visual_Control_enfermedades extends JFrame {
 	        cant_spinner.setBounds(234, 258, 186, 32);
 	        contentPanel.add(cant_spinner);
 	        
-	        monitoreo = new JLabel("Monitoreo:");
-	        monitoreo.setFont(new Font("Times New Roman", Font.PLAIN, 21));
-	        monitoreo.setBounds(21, 310, 192, 26);
-	        contentPanel.add(monitoreo);
-	        
-	        JCheckBox chckbxNewCheckBox = new JCheckBox("Activo");
-	        chckbxNewCheckBox.setFont(new Font("Times New Roman", Font.PLAIN, 21));
-	        chckbxNewCheckBox.setBounds(241, 306, 179, 35);
-	        contentPanel.add(chckbxNewCheckBox);
-	        
-	        JCheckBox chckbxInactivo = new JCheckBox("Inactivo");
-	        chckbxInactivo.setFont(new Font("Times New Roman", Font.PLAIN, 21));
-	        chckbxInactivo.setBounds(430, 306, 179, 35);
-	        contentPanel.add(chckbxInactivo);
+	     
 	        
 	        txt_expecialidad = new JTextField();
 	        txt_expecialidad.setEditable(false);
@@ -173,17 +163,7 @@ public class Visual_Control_enfermedades extends JFrame {
 	        
 	        btnGuardar = new JButton("Registrar");
 	        btnGuardar.setFont(new Font("Times New Roman", Font.PLAIN, 21));
-	        btnGuardar.addActionListener(new ActionListener() {
-	        	public void actionPerformed(ActionEvent e) {
-	        		
-	        		
-	        		
-	        		
-	        		
-	        		
-	        		
-	        	}
-	        });
+	        btnGuardar.addActionListener(this::guardad_enfermeda);
 	        btnGuardar.setActionCommand("Guardar");
 	        buttonPane.add(btnGuardar);
 	        
@@ -202,14 +182,14 @@ public class Visual_Control_enfermedades extends JFrame {
 	        txt_code_paciente.addFocusListener(new FocusAdapter() {
 	            @Override
 	            public void focusLost(FocusEvent e) {
-	             //   buscarCliente(txt_code_cliente.getText());
+	            	buscarPaciente(txt_code_paciente.getText());
 	            }
 	        });
 
 	        txt_code_doctor.addFocusListener(new FocusAdapter() {
 	            @Override
 	            public void focusLost(FocusEvent e) {
-	                //buscarEmpleado(txt_code_empleado.getText());
+	              buscarDoctor(txt_code_doctor.getText());
 	            }
 	        });
 	}
@@ -235,11 +215,67 @@ public class Visual_Control_enfermedades extends JFrame {
 
 			}
 			
+			  Paciente paciente = Control_enfermedad.verificar_code_paciente(code_pacien);
+	            if (paciente == null) {
+	                JOptionPane.showMessageDialog(null, "Paciente no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
+	                return;
+	            }
+	            
+	            Doctor doc = Control_enfermedad.verificar_code_doctor(code_doctor);
+	            if (doc == null) {
+	                JOptionPane.showMessageDialog(null, "Doctor no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
+	                return;
+	            }
+			Bajo_vigilancia enfe = new Bajo_vigilancia(codigo_enfer, name_enfemer, cant_hora, code_pacien, code_doctor, fecha_enferme);
+			Control_enfermedad.getVigilancia().add(enfe);
+			JOptionPane.showMessageDialog(null, " registrada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            clean();
+			
+			
+			
+			
 			
 			
 			
 		} catch (Exception e2) {
-			// TODO: handle exception
+            JOptionPane.showMessageDialog(null, "Error al guardar : " + e2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
+	
+	  private void buscarPaciente(String codigoPaciente)
+	    {
+	        Paciente paciente = Control_enfermedad.verificar_code_paciente(codigoPaciente);//aqui
+	        if (paciente != null) {
+	            txt_nombre_paciente.setText(paciente.getNombre());
+	           
+	        } else {
+	        	txt_nombre_paciente.setText("");
+	          
+	        }
+	    }
+	  private void buscarDoctor(String codigodoctor)
+	    {
+	        Doctor doct =Control_enfermedad.verificar_code_doctor(codigodoctor);
+	        if (doct != null) {
+	        	txt_nombre_doctor.setText(doct.getNombre());
+	           
+	        } else {
+	        	txt_nombre_doctor.setText("");
+	          
+	        }
+	    }
+	
+	
+	  private void clean() {
+		    fecha_enfermeda.setValue(new Date()); 
+		    cant_spinner.setValue(1); 
+		    txt_code_paciente.setText("");
+		    txt_nombre_paciente.setText("");
+		    txt_code_doctor.setText("");
+		    txt_nombre_doctor.setText("");
+		    txt_code_enfe.setText("VI-" + Control_enfermedad.code_enfe ); 
+		}
+
+	
+	
 }
