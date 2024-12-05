@@ -46,6 +46,7 @@ public class CerrarSesion extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 			InicioSesion iniSe = new InicioSesion();
 			iniSe.setVisible(true);
+			dispose();
 			setModal(true);
 			}
 		});
@@ -58,6 +59,7 @@ public class CerrarSesion extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 			RegistrarUsuario regUser = new RegistrarUsuario();
 			regUser.setVisible(true);
+			dispose();
 			setModal(true);
 			}
 		});

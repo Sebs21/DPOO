@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import logico.Clinica;
-import logico.Control_vacunacion;
 import logico.Paciente;
 import logico.vacunacion;
 
