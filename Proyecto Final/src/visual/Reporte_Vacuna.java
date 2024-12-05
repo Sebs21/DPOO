@@ -1,11 +1,21 @@
 package visual;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.ArrayList;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import logico.Clinica;
@@ -72,7 +82,11 @@ public class Reporte_Vacuna extends JFrame {
 
         btnVerReporte = new JButton("Ver Reporte");
         
-        btnVerReporte.addActionListener(e -> mostrarVista("tabla"));
+        btnVerReporte.addActionListener(e -> {
+            String codigoPaciente = txt_code_paciente.getText();
+            load_(codigoPaciente); 
+            mostrarVista("tabla");
+        });
         panelBotones.add(btnVerReporte);
 
         JButton btnCancelar = new JButton("Cancelar");
@@ -100,24 +114,26 @@ public class Reporte_Vacuna extends JFrame {
         }
     }
 
-    public static void load_vacu() 
-    {
+    public static void load_(String codigoPaciente) {
         model.setRowCount(0); 
+
         ArrayList<Control_vacunacion> controles = Clinica.getInstance().getControl_vacu();
 
-        for (Control_vacunacion control : controles)
-        {
+        for (Control_vacunacion control : controles) {
             if (control instanceof vacunacion) { 
-                vacunacion vacu = (vacunacion) control; 
+            	vacunacion vacu = (vacunacion) control;
 
-                Object[] row = new Object[5];
-                row[0] = vacu.getCodVacu(); 
-                row[1] = vacu.getCodigoPaciente(); 
-                row[2] = vacu.getTipoVacuna();
-                row[3] = vacu.getCant_ml(); 
-                row[4] = vacu.getFecha(); 
+               
+                if (codigoPaciente.isEmpty() || vacu.getCodigoPaciente().equals(codigoPaciente)) {
+                    Object[] row = new Object[5];
+                    row[0] = vacu.getCodVacu(); 
+                    row[1] = vacu.getCodigoPaciente(); 
+                    row[2] = vacu.getTipoVacuna();
+                    row[3] = vacu.getCant_ml(); 
+                    row[4] = vacu.getFecha(); 
 
-                model.addRow(row);
+                    model.addRow(row);
+                }
             }
         }
     }
@@ -142,7 +158,7 @@ public class Reporte_Vacuna extends JFrame {
         panelTabla.add(panelBotones, BorderLayout.SOUTH);
 
         contentPanel.add(panelTabla, "tabla");
-        load_vacu();
+       
     }
 
     private void mostrarVista(String vista) {

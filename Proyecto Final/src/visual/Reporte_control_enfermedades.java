@@ -1,8 +1,27 @@
 package visual;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+
+import logico.Bajo_vigilancia;
+import logico.Clinica;
+import logico.Control_enfermedad;
+import logico.Paciente;
 
 public class Reporte_control_enfermedades extends JFrame {
 
@@ -10,7 +29,8 @@ public class Reporte_control_enfermedades extends JFrame {
     private JTextField txt_code_paciente;
     private JTextField txt_nombre_paciente;
     private JTable table;
-    private DefaultTableModel model;
+    private static DefaultTableModel model;
+    
 
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
@@ -61,7 +81,11 @@ public class Reporte_control_enfermedades extends JFrame {
 
         JButton btnVerReporte = new JButton("Ver Reporte");
         
-        btnVerReporte.addActionListener(e -> mostrarVista("tabla"));
+        btnVerReporte.addActionListener(e -> {
+            String codigoPaciente = txt_code_paciente.getText();
+            load_(codigoPaciente); 
+            mostrarVista("tabla");
+        });
         panelBotones.add(btnVerReporte);
 
         JButton btnCancelar = new JButton("Cancelar");
@@ -69,13 +93,57 @@ public class Reporte_control_enfermedades extends JFrame {
         panelBotones.add(btnCancelar);
 
         contentPanel.add(panelFormulario, "formulario");
+        txt_code_paciente.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                buscarPaciente(txt_code_paciente.getText());
+            }
+        });
     }
+    
+    
+    
+    private void buscarPaciente(String codigoPaciente)
+    {
+      Paciente paciente = Control_enfermedad.verificar_code_paciente(codigoPaciente);
+        if (paciente != null)
+        {
+            txt_nombre_paciente.setText(paciente.getNombre()); 
+        } else {
+            txt_nombre_paciente.setText(""); 
+        }
+    }
+
+    public static void load_(String codigoPaciente) {
+        model.setRowCount(0); 
+
+        ArrayList<Control_enfermedad> controles = Clinica.getInstance().getControl_Enfer();
+
+        for (Control_enfermedad control : controles) {
+            if (control instanceof Bajo_vigilancia) { 
+                Bajo_vigilancia vacu = (Bajo_vigilancia) control;
+
+               
+                if (codigoPaciente.isEmpty() || vacu.getCodigoPaciente().equals(codigoPaciente)) {
+                    Object[] row = new Object[5];
+                    row[0] = vacu.getCodVigilancia();
+                    row[1] = vacu.getCodigoPaciente(); 
+                    row[2] = vacu.getCodigodoctor();
+                    row[3] = vacu.getTiempoVigilancia();
+                    row[4] = vacu.getfecha_enfemeda_vigi();
+
+                    model.addRow(row);
+                }
+            }
+        }
+    }
+
 
     private void initTablaPanel() {
         JPanel panelTabla = new JPanel(new BorderLayout());
 
         model = new DefaultTableModel();
-        String[] identificadores = {"Código", "Paciente", "Doctor", "Cantidad de hora", "Vigilancia", "Fecha"};
+        String[] identificadores = {"Código", "Paciente", "Doctor", "Cantidad de hora",  "Fecha"};
         model.setColumnIdentifiers(identificadores);
 
         table = new JTable(model);

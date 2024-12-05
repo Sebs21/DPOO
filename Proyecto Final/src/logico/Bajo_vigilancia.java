@@ -14,7 +14,7 @@ public class Bajo_vigilancia extends Control_enfermedad implements Serializable 
 	private float tiempoVigilancia;
 	 private String codigoPaciente; 
 	 private String codigodoctor; 
-	 private Date fecha_Vacunacion;
+	 private Date fecha_enfemeda_vigi;
 	//
 	
 	 
@@ -36,7 +36,7 @@ public class Bajo_vigilancia extends Control_enfermedad implements Serializable 
 	
 		this.codigoPaciente = codigoPaciente;
 		this.codigodoctor = codigodoctor;
-		this.fecha_Vacunacion = fecha_Vacunacion;
+		this.fecha_enfemeda_vigi = fecha_Vacunacion;
 	}
 
 
@@ -83,12 +83,12 @@ public class Bajo_vigilancia extends Control_enfermedad implements Serializable 
 
 
 
-	public Date getFecha_Vacunacion() {
-		return fecha_Vacunacion;
+	public Date getfecha_enfemeda_vigi() {
+		return fecha_enfemeda_vigi;
 	}
 
-	public void setFecha_Vacunacion(Date fecha_Vacunacion) {
-		this.fecha_Vacunacion = fecha_Vacunacion;
+	public void setfecha_enfemeda_vigi(Date fecha_Vacunacion) {
+		this.fecha_enfemeda_vigi = fecha_Vacunacion;
 	}
 	
 }
