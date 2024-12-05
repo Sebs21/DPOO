@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -23,7 +23,7 @@ import logico.Clinica;
 import logico.Control_enfermedad;
 import logico.Paciente;
 
-public class Reporte_control_enfermedades extends JFrame {
+public class Reporte_control_enfermedades extends JDialog {
 
     private JPanel contentPanel;
     private JTextField txt_code_paciente;
@@ -35,17 +35,18 @@ public class Reporte_control_enfermedades extends JFrame {
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {
-                Reporte_control_enfermedades frame = new Reporte_control_enfermedades();
-                frame.setVisible(true);
+                Reporte_control_enfermedades dialog = new Reporte_control_enfermedades(null, true);
+                dialog.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
     }
 
-    public Reporte_control_enfermedades() {
+   
+    public Reporte_control_enfermedades(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         setTitle("Reporte vigilancia");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 868, 564);
         setLocationRelativeTo(null);
         setIconImage(new ImageIcon(getClass().getResource("/visual/SIGIC_logo.jpg")).getImage());
@@ -55,7 +56,7 @@ public class Reporte_control_enfermedades extends JFrame {
 
         initFormularioPanel();
         initTablaPanel();
-    	}
+    }
 
     private void initFormularioPanel() {
         JPanel panelFormulario = new JPanel();
@@ -80,7 +81,6 @@ public class Reporte_control_enfermedades extends JFrame {
         panelBotones.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
         JButton btnVerReporte = new JButton("Ver Reporte");
-        
         btnVerReporte.addActionListener(e -> {
             String codigoPaciente = txt_code_paciente.getText();
             load_(codigoPaciente); 
@@ -89,7 +89,7 @@ public class Reporte_control_enfermedades extends JFrame {
         panelBotones.add(btnVerReporte);
 
         JButton btnCancelar = new JButton("Cancelar");
-        btnCancelar.addActionListener(e -> System.exit(0));
+        btnCancelar.addActionListener(e -> dispose()); 
         panelBotones.add(btnCancelar);
 
         contentPanel.add(panelFormulario, "formulario");
@@ -101,11 +101,9 @@ public class Reporte_control_enfermedades extends JFrame {
         });
     }
     
-    
-    
     private void buscarPaciente(String codigoPaciente)
     {
-      Paciente paciente = Control_enfermedad.verificar_code_paciente(codigoPaciente);
+        Paciente paciente = Control_enfermedad.verificar_code_paciente(codigoPaciente);
         if (paciente != null)
         {
             txt_nombre_paciente.setText(paciente.getNombre()); 
@@ -123,7 +121,6 @@ public class Reporte_control_enfermedades extends JFrame {
             if (control instanceof Bajo_vigilancia) { 
                 Bajo_vigilancia vacu = (Bajo_vigilancia) control;
 
-               
                 if (codigoPaciente.isEmpty() || vacu.getCodigoPaciente().equals(codigoPaciente)) {
                     Object[] row = new Object[5];
                     row[0] = vacu.getCodVigilancia();
@@ -137,7 +134,6 @@ public class Reporte_control_enfermedades extends JFrame {
             }
         }
     }
-
 
     private void initTablaPanel() {
         JPanel panelTabla = new JPanel(new BorderLayout());

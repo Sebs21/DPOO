@@ -1,7 +1,6 @@
 package visual;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -14,7 +13,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -28,7 +27,7 @@ import logico.Control_vacunacion;
 import logico.Paciente;
 import logico.vacunacion;
 
-public class Visual_vacunacion extends JFrame {
+public class Visual_vacunacion extends JDialog {
 
     private final JPanel contentPanel = new JPanel();
     private JTextField txtCodeVacu;
@@ -39,22 +38,12 @@ public class Visual_vacunacion extends JFrame {
     private JSpinner fechaVacu;
     private JSpinner spnCantMl;
 
-    public static void main(String[] args) {
-        EventQueue.invokeLater(() -> {
-            try {
-                Visual_vacunacion frame = new Visual_vacunacion();
-                frame.setVisible(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
     public Visual_vacunacion() {
         setIconImage(new ImageIcon(getClass().getResource("/visual/SIGIC_logo.jpg")).getImage());
         setTitle("Registro Vacuna");
         setBounds(100, 100, 868, 564);
         setLocationRelativeTo(null);
+        setModal(true); 
         getContentPane().setLayout(new BorderLayout());
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -108,7 +97,7 @@ public class Visual_vacunacion extends JFrame {
 
         listVacuna = new JComboBox<>();
         listVacuna.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-        listVacuna.setModel(new DefaultComboBoxModel<>(new String[] {"<Seleccione>", "Influenza", "Papiloma Humano", "Neumonía", "Meningitis"}));
+        listVacuna.setModel(new DefaultComboBoxModel<>(new String[] { "<Seleccione>", "Influenza", "Papiloma Humano", "Neumonía", "Meningitis" }));
         listVacuna.setBounds(154, 146, 186, 32);
         contentPanel.add(listVacuna);
 
@@ -129,11 +118,7 @@ public class Visual_vacunacion extends JFrame {
 
         JButton cancelButton = new JButton("Cancelar");
         cancelButton.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 21));
-        cancelButton.addActionListener(e -> {
-          
-                dispose();
-            
-        });
+        cancelButton.addActionListener(e -> dispose());
         cancelButton.setActionCommand("Cancel");
         buttonPane.add(cancelButton);
 
@@ -150,16 +135,15 @@ public class Visual_vacunacion extends JFrame {
             String codigoPaciente = txtCodePaciente.getText();
             String tipoVacuna = listVacuna.getSelectedItem().toString();
             float cantMl = ((Integer) spnCantMl.getValue()).floatValue();
-            int codigo =Integer.parseInt(txtCodeVacu.getText().replace("VA-", ""));
+            int codigo = Integer.parseInt(txtCodeVacu.getText().replace("VA-", ""));
             Date fechaVacunacion = (Date) fechaVacu.getValue();
 
             if (codigoPaciente.isEmpty()) {
                 throw new IllegalArgumentException("El espacio de codigo de paciente esta vacio.");
             }
             if ("<Seleccione>".equals(tipoVacuna)) {
-                throw new IllegalArgumentException("Debe seleccionar algún tipo de vacuna.");
+                throw new IllegalArgumentException("Debe seleccionar algun tipo de vacuna.");
             }
-          
 
             Paciente paciente = Control_vacunacion.verificar_code_paciente(codigoPaciente);
             if (paciente == null) {
@@ -168,30 +152,24 @@ public class Visual_vacunacion extends JFrame {
             }
 
             vacunacion newVacu = new vacunacion(codigo, tipoVacuna, fechaVacunacion, true, codigoPaciente, cantMl);
-            
             Control_vacunacion.getVacunaciones().add(newVacu);
-            
             paciente.agregarVacuna(newVacu);
-            
-            JOptionPane.showMessageDialog(null, " registrada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+            JOptionPane.showMessageDialog(null, "Registrada exitosamente.", "Exito", JOptionPane.INFORMATION_MESSAGE);
             clean();
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Error al guardar : " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error al guardar: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private void buscarPaciente(String codigoPaciente)
-    {
-        Paciente paciente = Control_vacunacion.verificar_code_paciente(codigoPaciente);//aqui
+    private void buscarPaciente(String codigoPaciente) {
+        Paciente paciente = Control_vacunacion.verificar_code_paciente(codigoPaciente);
         if (paciente != null) {
             txtNombrePaciente.setText(paciente.getNombre());
-           
         } else {
             txtNombrePaciente.setText("");
-          
         }
     }
-    
 
     private void clean() {
         fechaVacu.setValue(new Date());
@@ -199,7 +177,6 @@ public class Visual_vacunacion extends JFrame {
         listVacuna.setSelectedIndex(0);
         txtCodePaciente.setText("");
         txtNombrePaciente.setText("");
-       
         txtCodeVacu.setText("VA-" + Control_vacunacion.code_vacu);
     }
 }

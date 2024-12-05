@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -23,7 +23,7 @@ import logico.Control_vacunacion;
 import logico.Paciente;
 import logico.vacunacion;
 
-public class Reporte_Vacuna extends JFrame {
+public class Reporte_Vacuna extends JDialog {
 
     private JPanel contentPanel;
     private JTextField txt_code_paciente;
@@ -36,17 +36,18 @@ public class Reporte_Vacuna extends JFrame {
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {
-                Reporte_Vacuna frame = new Reporte_Vacuna();
-                frame.setVisible(true);
+                Reporte_Vacuna dialog = new Reporte_Vacuna(null, true); 
+                dialog.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
     }
 
-    public Reporte_Vacuna() {
+ 
+    public Reporte_Vacuna(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         setTitle("Reporte Vacuna");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 868, 564);
         setLocationRelativeTo(null);
         setIconImage(new ImageIcon(getClass().getResource("/visual/SIGIC_logo.jpg")).getImage());
@@ -56,7 +57,7 @@ public class Reporte_Vacuna extends JFrame {
 
         initFormularioPanel();
         initTablaPanel();
-    	}
+    }
 
     private void initFormularioPanel() {
         JPanel panelFormulario = new JPanel();
@@ -81,7 +82,6 @@ public class Reporte_Vacuna extends JFrame {
         panelBotones.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
         btnVerReporte = new JButton("Ver Reporte");
-        
         btnVerReporte.addActionListener(e -> {
             String codigoPaciente = txt_code_paciente.getText();
             load_(codigoPaciente); 
@@ -90,11 +90,11 @@ public class Reporte_Vacuna extends JFrame {
         panelBotones.add(btnVerReporte);
 
         JButton btnCancelar = new JButton("Cancelar");
-        btnCancelar.addActionListener(e -> System.exit(0));
+        btnCancelar.addActionListener(e -> dispose()); 
         panelBotones.add(btnCancelar);
 
         contentPanel.add(panelFormulario, "formulario");
-        
+
         txt_code_paciente.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -102,12 +102,10 @@ public class Reporte_Vacuna extends JFrame {
             }
         });
     }
-    
-    private void buscarPaciente(String codigoPaciente)
-    {
+
+    private void buscarPaciente(String codigoPaciente) {
         Paciente paciente = Control_vacunacion.verificar_code_paciente(codigoPaciente); 
-        if (paciente != null)
-        {
+        if (paciente != null) {
             txt_nombre_paciente.setText(paciente.getNombre()); 
         } else {
             txt_nombre_paciente.setText(""); 
@@ -121,9 +119,8 @@ public class Reporte_Vacuna extends JFrame {
 
         for (Control_vacunacion control : controles) {
             if (control instanceof vacunacion) { 
-            	vacunacion vacu = (vacunacion) control;
+                vacunacion vacu = (vacunacion) control;
 
-               
                 if (codigoPaciente.isEmpty() || vacu.getCodigoPaciente().equals(codigoPaciente)) {
                     Object[] row = new Object[5];
                     row[0] = vacu.getCodVacu(); 
@@ -142,7 +139,7 @@ public class Reporte_Vacuna extends JFrame {
         JPanel panelTabla = new JPanel(new BorderLayout());
 
         model = new DefaultTableModel();
-        String[] identificadores = {"Código", "Paciente",  "Vacuna", "cantidad ml", "Fecha"};
+        String[] identificadores = {"Código", "Paciente", "Vacuna", "cantidad ml", "Fecha"};
         model.setColumnIdentifiers(identificadores);
 
         table = new JTable(model);
@@ -158,7 +155,6 @@ public class Reporte_Vacuna extends JFrame {
         panelTabla.add(panelBotones, BorderLayout.SOUTH);
 
         contentPanel.add(panelTabla, "tabla");
-       
     }
 
     private void mostrarVista(String vista) {
