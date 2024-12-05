@@ -28,18 +28,18 @@ public class SeguroPaciente extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtIdSeguro;
-	private JTextField txtCedulaPaciente;
 	private JButton btnNo;
-	private JButton btnBuscar;
 	private JButton btnSi;
 	private JComboBox<String> cbxTipoDeSeguro;
 	private JButton btnConectar;
 	private JButton btnCancelar;
 	private JComboBox<String> cbxNombreEmpresa;
+	private JTextField txtNombrePaciente;
 	//
 	/**
 	 * Launch the application.
 	 */
+	
 	public static void main(String[] args) 
 	{
 		try 
@@ -87,60 +87,12 @@ public class SeguroPaciente extends JDialog {
 		txtIdSeguro.setBounds(138, 169, 237, 30);
 		contentPanel.add(txtIdSeguro);
 		txtIdSeguro.setColumns(10);
+		txtIdSeguro.setText( " S - " +Clinica.getInstance().idSeguro );
 		
-		JLabel lblIdPaciente = new JLabel("Cedula paciente:");
+		JLabel lblIdPaciente = new JLabel("Nombre del Paciente:");
 		lblIdPaciente.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
-		lblIdPaciente.setBounds(28, 35, 141, 30);
+		lblIdPaciente.setBounds(28, 35, 187, 30);
 		contentPanel.add(lblIdPaciente);
-		
-		txtCedulaPaciente = new JTextField();
-		txtCedulaPaciente.setBounds(181, 41, 116, 22);
-		contentPanel.add(txtCedulaPaciente);
-		txtCedulaPaciente.setColumns(10);
-		
-		btnBuscar = new JButton("Buscar");
-		btnBuscar.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent arg0) 
-			{
-				
-				Paciente paciente = Clinica.getInstance().buscarPacienteByCedula( txtCedulaPaciente.getText() );
-				User us = Clinica.getInstance().getLoginUser();
-				txtCedulaPaciente.setText(us.getPass());
-				if ( paciente != null )
-				{
-					
-					JOptionPane.showMessageDialog( null, "Paciente encontrado:" +paciente.getNombre() );
-					
-					String cedulaSeguro = paciente.getCedula();
-					String cedulaUsuario = txtCedulaPaciente.getText();
-					
-					if ( verificarCedulas( cedulaUsuario, cedulaSeguro ) )
-					{
-						JOptionPane.showMessageDialog( null, "La cédula coincide con la del seguro." );
-						btnSi.setEnabled( true );
-						btnNo.setEnabled( true );
-					}
-					else
-					{
-						JOptionPane.showMessageDialog( null, "La cédula no coincide con la del seguro." );
-						clearCedula();
-					}
-					
-				}
-				else
-				{
-					JOptionPane.showMessageDialog( null, "Paciente no fue encontrado, ingresa la cedula denuevo." );
-					clearCedula();
-				}
-				
-			}
-		});
-		btnBuscar.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		btnBuscar.setBackground(Color.CYAN);
-		btnBuscar.setActionCommand("OK");
-		btnBuscar.setBounds(309, 40, 83, 25);
-		contentPanel.add(btnBuscar);
 		
 		JLabel lblPoseeSeguro = new JLabel("\u00BFContiene seguro?");
 		lblPoseeSeguro.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
@@ -155,7 +107,6 @@ public class SeguroPaciente extends JDialog {
 				dispose();
 			}
 		});
-		btnNo.setEnabled(false);
 		btnNo.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
 		btnNo.setBackground(Color.CYAN);
 		btnNo.setActionCommand("OK");
@@ -178,7 +129,6 @@ public class SeguroPaciente extends JDialog {
 			}
 		});
 		btnSi.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		btnSi.setEnabled(false);
 		btnSi.setBackground(Color.CYAN);
 		btnSi.setActionCommand("OK");
 		btnSi.setBounds(198, 88, 52, 25);
@@ -197,6 +147,13 @@ public class SeguroPaciente extends JDialog {
 		cbxNombreEmpresa.setEnabled(false);
 		cbxNombreEmpresa.setBounds(133, 253, 254, 22);
 		contentPanel.add(cbxNombreEmpresa);
+		
+		txtNombrePaciente = new JTextField();
+		txtNombrePaciente.setEnabled(false);
+		txtNombrePaciente.setEditable(false);
+		txtNombrePaciente.setBounds(227, 41, 187, 22);
+		contentPanel.add(txtNombrePaciente);
+		txtNombrePaciente.setColumns(10);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
@@ -264,40 +221,20 @@ public class SeguroPaciente extends JDialog {
 				buttonPane.add(btnCancelar);
 			}
 		}
+		User user = Clinica.getInstance().getLoginUser();
+		String nombrePaciente = user.getUsuario();
+		txtNombrePaciente.setText(nombrePaciente);
+		 
 	}
 	
-	public boolean verificarCedulas( String cedulaUsuario, String cedulaSeguro )
-	{
-		
-		if ( cedulaUsuario.length() != cedulaSeguro.length() )
-		{
-			return false;
-		}
-		
-		for ( int ind = 0; ind < cedulaUsuario.length(); ind++ )
-		{
-			if ( cedulaUsuario.charAt( ind ) != cedulaSeguro.charAt( ind ) )
-			{
-				return false;
-			}
-		}
-		
-		return true;
-		
-	}
+	 
 	
 	public void clean ()
 	{
-		txtCedulaPaciente.setText("");
-		txtIdSeguro.setText("");
+		txtNombrePaciente.setText("");
+		txtIdSeguro.setText( " S - " +Clinica.getInstance().idCita );
 		cbxNombreEmpresa.setSelectedItem( " < Seleccione Nombre de Empresa > " );
 		cbxTipoDeSeguro.setSelectedItem( " < Seleccione Seguro > ");
 	}
-	
-	public void clearCedula ()
-	{
-		txtCedulaPaciente.setText("");
-	}
-	
 }
 

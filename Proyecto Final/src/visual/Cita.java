@@ -246,6 +246,7 @@ public class Cita extends JDialog
 		
 	}	
 	
+	
 	public void datos() 
 	{	
 		
