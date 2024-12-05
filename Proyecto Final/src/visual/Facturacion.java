@@ -71,7 +71,6 @@ public class Facturacion extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		setLocationRelativeTo(null);
-		setModal(true);
 		
 		JLabel lblNewLabel = new JLabel("Cedula paciente:");
 		lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
@@ -176,6 +175,15 @@ public class Facturacion extends JDialog {
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
+				
+				String cedula = txtCedulaPaciente.getText();
+				
+				if ( cedula.isEmpty() )
+				{
+					JOptionPane.showMessageDialog( null, "Introduzca la cédula si desea avanzar." );
+					return;
+				}
+				
 				Paciente paciente = Clinica.getInstance().buscarPacienteByCedula( txtCedulaPaciente.getText() );
 				
 				if ( paciente != null )
@@ -190,9 +198,8 @@ public class Facturacion extends JDialog {
 				}
 				else
 				{
-					JOptionPane.showMessageDialog( null, "Su ID no ha sido encontrado, inicie sesión nuevamente. " );
+					JOptionPane.showMessageDialog( null, "El paciente no ha sido encontrado, pruebe denuevo. " );
 					existePaciente = false;
-					dispose();
 				}
 				
 			}
@@ -276,7 +283,11 @@ public class Facturacion extends JDialog {
 				{
 					public void actionPerformed(ActionEvent arg0) 
 					{
-						
+						if ( !existePaciente )
+						{
+							JOptionPane.showMessageDialog( null, "Debe buscar y seleccionar un paciente válido antes de facturar. " );
+							return;
+						}
 					}
 				});
 				btnFacturar.setBackground(Color.CYAN);
@@ -311,7 +322,6 @@ public class Facturacion extends JDialog {
 		if ( updated != null )
 		{
 			txtCedulaPaciente.setText( updated.getCedula() );
-			
 		}
 	}
 	

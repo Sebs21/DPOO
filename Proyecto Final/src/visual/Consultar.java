@@ -25,6 +25,7 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 import javax.swing.SpinnerDateModel;
 import java.util.Date;
+import java.util.Random;
 import java.util.Calendar;
 import javax.swing.JRadioButton;
 
@@ -295,8 +296,22 @@ public class Consultar extends JDialog
 		txtSeguro.setText(paciente.getSeguro().getNombreEmpresa());
 	}
 
-	public void finalizarConsulta() {
+	public void finalizarConsulta() 
+	{
 		boolean importancia;
+		double precio = 0;
+		
+		if ( rdbtnImportante.isSelected() )
+		{
+			importancia = true;
+			precio = calcularConsultaImportancia( 6000, 15000 );
+		}
+		else
+		{
+			importancia = false;
+			precio = calcularConsultaImportancia( 1000, 6000 );
+		}
+		
 		for (logico.Cita cita : Clinica.getInstance().getMisCitas()) {
 			if (rdbtnImportante.isSelected()) {
 				importancia = true;
@@ -310,6 +325,12 @@ public class Consultar extends JDialog
 		}
 		JOptionPane.showMessageDialog(null, "Consulta registrada Exitosamente ", "",
 				JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	private double calcularConsultaImportancia( int minimo, int maximo )
+	{
+		Random random = new Random();
+		return minimo + ( random.nextDouble() * ( maximo - minimo ) );
 	}
 
 	public JRadioButton getRdbtnNoImportante() {

@@ -215,6 +215,14 @@ public class RegistrarUsuario extends JDialog {
 		}
 	}
 
+	public JTextField getTxtCedula() {
+		return txtCedula;
+	}
+
+	public void setTxtCedula(JTextField txtCedula) {
+		this.txtCedula = txtCedula;
+	}
+
 	private boolean validacion() {
 	    if (txtUsuario.getText().isEmpty() || txtCedula.getText().isEmpty() || cbxTipo.getSelectedIndex() == 0) {
 	        JOptionPane.showMessageDialog(this, "Debe llenar todos los campos obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);

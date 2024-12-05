@@ -64,7 +64,6 @@ public class SeguroPaciente extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		setLocationRelativeTo( null );
-		setModal(true);
 		
 		JLabel lblNewLabel = new JLabel("ID seguro:");
 		lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
@@ -110,12 +109,25 @@ public class SeguroPaciente extends JDialog {
 					
 					JOptionPane.showMessageDialog( null, "Paciente encontrado:" +paciente.getNombre() );
 					
-					btnSi.setEnabled( true );
-					btnNo.setEnabled( true );
+					String cedulaSeguro = paciente.getCedula();
+					String cedulaUsuario = txtCedulaPaciente.getText();
+					
+					if ( verificarCedulas( cedulaUsuario, cedulaSeguro ) )
+					{
+						JOptionPane.showMessageDialog( null, "La cédula coincide con la del seguro." );
+						btnSi.setEnabled( true );
+						btnNo.setEnabled( true );
+					}
+					else
+					{
+						JOptionPane.showMessageDialog( null, "La cédula no coincide con la del seguro." );
+						clearCedula();
+					}
+					
 				}
 				else
 				{
-					JOptionPane.showMessageDialog( null, "Ingresa la cedula denuevo." );
+					JOptionPane.showMessageDialog( null, "Paciente no fue encontrado, ingresa la cedula denuevo." );
 					clearCedula();
 				}
 				
@@ -192,10 +204,40 @@ public class SeguroPaciente extends JDialog {
 				btnConectar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) 
 					{
-						agregarSeguro();
-						clean();
+						if ( txtIdSeguro.getText().isEmpty() || cbxNombreEmpresa.getSelectedIndex() == 0 || cbxTipoDeSeguro.getSelectedIndex() == 0 )
+						{
+							JOptionPane.showMessageDialog( null, "Debe completar todos los campos para poder conectar.", "Error", JOptionPane.ERROR_MESSAGE );
+							return;
+						}
 						
+						String idSeguro = txtIdSeguro.getText();
+						String nombreEmpresa = cbxNombreEmpresa.getSelectedItem().toString();
+						String tipoSeguro = cbxTipoDeSeguro.getSelectedItem().toString();
+						double descuento = 0.0;
+						
+						switch ( tipoSeguro )
+						{
+							case "Seguro de Responsabilidad Médica":
+								descuento = 0.40;
+								break;
+							case "Equipo Médico":
+								descuento = 0.60;
+								break;
+							case "Salud para pacientes":
+								descuento = 0.75;
+								break;
+							default:
+								JOptionPane.showMessageDialog( null, "Seleccione un tipo de seguro.", "Error", JOptionPane.ERROR_MESSAGE );
+								return;		
+						}
+						
+						Seguro seguro = new Seguro ( idSeguro, nombreEmpresa, tipoSeguro, descuento );
+						Clinica.getInstance().agregarSeguro( seguro );
+						JOptionPane.showMessageDialog( null, "Seguro agregado a su sesión." + ( descuento * 100 ) + "%." );
+						
+						clean();
 						dispose();
+						
 					}
 				});
 				btnConectar.setEnabled(false);
@@ -221,37 +263,23 @@ public class SeguroPaciente extends JDialog {
 		}
 	}
 	
-	private void agregarSeguro() {
-		if ( txtIdSeguro.getText().isEmpty() || cbxNombreEmpresa.getSelectedIndex() == 0 || cbxTipoDeSeguro.getSelectedIndex() == 0 )
+	public boolean verificarCedulas( String cedulaUsuario, String cedulaSeguro )
+	{
+		
+		if ( cedulaUsuario.length() != cedulaSeguro.length() )
 		{
-			JOptionPane.showMessageDialog( null, "Debe completar todos los campos para poder conectar.", "Error", JOptionPane.ERROR_MESSAGE );
-			return;
+			return false;
 		}
 		
-		String idSeguro = txtIdSeguro.getText();
-		String nombreEmpresa = cbxNombreEmpresa.getSelectedItem().toString();
-		String tipoSeguro = cbxTipoDeSeguro.getSelectedItem().toString();
-		double descuento = 0.0;
-		
-		switch ( tipoSeguro )
+		for ( int ind = 0; ind < cedulaUsuario.length(); ind++ )
 		{
-			case "Seguro de Responsabilidad Médica":
-				descuento = 0.40;
-				break;
-			case "Equipo Médico":
-				descuento = 0.60;
-				break;
-			case "Salud para pacientes":
-				descuento = 0.75;
-				break;
-			default:
-				JOptionPane.showMessageDialog( null, "Seleccione un tipo de seguro.", "Error", JOptionPane.ERROR_MESSAGE );
-				return;		
+			if ( cedulaUsuario.charAt( ind ) != cedulaSeguro.charAt( ind ) )
+			{
+				return false;
+			}
 		}
 		
-		Seguro seguro = new Seguro ( idSeguro, nombreEmpresa, tipoSeguro, descuento );
-		Clinica.getInstance().agregarSeguro( seguro );
-		JOptionPane.showMessageDialog( null, "Seguro agregado a su sesión. " + ( descuento * 100 ) + "%." );
+		return true;
 		
 	}
 	
