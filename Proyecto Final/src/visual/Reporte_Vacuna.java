@@ -1,8 +1,17 @@
 package visual;
 
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.util.ArrayList;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import logico.Clinica;
+import logico.Control_vacunacion;
+import logico.Paciente;
+import logico.vacunacion;
 
 public class Reporte_Vacuna extends JFrame {
 
@@ -10,7 +19,9 @@ public class Reporte_Vacuna extends JFrame {
     private JTextField txt_code_paciente;
     private JTextField txt_nombre_paciente;
     private JTable table;
-    private DefaultTableModel model;
+    private static DefaultTableModel model;
+    private JButton btnVerReporte;
+    private JPanel panelBotones;
 
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
@@ -54,12 +65,12 @@ public class Reporte_Vacuna extends JFrame {
         txt_nombre_paciente.setBounds(428, 21, 186, 32);
         panelFormulario.add(txt_nombre_paciente);
 
-        JPanel panelBotones = new JPanel();
+        panelBotones = new JPanel();
         panelBotones.setBounds(0, 448, 842, 45);
         panelFormulario.add(panelBotones);
         panelBotones.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-        JButton btnVerReporte = new JButton("Ver Reporte");
+        btnVerReporte = new JButton("Ver Reporte");
         
         btnVerReporte.addActionListener(e -> mostrarVista("tabla"));
         panelBotones.add(btnVerReporte);
@@ -69,6 +80,46 @@ public class Reporte_Vacuna extends JFrame {
         panelBotones.add(btnCancelar);
 
         contentPanel.add(panelFormulario, "formulario");
+        
+        txt_code_paciente.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                buscarPaciente(txt_code_paciente.getText());
+            }
+        });
+    }
+    
+    private void buscarPaciente(String codigoPaciente)
+    {
+        Paciente paciente = Control_vacunacion.verificar_code_paciente(codigoPaciente); 
+        if (paciente != null)
+        {
+            txt_nombre_paciente.setText(paciente.getNombre()); 
+        } else {
+            txt_nombre_paciente.setText(""); 
+        }
+    }
+
+    public static void load_vacu() 
+    {
+        model.setRowCount(0); 
+        ArrayList<Control_vacunacion> controles = Clinica.getInstance().getControl_vacu();
+
+        for (Control_vacunacion control : controles)
+        {
+            if (control instanceof vacunacion) { 
+                vacunacion vacu = (vacunacion) control; 
+
+                Object[] row = new Object[5];
+                row[0] = vacu.getCodVacu(); 
+                row[1] = vacu.getCodigoPaciente(); 
+                row[2] = vacu.getTipoVacuna();
+                row[3] = vacu.getCant_ml(); 
+                row[4] = vacu.getFecha(); 
+
+                model.addRow(row);
+            }
+        }
     }
 
     private void initTablaPanel() {
@@ -91,6 +142,7 @@ public class Reporte_Vacuna extends JFrame {
         panelTabla.add(panelBotones, BorderLayout.SOUTH);
 
         contentPanel.add(panelTabla, "tabla");
+        load_vacu();
     }
 
     private void mostrarVista(String vista) {

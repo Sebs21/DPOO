@@ -147,7 +147,7 @@ public class Visual_vacunacion extends JFrame {
 
     private void guardarVacunacion(ActionEvent e) {
         try {
-            String codigoPaciente = txtCodePaciente.getText().trim();
+            String codigoPaciente = txtCodePaciente.getText();
             String tipoVacuna = listVacuna.getSelectedItem().toString();
             float cantMl = ((Number) spnCantMl.getValue()).floatValue();
             int codigo =Integer.parseInt(txtCodeVacu.getText().replace("VA-", ""));
