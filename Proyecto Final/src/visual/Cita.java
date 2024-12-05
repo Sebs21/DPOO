@@ -22,13 +22,16 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JSpinner;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.border.SoftBevelBorder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.border.BevelBorder;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Cita extends JDialog 
 {
@@ -40,13 +43,15 @@ public class Cita extends JDialog
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtEdadPaciente;
 	private JSpinner spnFechaCita;
-	private JComboBox cbxDoctor;
-	
 	private JTextField txtIdCita;
 	private JTextField txtPacienteSesion;
 	
-	private User pacienteSelect = Clinica.getLoginUser();
+	private User pacienteSelect = Clinica.getInstance().getLoginUser();
 	private Paciente pacienteCita = Clinica.getInstance().buscarPacienteByCedula( pacienteSelect.getPass() );
+	private JTable tableDoctores;
+	private static Object[] doctoresRow;
+	private static DefaultTableModel modelo;
+	
 
 	/**
 	 * Launch the application.
@@ -75,27 +80,21 @@ public class Cita extends JDialog
 		}
 		
 		setTitle("Registrar Cita");
-		setBounds(100, 100, 334, 368);
+		setBounds(100, 100, 767, 344);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		setLocationRelativeTo( null );
-		setModal(true);
-		
-		JLabel lblNewLabel = new JLabel("Doctor:");
-		lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		lblNewLabel.setBounds(40, 66, 56, 16);
-		contentPanel.add(lblNewLabel);
 		
 		JLabel lblPaciente = new JLabel("Paciente:");
 		lblPaciente.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		lblPaciente.setBounds(40, 95, 59, 16);
+		lblPaciente.setBounds(37, 66, 59, 16);
 		contentPanel.add(lblPaciente);
 		
 		JLabel lblEdad = new JLabel("Edad:");
 		lblEdad.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		lblEdad.setBounds(37, 124, 59, 16);
+		lblEdad.setBounds(37, 95, 59, 16);
 		contentPanel.add(lblEdad);
 		
 		txtEdadPaciente = new JTextField();
@@ -104,26 +103,20 @@ public class Cita extends JDialog
 		txtEdadPaciente.setEditable(false);
 		txtEdadPaciente.setEnabled(false);
 		txtEdadPaciente.setColumns(10);
-		txtEdadPaciente.setBounds(133, 121, 155, 22);
+		txtEdadPaciente.setBounds(133, 92, 155, 22);
 		contentPanel.add(txtEdadPaciente);
 		
 		JLabel lblFechaDeLa = new JLabel("Fecha de la Cita:");
 		lblFechaDeLa.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		lblFechaDeLa.setBounds(90, 176, 118, 16);
+		lblFechaDeLa.setBounds(92, 141, 118, 16);
 		contentPanel.add(lblFechaDeLa);
 		
 		spnFechaCita = new JSpinner();
 		spnFechaCita.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		spnFechaCita.setBounds(60, 205, 165, 37);
+		spnFechaCita.setBounds(60, 170, 165, 37);
 		spnFechaCita.setModel( new SpinnerDateModel( new Date(), null, null, Calendar.DAY_OF_MONTH ) );
 		
 		contentPanel.add(spnFechaCita);
-		
-		cbxDoctor = new JComboBox();
-		cbxDoctor.setModel(new DefaultComboBoxModel(new String[] {"< Seleccione  >  "}));
-		cbxDoctor.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		cbxDoctor.setBounds(133, 63, 155, 22);
-		contentPanel.add(cbxDoctor);
 		
 		JLabel lblIdCita = new JLabel("ID cita:");
 		lblIdCita.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
@@ -145,8 +138,50 @@ public class Cita extends JDialog
 		txtPacienteSesion.setEnabled(false);
 		txtPacienteSesion.setEditable(false);
 		txtPacienteSesion.setColumns(10);
-		txtPacienteSesion.setBounds(133, 92, 155, 22);
+		txtPacienteSesion.setBounds(133, 63, 155, 22);
 		contentPanel.add(txtPacienteSesion);
+		
+		JPanel panelDoctores = new JPanel();
+		panelDoctores.setBounds(338, 24, 388, 204);
+		contentPanel.add(panelDoctores);
+		panelDoctores.setLayout(null);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(0, 0, 388, 204);
+		panelDoctores.add(scrollPane);
+		
+		tableDoctores = new JTable();
+		modelo = new DefaultTableModel();
+		String[] identificadores = { "Nombre", "Especialidad" };
+		modelo.setColumnIdentifiers( identificadores );
+		tableDoctores.setModel( modelo );
+		tableDoctores.addMouseListener(new MouseAdapter() 
+		{
+			@Override
+			public void mouseClicked(MouseEvent arg0) 
+			{
+				int selectedRow = tableDoctores.getSelectedRow();
+				
+				if ( selectedRow >= 0 )
+				{
+					String nombreDoctor = ( String ) modelo.getValueAt( selectedRow, 0 );
+					String especialidadDoctor = ( String ) modelo.getValueAt( selectedRow, 1 );
+					Doctor doctorSeleccionado = Clinica.getInstance().buscarDoctorByNombreEspecialidad( nombreDoctor, especialidadDoctor );
+					
+					if ( doctorSeleccionado != null )
+					{
+						JOptionPane.showMessageDialog( null, "Doctor seleccionado" +doctorSeleccionado.getNombre(), "Información", JOptionPane.INFORMATION_MESSAGE );
+					}
+					else
+					{
+						JOptionPane.showMessageDialog( null, "Error seleccionando doctor.", "Error", JOptionPane.ERROR_MESSAGE );
+					}
+					
+				}
+				
+			}
+		});
+		scrollPane.setViewportView(tableDoctores);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null ) );
@@ -158,29 +193,32 @@ public class Cita extends JDialog
 				{
 					public void actionPerformed( ActionEvent arg0 ) 
 					{
-						if ( cbxDoctor.getSelectedIndex() == 0 )
-						{
-							JOptionPane.showMessageDialog( null, "Debe ingresar un Doctor y un Paciente." );
-						}
-						else
-						{
-							
-							String idCita = txtIdCita.getText();
-							Doctor doctorSelect = ( Doctor ) cbxDoctor.getSelectedItem();
-							String cedulaPaciente = pacienteCita.getCedula();
-							Date fechaCita = ( Date ) spnFechaCita.getValue();
-							
-							if ( pacienteCita == null )
-							{
-								JOptionPane.showMessageDialog( null, "Paciente no encontrado", "Error", JOptionPane.ERROR_MESSAGE );
-								return;
-							}
-							
-							logico.Cita cita = new logico.Cita( idCita, doctorSelect, pacienteCita, fechaCita );
-							Clinica.getInstance().agregarCita( cita );
-							JOptionPane.showMessageDialog( null, " Registro Exitoso ", "Información", JOptionPane.INFORMATION_MESSAGE );
-							clean();
-						}
+						
+						int selectedRow = tableDoctores.getSelectedRow();
+						
+				        if ( selectedRow < 0 ) 
+				        {
+				            JOptionPane.showMessageDialog( null, "Debe seleccionar un doctor.", "Advertencia", JOptionPane.WARNING_MESSAGE );
+				            return;
+				        }
+
+				        String nombreDoctor = ( String ) modelo.getValueAt( selectedRow, 0 );
+				        String especialidadDoctor = ( String ) modelo.getValueAt( selectedRow, 1 );
+				        Doctor doctorSeleccionado = Clinica.getInstance().buscarDoctorByNombreEspecialidad( nombreDoctor, especialidadDoctor );
+
+				        if ( doctorSeleccionado == null ) 
+				        {
+				            JOptionPane.showMessageDialog( null, "Error al seleccionar el doctor.", "Error", JOptionPane.ERROR_MESSAGE );
+				            return;
+				        }
+
+				        String idCita = txtIdCita.getText();
+				        Date fechaCita = ( Date ) spnFechaCita.getValue();
+
+				        logico.Cita cita = new logico.Cita( idCita, doctorSeleccionado, pacienteCita, fechaCita );
+				        Clinica.getInstance().agregarCita( cita );
+				        JOptionPane.showMessageDialog( null, "Cita registrada con éxito.", "Información", JOptionPane.INFORMATION_MESSAGE );
+				        clean();
 						
 					}
 				});
@@ -202,9 +240,8 @@ public class Cita extends JDialog
 				buttonPane.add(btnCancelar);
 			}
 		}
-		
-		updateCombosBox ();
 		datos ();
+		datosDoctor ();
 		clean ();
 		
 	}	
@@ -241,26 +278,25 @@ public class Cita extends JDialog
 		    
 	}
 	
-	private void updateCombosBox ()
+	public void clean ()
 	{
+		txtIdCita.setText( " C - " +Clinica.getInstance().idCita );
+		txtPacienteSesion.setText("");
+		txtEdadPaciente.setText("");
+	}
+	
+	public void datosDoctor ()
+	{
+		modelo.setRowCount(0);
+		doctoresRow = new Object[2];
+		ArrayList<Doctor> aux = Clinica.getInstance().getMisDoctores();
 		
-		ArrayList<Doctor> doctores = Clinica.getInstance().getMisDoctores();
-		cbxDoctor.removeAllItems();
-		cbxDoctor.addItem( " < Seleccione > " );
-		
-		for ( Doctor doctor : doctores ) 
+		for ( Doctor doctor : aux )
 		{
-			cbxDoctor.addItem( doctor );
+			doctoresRow[0] = doctor.getNombre();
+			doctoresRow[1] = doctor.getEspecialidad();
 		}
 		
 	}
 	
-	public void clean ()
-	{
-		txtIdCita.setText( " C - " +Clinica.getInstance().idCita );
-		cbxDoctor.setSelectedItem( " < Seleccione > " );
-		txtPacienteSesion.setText("");
-		txtEdadPaciente.setText("");
-	}
 }
-

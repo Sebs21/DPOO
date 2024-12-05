@@ -691,8 +691,19 @@ public class Clinica implements Serializable
 		
 	}
 	
-	
-	
+	public Doctor buscarDoctorByNombreEspecialidad(String nombre, String especialidad) {
+	    if (nombre == null || especialidad == null || misDoctores == null || misDoctores.isEmpty()) {
+	        return null;
+	    }
+
+	    for (Doctor doc : misDoctores) {
+	        if (nombre.equals(doc.getNombre()) && especialidad.equals(doc.getEspecialidad())) {
+	            return doc;
+	        }
+	    }
+
+	    return null; 
+	}
 	
 }
 

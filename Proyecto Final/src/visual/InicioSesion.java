@@ -43,7 +43,8 @@ public class InicioSesion extends JDialog {
 	private JTextField txtNombre;
 	private JTextField txtPassword;
 	private boolean loginsuccesful = false;
-	private static final String clinica_info ="Clinica_info.dat";
+	private static final String clinica_info = "Clinica_info.dat";
+
 	/**
 	 * Launch the application.
 	 */
@@ -74,7 +75,7 @@ public class InicioSesion extends JDialog {
 					} catch (IOException ex) {
 
 						ex.printStackTrace();
-					} 
+					}
 				} catch (IOException e) {
 					e.printStackTrace();
 				} catch (ClassNotFoundException e) {
@@ -160,20 +161,21 @@ public class InicioSesion extends JDialog {
 				JButton okButton = new JButton("Iniciar Sesion");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-							
-						if (Clinica.getInstance().ConfirmarLogin(txtNombre.getText(), txtPassword.getText()) || (txtPassword.equals("Admin") && txtNombre.equals("Admin"))) {
+
+						if (Clinica.getInstance().ConfirmarLogin(txtNombre.getText(), txtPassword.getText())
+								|| (txtPassword.equals("Admin") && txtNombre.equals("Admin"))) {
 							Principal prin = new Principal();
 							loginsuccesful = true;
-					
 							dispose();
-							Clinica clinica = Clinica.cargarClinica(clinica_info);
 							
-							if(clinica !=null){
+							Clinica clinica = Clinica.cargarClinica();
+
+							if (clinica != null) {
 								Clinica.setClinica(clinica);
 							}
-							
+
 							prin.setVisible(true);
-						}	
+						}
 					}
 				});
 
@@ -193,8 +195,6 @@ public class InicioSesion extends JDialog {
 			}
 		}
 	}
-	
-	
 
 	public JTextField getTxtNombre() {
 		return txtNombre;
@@ -213,4 +213,3 @@ public class InicioSesion extends JDialog {
 	}
 
 }
-

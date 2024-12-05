@@ -190,6 +190,7 @@ public class RegistrarUsuario extends JDialog {
 						dispose();
 						InicioSesion iniSe = new InicioSesion();
 						iniSe.setVisible(true);
+						setModal(true);
 					}
 				});
 				btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 18));
