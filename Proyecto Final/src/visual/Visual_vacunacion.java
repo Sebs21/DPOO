@@ -140,7 +140,7 @@ public class Visual_vacunacion extends JFrame {
         txtCodePaciente.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
-                buscarPaciente(txtCodePaciente.getText());
+                buscarPaciente(txtCodePaciente.getText());//aqui
             }
         });
     }
@@ -178,8 +178,9 @@ public class Visual_vacunacion extends JFrame {
         }
     }
 
-    private void buscarPaciente(String codigoPaciente) {
-        Paciente paciente = Control_vacunacion.verificar_code_paciente(codigoPaciente);
+    private void buscarPaciente(String codigoPaciente)//aqui
+    {
+        Paciente paciente = Control_vacunacion.verificar_code_paciente(codigoPaciente);//aqui
         if (paciente != null) {
             txtNombrePaciente.setText(paciente.getNombre());
            
