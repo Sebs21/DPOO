@@ -2,7 +2,6 @@ package logico;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 public class Control_vacunacion implements Serializable
 {
 	/**
@@ -10,7 +9,7 @@ public class Control_vacunacion implements Serializable
 	 */
 	private static final long serialVersionUID = 1L;
 	private Consulta consulta;
-	  private HashMap<Integer, Paciente> pacientes; 
+	  private static ArrayList<Paciente> pacientes; 
 	    private static ArrayList<vacunacion> vacunaciones; 
 	    private static ArrayList<Paciente>panc;
 	    
@@ -18,7 +17,7 @@ public class Control_vacunacion implements Serializable
 	
 	
 		public Control_vacunacion() {
-		    this.pacientes = new HashMap<>();
+			 Control_vacunacion.setPacientes(new ArrayList<>());
 		    Control_vacunacion.vacunaciones = new ArrayList<>();
 		    Control_vacunacion.panc = new ArrayList<>();
 		}
@@ -37,16 +36,7 @@ public class Control_vacunacion implements Serializable
 
 
 
-		public HashMap<Integer, Paciente> getPacientes() {
-			return pacientes;
-		}
-
-
-
-		public void setPacientes(HashMap<Integer, Paciente> pacientes) {
-			this.pacientes = pacientes;
-		}
-
+		
 
 
 		public static ArrayList<vacunacion> getVacunaciones() {
@@ -111,6 +101,18 @@ public class Control_vacunacion implements Serializable
 
 	public void setPanc(ArrayList<Paciente> panc) {
 		Control_vacunacion.panc = panc;
+	}
+
+
+
+	public static ArrayList<Paciente> getPacientes() {
+		return pacientes;
+	}
+
+
+
+	public static void setPacientes(ArrayList<Paciente> pacientes) {
+		Control_vacunacion.pacientes = pacientes;
 	}
 	    
 	

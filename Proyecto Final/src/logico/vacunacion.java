@@ -78,6 +78,11 @@ public class vacunacion extends Control_vacunacion implements Serializable
 	public void setCant_ml(float cant_ml) {
 		this.cant_ml = cant_ml;
 	}
+
+	public Object getFecha() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 	
