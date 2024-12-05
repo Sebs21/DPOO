@@ -166,11 +166,11 @@ public class InicioSesion extends JDialog {
 							loginsuccesful = true;
 					
 							dispose();
-							//Clinica clinica = Clinica.cargarClinica(clinica_info);
+							Clinica clinica = Clinica.cargarClinica(clinica_info);
 							
-							//if(clinica !=null){
-							//	Clinica.setClinica(clinica);
-							//}
+							if(clinica !=null){
+								Clinica.setClinica(clinica);
+							}
 							
 							prin.setVisible(true);
 						}	

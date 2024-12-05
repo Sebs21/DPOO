@@ -287,8 +287,7 @@ public class Consultar extends JDialog
 
 	public void actualizarCampos(Doctor doctor, Paciente paciente) {
 		txtDoctor.setText(doctor.getNombre());
-		txtIdConsulta.setText("CONS-" + System.currentTimeMillis());
-
+		txtIdConsulta.setText("C-" + Clinica.getInstance().getIdConsulta());
 		txtNombre.setText(paciente.getNombre());
 		txtApellido.setText(paciente.getApellido());
 		txtCedula.setText(paciente.getCedula());
