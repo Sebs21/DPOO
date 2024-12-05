@@ -68,7 +68,7 @@ public class Control_vacunacion implements Serializable
 	 
 	 public static Paciente verificar_code_paciente(String codigo)
 	 {
-		 for(Paciente pac: pacientes)//aqui
+		 for(Paciente pac: pacientes)
 		 {
 			 if(pac.getCedula().equalsIgnoreCase(codigo))
 			 {

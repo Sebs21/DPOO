@@ -39,13 +39,14 @@ public class CerrarSesion extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		setLocationRelativeTo(null);
-		setModal(true);
+
 		
 		JButton btnNewButton = new JButton("Iniciar Sesion");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			InicioSesion iniSe = new InicioSesion();
 			iniSe.setVisible(true);
+			setModal(true);
 			}
 		});
 		btnNewButton.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
@@ -57,7 +58,7 @@ public class CerrarSesion extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 			RegistrarUsuario regUser = new RegistrarUsuario();
 			regUser.setVisible(true);
-			regUser.setModal(true);
+			setModal(true);
 			}
 		});
 		btnRegistrarNuevoUsuario.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 14));

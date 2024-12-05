@@ -110,6 +110,7 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				InterfazDoctor interDoc = new InterfazDoctor();
 				interDoc.setVisible(true);
+				interDoc.setModal(true);
 			}
 		});
 		btnInterfaz.setFont(new Font("Segoe UI", Font.PLAIN, 16));
@@ -120,6 +121,7 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Facturacion factura = new Facturacion();
 				factura.setVisible(true);
+				factura.setModal(true);
 			}
 		});
 		btnFacturar.setFont(new Font("Segoe UI", Font.PLAIN, 16));
@@ -135,6 +137,7 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				ListadoGeneral lista = new ListadoGeneral();
 				lista.setVisible(true);
+				lista.setModal(true);
 				 
 			}
 		});
@@ -150,7 +153,6 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				Visual_Control_enfermedades enfe = new Visual_Control_enfermedades();
 				enfe.setVisible(true);
-
 			}
 		});
 		btnEnfermedadesVigilancia.add(btn_Registro_Vigilancia);
@@ -160,7 +162,6 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Reporte_control_enfermedades repor_enfe  = new Reporte_control_enfermedades();
 				repor_enfe.setVisible(true);
-
 			}
 		});
 		btn_Reporte_Vigilancia.setFont(new Font("Segoe UI", Font.PLAIN, 16));
@@ -174,10 +175,7 @@ public class Principal extends JFrame {
 		btnregistro_vacuna.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Visual_vacunacion vacu = new Visual_vacunacion();
-				vacu.setVisible(true);
-				
-				
-				
+				vacu.setVisible(true);				
 			}
 		});
 		btnregistro_vacuna.setFont(new Font("Segoe UI", Font.PLAIN, 16));
@@ -188,7 +186,6 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				Reporte_Vacuna repor = new Reporte_Vacuna();
 				repor.setVisible(true);
-				
 			}
 		});
 		btnReporteDeVacuna.setFont(new Font("Segoe UI", Font.PLAIN, 16));
@@ -199,6 +196,7 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				CerrarSesion cerrar = new CerrarSesion();
 				cerrar.setVisible(true); 
+				cerrar.setModal(true);
 				dispose();
 			}
 		});
@@ -208,6 +206,7 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				Cita cita = new Cita();
 				cita.setVisible(true);
+				cita.setModal(true);
 			}
 		});
 
@@ -217,6 +216,7 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				SeguroPaciente segPaciente = new SeguroPaciente();
 				segPaciente.setVisible(true);
+				segPaciente.setModal(true);
 			}
 		});
 		menuBar.add(btnSeguro);

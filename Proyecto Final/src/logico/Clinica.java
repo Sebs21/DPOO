@@ -24,6 +24,7 @@ public class Clinica implements Serializable
 	private ArrayList<Doctor> misDoctores;
 	private ArrayList<Seguro> misSeguros;
 	private ArrayList<User> misUsuarios;
+	private ArrayList<vacunacion> misvacunas;
 	
 	public static int idDoctor;
 	public static int idPaciente;
@@ -253,6 +254,14 @@ public class Clinica implements Serializable
 
 	public ArrayList<Control_enfermedad> getControl_enfer() {
 		return control_enfer;
+	}
+
+	public ArrayList<vacunacion> getMisvacunas() {
+		return misvacunas;
+	}
+
+	public void setMisvacunas(ArrayList<vacunacion> misvacunas) {
+		this.misvacunas = misvacunas;
 	}
 
 	public void setControl_enfer(ArrayList<Control_enfermedad> control_enfer) {

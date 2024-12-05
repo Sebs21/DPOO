@@ -22,6 +22,7 @@ import javax.swing.border.SoftBevelBorder;
 import logico.Clinica;
 import logico.Paciente;
 import logico.Seguro;
+import logico.User;
 
 public class SeguroPaciente extends JDialog {
 
@@ -99,11 +100,13 @@ public class SeguroPaciente extends JDialog {
 		
 		btnBuscar = new JButton("Buscar");
 		btnBuscar.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				
 				Paciente paciente = Clinica.getInstance().buscarPacienteByCedula( txtCedulaPaciente.getText() );
-				
+				User us = Clinica.getInstance().getLoginUser();
+				txtCedulaPaciente.setText(us.getPass());
 				if ( paciente != null )
 				{
 					

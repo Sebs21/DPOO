@@ -109,6 +109,11 @@ public class Paciente extends Persona
 	public void setMiFactura(ArrayList<Facturar> miFactura) {
 		this.miFactura = miFactura;
 	}
+
+	public void agregarVacuna(vacunacion newVacu) {
+		
+		miVacuna.add(newVacu);
+	}
 	
 }
 

@@ -215,6 +215,15 @@ public class Consultar extends JDialog
 		panel_2.add(btnHistoriaClinica);
 
 		JButton btnVerVacunas = new JButton("Ver vacunas");
+		btnVerVacunas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				VacunaXPaciente vacuPaciente = new VacunaXPaciente();
+				vacuPaciente.ListVacunas(txtCedula.getText());
+				
+				vacuPaciente.setVisible(true);
+				vacuPaciente.setModal(true);
+			}
+		});
 		btnVerVacunas.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
 		btnVerVacunas.setBounds(315, 300, 165, 37);
 		panel_2.add(btnVerVacunas);
