@@ -42,7 +42,7 @@ public class VacunaXPaciente extends JDialog {
         setTitle("Vacunas del Paciente");
         setBounds(100, 100, 600, 400);
         getContentPane().setLayout(new BorderLayout());
-
+        setLocationRelativeTo(null);
         tableModel = new DefaultTableModel();
         String[] columnNames = {"Nombre de Vacuna", "ML", "Fecha"};
         tableModel.setColumnIdentifiers(columnNames);

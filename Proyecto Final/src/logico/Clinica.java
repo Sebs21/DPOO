@@ -244,14 +244,7 @@ public class Clinica implements Serializable
 	        return control_vacu;
 	        
 	    }    
-	    
-	    //terminar de agregar paciente
-	    
 	
-	
-	
-	
-
 	public ArrayList<Control_enfermedad> getControl_enfer() {
 		return control_enfer;
 	}

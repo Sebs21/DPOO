@@ -23,6 +23,7 @@ import logico.Clinica;
 import logico.Doctor;
 import logico.Paciente;
 import logico.User;
+import javax.swing.JLabel;
 
 public class InterfazDoctor extends JDialog {
 
@@ -55,10 +56,10 @@ public class InterfazDoctor extends JDialog {
         getContentPane().add(contentPanel, BorderLayout.CENTER);
         contentPanel.setLayout(null);
 
-        doctorLogin = doctorLogin();
+       doctorLogin = doctorLogin();
 
         if (doctorLogin == null) {
-            dispose();
+           dispose();
             return;
         }
 
@@ -127,7 +128,7 @@ public class InterfazDoctor extends JDialog {
         String[] headersCitas = {"Edad", "Nombre", "Apellido", "Seguro"};
         modeloCitas.setColumnIdentifiers(headersCitas);
         tblCitas.setModel(modeloCitas);
-
+        
         actualizarTablaConsultas(doctorLogin.getCedula());
         actualizarTablaCitas();
     }
@@ -168,13 +169,12 @@ public class InterfazDoctor extends JDialog {
         }
     }
 
-	private Doctor doctorLogin() {
-		User usuario = Clinica.getInstance().getLoginUser();
-		Doctor doc = Clinica.getInstance().buscarDoctorByCedula(usuario.getPass());
-	    if (doc != null) {
-	        return doc;
-	    }
-	    return null;
-	}
-	
+    private Doctor doctorLogin() {
+        User usuario = Clinica.getInstance().getLoginUser();
+        if (usuario == null) {
+            return null; 
+        }
+
+        return Clinica.getInstance().buscarDoctorByCedula(usuario.getPass());
+    }
 }
