@@ -1,89 +1,65 @@
 package logico;
 
 import java.io.Serializable;
-import java.util.Date;
 
-public class vacunacion extends Control_vacunacion implements Serializable
-{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int cod_Vacu;
-	private String tipo_Vacuna;
-	private Date fecha_Vacunacion;
-	private boolean verifica;
-	 private String codigoPaciente; 
-	 private float cant_ml;
-	
+public class vacunacion implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
+    private String idVacuna;
+    private String nombre;
+    private String fabricante;
+    private int cantidadDisponible; // ATRIBUTO CLAVE PARA EL INVENTARIO
 
-	
-	
+    public vacunacion(String idVacuna, String nombre, String fabricante) {
+        this.idVacuna = idVacuna;
+        this.nombre = nombre;
+        this.fabricante = fabricante;
+        this.cantidadDisponible = 0; // Inicia en 0 por defecto
+    }
 
-	public vacunacion(int cod_Vacu, String tipo_Vacuna, Date fecha_Vacunacion, boolean verifica, String codigo_paciente,
-			float cant_ml) {
-		super();
-		this.cod_Vacu = cod_Vacu;
-		this.tipo_Vacuna = tipo_Vacuna;
-		this.fecha_Vacunacion = fecha_Vacunacion;
-		this.verifica = verifica;
-		this.codigoPaciente = codigo_paciente;
-		this.setCant_ml(cant_ml);
-	}
+    // Métodos para manejar el stock
+    public void agregarStock(int cantidad) {
+        if (cantidad > 0) {
+            this.cantidadDisponible += cantidad;
+        }
+    }
 
-	public int getCodVacu() {
-		return cod_Vacu;
-	}
-	
-	public void setcodVacu(int cod_Vacu) {
-		this.cod_Vacu = cod_Vacu;
-	}
-	
-	public String getTipoVacuna() {
-		return tipo_Vacuna;
-	}
-	
-	public void setTipoVacuna(String tipoVacuna) {
-		this.tipo_Vacuna = tipoVacuna;
-	}
-	
-	public Date getFechaVacunacion() {
-		return fecha_Vacunacion;
-	}
-	
-	public void setFechaVacunacion(Date fechaVacunacion) {
-		this.fecha_Vacunacion = fechaVacunacion;
-	}
-	
-	public boolean isVerifica() {
-		return verifica;
-	}
-	
-	public void setVerifica(boolean verifica) {
-		this.verifica = verifica;
-	}
+    public void descontarStock(int cantidad) {
+        if (cantidad > 0 && this.cantidadDisponible >= cantidad) {
+            this.cantidadDisponible -= cantidad;
+        }
+    }
 
-	public String getCodigoPaciente() {
-		return codigoPaciente;
-	}
+    // Getters y Setters
+    public int getCantidadDisponible() {
+        return cantidadDisponible;
+    }
 
-	public void setCodigoPaciente(String codigoPaciente) {
-		this.codigoPaciente = codigoPaciente;
-	}
+    public void setCantidadDisponible(int cantidadDisponible) {
+        this.cantidadDisponible = cantidadDisponible;
+    }
 
-	public float getCant_ml() {
-		return cant_ml;
-	}
+    public String getIdVacuna() {
+        return idVacuna;
+    }
 
-	public void setCant_ml(float cant_ml) {
-		this.cant_ml = cant_ml;
-	}
+    public void setIdVacuna(String idVacuna) {
+        this.idVacuna = idVacuna;
+    }
 
-	public Object getFecha() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
-	
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getFabricante() {
+        return fabricante;
+    }
+
+    public void setFabricante(String fabricante) {
+        this.fabricante = fabricante;
+    }
 }

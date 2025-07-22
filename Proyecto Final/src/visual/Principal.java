@@ -1,6 +1,7 @@
 package visual;
 
 import java.awt.Color;
+
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -19,7 +20,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
@@ -68,7 +68,7 @@ public class Principal extends JFrame {
 				FileOutputStream clinica2;
 				ObjectOutputStream clinicaWrite;
 				try {
-					clinica2 = new FileOutputStream("Clinica.dat");
+					clinica2 = new FileOutputStream("Clinica_info.dat");
 					clinicaWrite = new ObjectOutputStream(clinica2);
 					clinicaWrite.writeObject(Clinica.getInstance());
 
@@ -230,7 +230,7 @@ public class Principal extends JFrame {
 		mntmNewMenuItem.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuBar.add(mntmNewMenuItem);
 
-		if (Clinica.getLoginUser().getTipo().equalsIgnoreCase("Paciente") )
+		/*if (Clinica.getLoginUser().getTipo().equalsIgnoreCase("Paciente") )
 		{
 			btnAdministracion.setEnabled(false);
 			btnResumenes.setEnabled(false);
@@ -258,6 +258,8 @@ public class Principal extends JFrame {
 			btnCita.setEnabled(false);
 			btnSeguro.setEnabled(false);
 		}
+		*/
+		
 	}
 }
 

@@ -3,92 +3,71 @@ package logico;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Bajo_vigilancia extends Control_enfermedad implements Serializable {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private String codVigilancia;
-	private String enfermedad;
-	private float tiempoVigilancia;
-	 private String codigoPaciente; 
-	 private String codigodoctor; 
-	 private Date fecha_enfemeda_vigi;
-	//
-	
-	 
-	 
-	 
+public class Bajo_vigilancia implements Serializable {
+    private static final long serialVersionUID = 1L;
 
-	public String getCodVigilancia() {
-		return codVigilancia;
-	}
+    private Paciente paciente;
+    private String enfermedad;
+    private Doctor doctorResponsable;
+    private Date fechaInicio;
+    private String estado; // Ej: "Activa", "Resuelta"
+    private Consulta consultaOrigen;
 
-	
+    public Bajo_vigilancia(Paciente paciente, String enfermedad, Doctor doctorResponsable, Date fechaInicio, Consulta consultaOrigen) {
+        this.paciente = paciente;
+        this.enfermedad = enfermedad;
+        this.doctorResponsable = doctorResponsable;
+        this.fechaInicio = fechaInicio;
+        this.estado = "Activa"; // Por defecto, una nueva vigilancia está activa
+        this.consultaOrigen = consultaOrigen;
+    }
 
-	public Bajo_vigilancia(String codVigilancia, String enfermedad, float tiempoVigilancia, 
-			String codigoPaciente, String codigodoctor, Date fecha_Vacunacion) {
-		super();
-		this.codVigilancia = codVigilancia;
-		this.enfermedad = enfermedad;
-		this.tiempoVigilancia = tiempoVigilancia;
-	
-		this.codigoPaciente = codigoPaciente;
-		this.codigodoctor = codigodoctor;
-		this.fecha_enfemeda_vigi = fecha_Vacunacion;
-	}
+    // Getters y Setters para todos los atributos
+    public Paciente getPaciente() {
+        return paciente;
+    }
 
+    public void setPaciente(Paciente paciente) {
+        this.paciente = paciente;
+    }
 
+    public String getEnfermedad() {
+        return enfermedad;
+    }
 
-	public String getCodigoPaciente() {
-		return codigoPaciente;
-	}
+    public void setEnfermedad(String enfermedad) {
+        this.enfermedad = enfermedad;
+    }
 
-	public void setCodigoPaciente(String codigoPaciente) {
-		this.codigoPaciente = codigoPaciente;
-	}
+    public Doctor getDoctorResponsable() {
+        return doctorResponsable;
+    }
 
-	public String getCodigodoctor() {
-		return codigodoctor;
-	}
+    public void setDoctorResponsable(Doctor doctorResponsable) {
+        this.doctorResponsable = doctorResponsable;
+    }
 
-	public void setCodigodoctor(String codigodoctor) {
-		this.codigodoctor = codigodoctor;
-	}
+    public Date getFechaInicio() {
+        return fechaInicio;
+    }
 
-	public void setTiempoVigilancia(float tiempoVigilancia) {
-		this.tiempoVigilancia = tiempoVigilancia;
-	}
+    public void setFechaInicio(Date fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
 
-	public void setCodVigilancia(String codVigilancia) {
-		this.codVigilancia = codVigilancia;
-	}
+    public String getEstado() {
+        return estado;
+    }
 
-	public String getEnfermedad() {
-		return enfermedad;
-	}
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
 
-	public void setEnfermedad(String enfermedad) {
-		this.enfermedad = enfermedad;
-	}
+    public Consulta getConsultaOrigen() {
+        return consultaOrigen;
+    }
 
-	public float getTiempoVigilancia() {
-		return tiempoVigilancia;
-	}
-
-	public void setTiempoVigilancia(int tiempoVigilancia) {
-		this.tiempoVigilancia = tiempoVigilancia;
-	}
-
-
-
-	public Date getfecha_enfemeda_vigi() {
-		return fecha_enfemeda_vigi;
-	}
-
-	public void setfecha_enfemeda_vigi(Date fecha_Vacunacion) {
-		this.fecha_enfemeda_vigi = fecha_Vacunacion;
-	}
-	
+    public void setConsultaOrigen(Consulta consultaOrigen) {
+        this.consultaOrigen = consultaOrigen;
+    }
 }

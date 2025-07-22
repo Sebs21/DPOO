@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Clinica implements Serializable 
 {
@@ -15,11 +16,11 @@ public class Clinica implements Serializable
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private ArrayList<Consulta> misConsultas;//
+	private ArrayList<Consulta> misConsultas;
 	private ArrayList<Facturar> misFacturas;
 	private ArrayList<Cita> misCitas;
-	private ArrayList<Control_enfermedad> control_enfer;//
-	private ArrayList<Control_vacunacion> control_vacu;//
+	private ArrayList<Control_enfermedad> control_enfer;
+	private ArrayList<Control_vacunacion> control_vacu;
 	private ArrayList<Paciente> misPacientes;
 	private ArrayList<Doctor> misDoctores;
 	private ArrayList<Seguro> misSeguros;
@@ -36,10 +37,11 @@ public class Clinica implements Serializable
 	public static int idcontrolVacuna;
 	public static int idVacuna;
 	public static int idUser;
+	private ArrayList<vacunacion> inventarioDeVacunas;
+    private ArrayList<Bajo_vigilancia> misVigilancias;
 	
 	private static User LoginUser;
 	public static Clinica clinica = null;
-
 	
 	public Clinica() 
 	{
@@ -52,8 +54,10 @@ public class Clinica implements Serializable
 		misCitas = new ArrayList<>();
 		control_enfer = new ArrayList<>();
 		control_vacu = new ArrayList<>();
-		
 		misUsuarios = new ArrayList<>();
+		inventarioDeVacunas = new ArrayList<>();
+        misVigilancias = new ArrayList<>();
+		
 		
 		idPaciente = 1;
 		idDoctor = 1;
@@ -79,7 +83,7 @@ public class Clinica implements Serializable
 		return clinica;
 		
 	}
-	//guarda informacion 
+	//Guarda informacion 
 	 public void guardarClinica() 
 	 {
 	        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Clinica_info.dat"))) {
@@ -92,20 +96,31 @@ public class Clinica implements Serializable
 	    }
 
 	   
-	 public static Clinica cargarClinica() 
-	 {
-		 
+	 public static Clinica cargarClinica() {
 		    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("Clinica_info.dat"))) {
-		    	
 		        clinica = (Clinica) ois.readObject();
-		        System.out.println("Archivo no encontrado");
-
+		        System.out.println("Datos cargados exitosamente"); 
 		        return clinica;
 		    } catch (IOException | ClassNotFoundException e) {
+		        System.out.println("Archivo no encontrado o error al cargar");
 		        e.printStackTrace();
 		        return null;
 		    }
 		}
+	 
+	 public void iniciarVigilancia(Consulta consulta) {
+	        if (consulta != null) {
+	            Bajo_vigilancia nuevaVigilancia = new Bajo_vigilancia(
+	                consulta.getPaciente(),
+	                consulta.getEnfermedad(),
+	                consulta.getDoctor(),
+	                new Date(), // Fecha actual como inicio
+	                consulta
+	            );
+	            this.misVigilancias.add(nuevaVigilancia);
+	            guardarClinica(); // Si tienes un método para guardar el estado
+	        }
+	    }
 	    
 	    //agregar paciente.
 	    
@@ -248,6 +263,14 @@ public class Clinica implements Serializable
 	public ArrayList<Control_enfermedad> getControl_enfer() {
 		return control_enfer;
 	}
+	
+	public ArrayList<Bajo_vigilancia> getMisVigilancias() {
+        return misVigilancias;
+    }
+
+    public ArrayList<vacunacion> getInventarioDeVacunas() {
+        return inventarioDeVacunas;
+    }
 
 	public ArrayList<vacunacion> getMisvacunas() {
 		return misvacunas;
@@ -542,36 +565,42 @@ public class Clinica implements Serializable
 	{
 		misPacientes.remove( aux );
 		idPaciente--;
+		guardarClinica();
 	}
 	
 	public void eliminarDoctor( Doctor aux )
 	{
 		misDoctores.remove( aux );
 		idDoctor--;
+		guardarClinica();
 	}
 	
 	public void eliminarConsulta( Consulta aux )
 	{
 		misConsultas.remove( aux );
 		idConsulta--;
+		guardarClinica();
 	}
 	
 	public void eliminarFactura( Facturar aux )
 	{
 		misFacturas.remove( aux );
 		idFactura--;
+		guardarClinica();
 	}
 	
 	public void eliminarCita ( Cita aux )
 	{
 		misCitas.remove( aux );
 		idCita--;
+		guardarClinica();
 	}
 	
 	public void eliminarSeguro ( Seguro aux )
 	{
 		misSeguros.remove( aux );
 		idSeguro--;
+		guardarClinica();
 	}
 	
 
@@ -580,41 +609,48 @@ public class Clinica implements Serializable
 	{
 		misDoctores.add( aux );
 		idDoctor++;
+		guardarClinica();
 	}
 	
 	public void agregarPaciente ( Paciente aux )
 	{
 		misPacientes.add( aux );
 		idPaciente++;
+		guardarClinica();
 	}
 	
 	public void agregarConsulta ( Consulta aux )
 	{
 		misConsultas.add( aux );
 		idConsulta++;
+		guardarClinica();
 	}
 	
 	public void agregarCita ( Cita aux )
 	{
 		misCitas.add( aux );
 		idCita++;
+		guardarClinica();
 	}
 	
 	public void agregarFacturar ( Facturar aux )
 	{
 		misFacturas.add( aux );
 		idFactura++;
+		guardarClinica();
 	}
 	
 	public void agregarSeguro ( Seguro aux )
 	{
 		misSeguros.add( aux );
 		idSeguro++;
+		guardarClinica();
 	}
 	
 	public void agregarUsuario(User user) {
 		misUsuarios.add(user);
 		idUser++;
+		guardarClinica();
 	}
 	
 	
@@ -622,6 +658,7 @@ public class Clinica implements Serializable
 	{
 		control_vacu.add( aux );
 		idcontrolVacuna++;
+		guardarClinica();
 	}
 	
 	public ArrayList<Paciente> pacientesSeleccionados ()
@@ -706,6 +743,16 @@ public class Clinica implements Serializable
 
 	    return null; 
 	}
+	
+	public void agregarStockVacuna(vacunacion vacuna, int cantidad) {
+        if (inventarioDeVacunas.contains(vacuna)) {
+            vacuna.agregarStock(cantidad);
+        } else {
+            vacuna.setCantidadDisponible(cantidad);
+            inventarioDeVacunas.add(vacuna);
+        }
+        guardarClinica();
+    }
 	
 }
 
