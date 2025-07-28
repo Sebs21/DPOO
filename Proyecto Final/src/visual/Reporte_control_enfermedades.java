@@ -85,7 +85,6 @@ public class Reporte_control_enfermedades extends JDialog {
         JButton btnVerReporte = new JButton("Ver Reporte");
         btnVerReporte.addActionListener(e -> {
             String codigoPaciente = txt_code_paciente.getText();
-            load_(codigoPaciente); 
             mostrarVista("tabla");
         });
         panelBotones.add(btnVerReporte);
@@ -114,28 +113,7 @@ public class Reporte_control_enfermedades extends JDialog {
         }
     }
 
-    public static void load_(String codigoPaciente) {
-        model.setRowCount(0); 
-
-        ArrayList<Control_enfermedad> controles = Clinica.getInstance().getControl_Enfer();
-
-        for (Control_enfermedad control : controles) {
-            if (control instanceof Bajo_vigilancia) { 
-                Bajo_vigilancia vacu = (Bajo_vigilancia) control;
-
-                if (codigoPaciente.isEmpty() || vacu.getCodigoPaciente().equals(codigoPaciente)) {
-                    Object[] row = new Object[5];
-                    row[0] = vacu.getCodVigilancia();
-                    row[1] = vacu.getCodigoPaciente(); 
-                    row[2] = vacu.getCodigodoctor();
-                    row[3] = vacu.getTiempoVigilancia();
-                    row[4] = vacu.getfecha_enfemeda_vigi();
-
-                    model.addRow(row);
-                }
-            }
-        }
-    }
+    
 
     private void initTablaPanel() {
         JPanel panelTabla = new JPanel(new BorderLayout());

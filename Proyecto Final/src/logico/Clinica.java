@@ -39,8 +39,9 @@ public class Clinica implements Serializable
 	public static int idUser;
 	private ArrayList<vacunacion> inventarioDeVacunas;
     private ArrayList<Bajo_vigilancia> misVigilancias;
-	
-	private static User LoginUser;
+    private int totalVacunasAplicadas;
+    
+	private User LoginUser;
 	public static Clinica clinica = null;
 	
 	public Clinica() 
@@ -58,7 +59,7 @@ public class Clinica implements Serializable
 		inventarioDeVacunas = new ArrayList<>();
         misVigilancias = new ArrayList<>();
 		
-		
+        totalVacunasAplicadas = 0;
 		idPaciente = 1;
 		idDoctor = 1;
 		idConsulta = 1;
@@ -259,6 +260,8 @@ public class Clinica implements Serializable
 	        return control_vacu;
 	        
 	    }    
+	    
+	    
 	
 	public ArrayList<Control_enfermedad> getControl_enfer() {
 		return control_enfer;
@@ -300,11 +303,11 @@ public class Clinica implements Serializable
 		this.misUsuarios = misUsuarios;
 	}
 
-	public static User getLoginUser() {
+	public User getLoginUser() {
 		return LoginUser;
 	}
 
-	public static void setLoginUser(User loginUser) {
+	public void setLoginUser(User loginUser) {
 		LoginUser = loginUser;
 	}
 	
@@ -444,6 +447,24 @@ public class Clinica implements Serializable
 		this.misSeguros = misSeguros;
 	}
 	
+	public boolean administrarVacuna(Paciente paciente, vacunacion vacunaAUsar) {
+        if (vacunaAUsar != null && vacunaAUsar.getCantidadDisponible() > 0) {
+            // 1. Descontar del inventario
+            vacunaAUsar.descontarStock(1);
+            
+            // 2. Registrar la vacuna en el historial del paciente (si es necesario)
+            if (paciente.getMiVacuna() != null) {
+                 paciente.getMiVacuna().add(vacunaAUsar);
+            }
+            guardarClinica();
+            return true; // La operación fue exitosa
+        }
+        return false; // No hay stock o la vacuna no existe
+    }
+	
+	public int getTotalVacunasAplicadas() {
+        return totalVacunasAplicadas;
+    }
 	
 	
 	public Consulta buscarConsultaById ( String id )

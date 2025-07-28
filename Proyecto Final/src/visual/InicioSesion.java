@@ -9,6 +9,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import javax.swing.border.LineBorder;
@@ -49,40 +50,48 @@ public class InicioSesion extends JDialog {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				FileInputStream clinica = null;
-				ObjectInputStream clinicaRead = null;
-				FileOutputStream clinica2 = null;
-				ObjectOutputStream clinicaWrite = null;
+	    EventQueue.invokeLater(new Runnable() {
+	        public void run() {
+	            // --- CAMBIO: TODA LA LÓGICA DE ARRANQUE VA AQUÍ DENTRO ---
 
-				try {
-					clinica = new FileInputStream("Clinica_info.dat");
-					clinicaRead = new ObjectInputStream(clinica);
-					Clinica aux = (Clinica) clinicaRead.readObject();
-					Clinica.setClinica(aux);
-					clinica.close();
-					clinicaRead.close();
-				} catch (FileNotFoundException e) {
-					try {
-						clinica2 = new FileOutputStream("Clinica_info.dat");
-						clinicaWrite = new ObjectOutputStream(clinica2);
-						User user = new User("Admin", "Admin", "Administrador");
-						Clinica.getInstance().agregarUsuario(user);
-						clinicaWrite.writeObject(Clinica.getInstance());
-						clinicaWrite.close();
-						clinica2.close();
-					} catch (IOException ex) {
+	            // PASO 1: Intentar cargar los datos de la clínica desde el archivo.
+	            try {
+	                FileInputStream fis = new FileInputStream("Clinica_info.dat");
+	                ObjectInputStream ois = new ObjectInputStream(fis);
+	                Clinica aux = (Clinica) ois.readObject();
+	                Clinica.setClinica(aux); // Se establece la instancia cargada
+	                fis.close();
+	                ois.close();
+	            } catch (FileNotFoundException e) {
+	                // Si el archivo no existe, es el primer arranque. Se crea uno nuevo.
+	                try {
+	                    FileOutputStream fos = new FileOutputStream("Clinica_info.dat");
+	                    ObjectOutputStream oos = new ObjectOutputStream(fos);
+	                    // Se crea un usuario administrador por defecto
+	                    User user = new User("Admin", "Admin", "Administrador");
+	                    Clinica.getInstance().agregarUsuario(user);
+	                    oos.writeObject(Clinica.getInstance());
+	                    oos.close();
+	                    fos.close();
+	                } catch (IOException ex) {
+	                    // Manejar error de escritura
+	                    ex.printStackTrace();
+	                }
+	            } catch (IOException | ClassNotFoundException e) {
+	                // Manejar otros errores de carga
+	                e.printStackTrace();
+	            }
 
-						ex.printStackTrace();
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	            // PASO 2: Una vez cargados (o creados) los datos, mostrar la ventana de login.
+	            try {
+	                InicioSesion dialog = new InicioSesion();
+	                dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+	                dialog.setVisible(true);
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    });
 
 		try {
 			InicioSesion dialog = new InicioSesion();
@@ -160,23 +169,20 @@ public class InicioSesion extends JDialog {
 			{
 				JButton okButton = new JButton("Iniciar Sesion");
 				okButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
+				    public void actionPerformed(ActionEvent e) {
+				        // Se confirma el login. El método ConfirmarLogin ya establece el LoginUser.
+				        if (Clinica.getInstance().ConfirmarLogin(txtNombre.getText(), txtPassword.getText())) {
 
-						if (Clinica.getInstance().ConfirmarLogin(txtNombre.getText(), txtPassword.getText())
-								|| (txtPassword.equals("Admin") && txtNombre.equals("Admin"))) {
-							Principal prin = new Principal();
-							loginsuccesful = true;
-							dispose();
-							
-							Clinica clinica = Clinica.cargarClinica();
+				            // Si el login es correcto, simplemente se abre la ventana principal.
+				            // NO se vuelve a cargar el archivo aquí.
+				            Principal prin = new Principal();
+				            dispose(); 
+				            prin.setVisible(true); 
 
-							if (clinica != null) {
-								Clinica.setClinica(clinica);
-							}
-
-							prin.setVisible(true);
-						}
-					}
+				        } else {
+				            JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos.", "Error de Autenticación", JOptionPane.ERROR_MESSAGE);
+				        }
+				    }
 				});
 
 				okButton.setActionCommand("OK");

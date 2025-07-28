@@ -5,11 +5,11 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
-
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -23,7 +23,6 @@ import logico.Clinica;
 import logico.Doctor;
 import logico.Paciente;
 import logico.User;
-import javax.swing.JLabel;
 
 public class InterfazDoctor extends JDialog {
 
@@ -38,33 +37,28 @@ public class InterfazDoctor extends JDialog {
     private Doctor doctorLogin = null;
     private Cita cita = null;
 
-    public static void main(String[] args) {
-        try {
-            InterfazDoctor dialog = new InterfazDoctor();
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            dialog.setVisible(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public InterfazDoctor() {
-        setTitle("Listado del Doctor");
+        setTitle("Interfaz del Doctor");
         setBounds(100, 100, 1275, 803);
         getContentPane().setLayout(new BorderLayout());
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         getContentPane().add(contentPanel, BorderLayout.CENTER);
         contentPanel.setLayout(null);
+        setLocationRelativeTo(null);
+        setModal(true);
 
-       doctorLogin = doctorLogin();
+        // Se obtiene el doctor que ha iniciado sesión
+        doctorLogin = obtenerDoctorLogueado();
 
+        // Si no se encuentra un doctor (p. ej., si un admin abre la ventana), se cierra.
         if (doctorLogin == null) {
-           dispose();
+            JOptionPane.showMessageDialog(this, "No se pudo identificar al doctor. Asegúrese de iniciar sesión como un doctor.", "Error de Usuario", JOptionPane.ERROR_MESSAGE);
+            dispose();
             return;
         }
 
         JPanel panelPacientes = new JPanel();
-        panelPacientes.setBorder(new TitledBorder(new LineBorder(new Color(224, 255, 255), 3, true), "Pacientes Consultados", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+        panelPacientes.setBorder(new TitledBorder(new LineBorder(new Color(224, 255, 255), 3, true), "Historial de Pacientes Atendidos", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
         panelPacientes.setBounds(513, 11, 736, 709);
         contentPanel.add(panelPacientes);
         panelPacientes.setLayout(new BorderLayout(0, 0));
@@ -96,36 +90,38 @@ public class InterfazDoctor extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 int filaSeleccionada = tblCitas.getSelectedRow();
                 if (filaSeleccionada != -1) {
-                    consultar = new Consultar();
-                    cita = Clinica.getInstance().getMisCitas().get(filaSeleccionada);
-                    paciente = cita.getPaciente();
+                    // Se busca la cita correcta en la lista filtrada
+                    ArrayList<Cita> misCitas = obtenerCitasDelDoctor(doctorLogin);
+                    if(filaSeleccionada < misCitas.size()){
+                        cita = misCitas.get(filaSeleccionada);
+                        paciente = cita.getPaciente();
+                        
+                        consultar = new Consultar();
+                        consultar.actualizarCampos(doctorLogin, paciente);
+                        consultar.setVisible(true);
 
-                    consultar.actualizarCampos(doctorLogin, paciente);
-                    consultar.setVisible(true);
-                    consultar.setModal(true);
-
-                    actualizarTablaConsultas(doctorLogin.getCedula());
-                    actualizarTablaCitas();
+                        // Se actualizan las tablas después de cerrar la ventana de consulta
+                        actualizarTablaConsultas(doctorLogin.getCedula());
+                        actualizarTablaCitas();
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Debe seleccionar una cita para proceder.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 }
             }
         });
         buttonPane.add(btnConsulta);
 
-        JButton cancelButton = new JButton("Cancelar");
-        cancelButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
+        JButton cancelButton = new JButton("Cerrar");
+        cancelButton.addActionListener(e -> dispose());
         buttonPane.add(cancelButton);
 
         modelo = new DefaultTableModel();
-        String[] headersConsultas = {"Cédula", "Edad", "Nombre", "Apellido", "Seguro", "Enfermedad"};
+        String[] headersConsultas = {"Cédula", "Nombre", "Apellido", "Edad", "Seguro", "Último Diagnóstico"};
         modelo.setColumnIdentifiers(headersConsultas);
         tblPacientes.setModel(modelo);
 
         modeloCitas = new DefaultTableModel();
-        String[] headersCitas = {"Edad", "Nombre", "Apellido", "Seguro"};
+        String[] headersCitas = {"Nombre", "Apellido", "Edad", "Seguro"};
         modeloCitas.setColumnIdentifiers(headersCitas);
         tblCitas.setModel(modeloCitas);
         
@@ -135,46 +131,55 @@ public class InterfazDoctor extends JDialog {
 
     public void actualizarTablaCitas() {
         modeloCitas.setRowCount(0);
+        ArrayList<Cita> misCitas = obtenerCitasDelDoctor(doctorLogin);
+
+        for (Cita cita : misCitas) {
+            Paciente paciente = cita.getPaciente();
+            Object[] fila = {
+                paciente.getNombre(),
+                paciente.getApellido(),
+                paciente.getEdad(),
+                paciente.getSeguro() != null ? paciente.getSeguro().getNombreEmpresa() : "No especificado"
+            };
+            modeloCitas.addRow(fila);
+        }
+    }
+
+    private ArrayList<Cita> obtenerCitasDelDoctor(Doctor doctor) {
+        ArrayList<Cita> citasDelDoctor = new ArrayList<>();
         for (Cita cita : Clinica.getInstance().getMisCitas()) {
-            if (cita.getDoctor().equals(doctorLogin)) {
-                Paciente paciente = cita.getPaciente();
-                Object[] fila = {
-                    paciente.getEdad(),
-                    paciente.getNombre(),
-                    paciente.getApellido(),
-                    paciente.getSeguro().getNombreEmpresa()
-                };
-                modeloCitas.addRow(fila);
+            // <-- CAMBIO CRÍTICO: Se compara por cédula en lugar de por objeto
+            if (cita.getDoctor().getCedula().equalsIgnoreCase(doctor.getCedula())) {
+                citasDelDoctor.add(cita);
             }
         }
+        return citasDelDoctor;
     }
 
     public void actualizarTablaConsultas(String cedulaDoctor) {
         modelo.setRowCount(0);
         Doctor aux = Clinica.getInstance().buscarDoctorByCedula(cedulaDoctor);
-        if (aux != null) {
+        if (aux != null && aux.getMisPacientes() != null) {
             for (Paciente paciente : aux.getMisPacientes()) {
-                if (paciente.getSeleccionado()) {
-                    Object[] fila = {
-                        paciente.getCedula(),
-                        paciente.getEdad(),
-                        paciente.getNombre(),
-                        paciente.getApellido(),
-                        paciente.getSeguro().getNombreEmpresa(),
-                        paciente.getEnfermedad()
-                    };
-                    modelo.addRow(fila);
-                }
+                // Asumiendo que quieres mostrar todos los pacientes que el doctor ha visto
+                Object[] fila = {
+                    paciente.getCedula(),
+                    paciente.getNombre(),
+                    paciente.getApellido(),
+                    paciente.getEdad(),
+                    paciente.getSeguro() != null ? paciente.getSeguro().getNombreEmpresa() : "N/A",
+                    paciente.getEnfermedad() // El último diagnóstico registrado
+                };
+                modelo.addRow(fila);
             }
         }
     }
 
-    private Doctor doctorLogin() {
+    private Doctor obtenerDoctorLogueado() {
         User usuario = Clinica.getInstance().getLoginUser();
-        if (usuario == null) {
+        if (usuario == null || !usuario.getTipo().equalsIgnoreCase("Doctor")) {
             return null; 
         }
-
         return Clinica.getInstance().buscarDoctorByCedula(usuario.getPass());
     }
 }

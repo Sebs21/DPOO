@@ -230,35 +230,32 @@ public class Principal extends JFrame {
 		mntmNewMenuItem.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuBar.add(mntmNewMenuItem);
 
-		/*if (Clinica.getLoginUser().getTipo().equalsIgnoreCase("Paciente") )
+		// Asegúrate de que las correcciones en Clinica.java y InicioSesion.java estén aplicadas.
+		// Luego, elimina los comentarios de este bloque.
+
+		if (Clinica.getInstance().getLoginUser().getTipo().equalsIgnoreCase("Paciente") )
 		{
-			btnAdministracion.setEnabled(false);
-			btnResumenes.setEnabled(false);
-			btnEnfermedadesVigilancia.setEnabled(false);
-			btnVacunacion.setEnabled(true);
-			btnSeguro.setEnabled(true);
-			btnFacturar.setEnabled(false);
+		    btnAdministracion.setEnabled(false);
+		    btnResumenes.setEnabled(false);
+		    btnEnfermedadesVigilancia.setEnabled(false);
+		    btnVacunacion.setEnabled(true);
+		    btnSeguro.setEnabled(true);
+		    // Asumiendo que Facturar está dentro de Administracion, ya está deshabilitado.
 
-		} else if (Clinica.getLoginUser().getTipo().equalsIgnoreCase("Doctor")) {
-			btnAdministracion.setEnabled(true);
-			btnResumenes.setEnabled(false);
-			btnEnfermedadesVigilancia.setEnabled(true);
-			btnVacunacion.setEnabled(true);
-			btnFacturar.setEnabled(false);
-			btnCita.setEnabled(false);
-			btnSeguro.setEnabled(false);
+		} else if (Clinica.getInstance().getLoginUser().getTipo().equalsIgnoreCase("Doctor")) {
+		    btnAdministracion.setEnabled(true);
+		    btnResumenes.setEnabled(false);
+		    btnEnfermedadesVigilancia.setEnabled(true);
+		    btnVacunacion.setEnabled(true);
+		    btnCita.setEnabled(false);
+		    btnSeguro.setEnabled(false);
 
-		} else if (Clinica.getLoginUser().getTipo().equalsIgnoreCase("Administrador")) {
-			btnAdministracion.setEnabled(true);
-			btnResumenes.setEnabled(true);
-			btnEnfermedadesVigilancia.setEnabled(true);
-			btnVacunacion.setEnabled(true);
-			btnFacturar.setEnabled(true);
-			btnInterfaz.setEnabled(false);
-			btnCita.setEnabled(false);
-			btnSeguro.setEnabled(false);
+		} else if (Clinica.getInstance().getLoginUser().getTipo().equalsIgnoreCase("Administrador")) {
+		    // El administrador puede hacer todo, pero no puede crear citas para sí mismo
+		    // ni asignarse un seguro directamente desde aquí.
+		    btnCita.setEnabled(false);
+		    btnSeguro.setEnabled(false);
 		}
-		*/
 		
 	}
 }
