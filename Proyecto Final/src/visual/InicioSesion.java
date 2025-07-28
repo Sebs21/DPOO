@@ -120,7 +120,7 @@ public class InicioSesion extends JDialog {
 		JPanel panel_4 = new JPanel();
 		panel_4.setBorder(new TitledBorder(new LineBorder(new Color(95, 158, 160), 4, true), "Iniciar Sesion",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_4.setBounds(69, 11, 315, 420);
+		panel_4.setBounds(69, 11, 315, 392);
 		contentPanel.add(panel_4);
 		panel_4.setLayout(null);
 
@@ -196,10 +196,39 @@ public class InicioSesion extends JDialog {
 						dispose();
 					}
 				});
+				
+				JButton btnNewButton = new JButton("Continuar como invitado");
+				btnNewButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						User guestUser = new User("Invitado", "", "Invitado");
+						Clinica.getInstance().setLoginUser(guestUser); // Se establece como usuario activo
+						
+						// Se cierra esta ventana y se abre la principal
+						dispose();
+						Principal prin = new Principal();
+						prin.setVisible(true);
+						dispose();
+					}
+				});
+				buttonPane.add(btnNewButton);
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
 		}
+		
+		JButton btnGuest = new JButton("Continuar como Invitado");
+		btnGuest.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Se crea un usuario temporal de tipo "Invitado"
+				User guestUser = new User("Invitado", "", "Invitado");
+				Clinica.getInstance().setLoginUser(guestUser); // Se establece como usuario activo
+				
+				// Se cierra esta ventana y se abre la principal
+				dispose();
+				Principal prin = new Principal();
+				prin.setVisible(true);
+			}
+		});
 	}
 
 	public JTextField getTxtNombre() {

@@ -1,20 +1,14 @@
 package visual;
 
 import java.awt.Color;
-
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -22,16 +16,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-
 import logico.Clinica;
 
 public class Principal extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
+	private JPanel contentPanel;
 	private Dimension dim;
 	private JMenu btnResumenes;
 	private JMenu btnEnfermedadesVigilancia;
@@ -40,223 +30,199 @@ public class Principal extends JFrame {
 	private JMenuItem btnSeguro;
 	private JMenuItem btnCita;
 	private JMenuItem mntmNewMenuItem;
-	private JButton btnReporteDeVacuna ;
-	private JButton btnregistro_vacuna ;
-	//
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			Principal Frame = new Principal();
-			Frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			Frame.setVisible(true);
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public Principal() {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-
-				FileOutputStream clinica2;
-				ObjectOutputStream clinicaWrite;
-				try {
-					clinica2 = new FileOutputStream("Clinica_info.dat");
-					clinicaWrite = new ObjectOutputStream(clinica2);
-					clinicaWrite.writeObject(Clinica.getInstance());
-
-				} catch (FileNotFoundException e1) {
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					e1.printStackTrace();
+				// Guardar el estado de la clínica al cerrar la ventana principal
+				try (FileOutputStream fos = new FileOutputStream("Clinica_info.dat");
+					 ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+					oos.writeObject(Clinica.getInstance());
+				} catch (IOException ex) {
+					ex.printStackTrace();
 				}
 			}
 		});
 
-		setTitle("SIGIC");
+		setTitle("SIGIC - Sistema de Gestión de Información Clínica");
 		setIconImage(new ImageIcon(getClass().getResource("/visual/SIGIC_logo.jpg")).getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBackground(UIManager.getColor("InternalFrame.inactiveTitleGradient"));
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
 		dim = getToolkit().getScreenSize();
-		setSize(dim.width, dim.height - 35);
+		setSize(dim.width, dim.height - 40); // Ajuste para la barra de tareas
 		setLocationRelativeTo(null);
+		
+		contentPanel = new JPanel();
+		contentPanel.setBackground(UIManager.getColor("InternalFrame.inactiveTitleGradient"));
+		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPanel);
+		contentPanel.setLayout(null);
 
 		JMenuBar menuBar = new JMenuBar();
-		menuBar.setForeground(UIManager.getColor("activeCaption"));
-		menuBar.setBackground(UIManager.getColor("activeCaption"));
+		menuBar.setBackground(new Color(70, 130, 180)); // Un color más profesional
 		setJMenuBar(menuBar);
 
-		btnAdministracion = new JMenu("Administraci\u00F3n");
-		btnAdministracion.setForeground(Color.CYAN);
-
+		// --- Menú Administración ---
+		btnAdministracion = new JMenu("Administración");
 		btnAdministracion.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuBar.add(btnAdministracion);
 
-		JMenuItem btnInterfaz = new JMenuItem("Listado de citas");
-		btnInterfaz.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				InterfazDoctor interDoc = new InterfazDoctor();
-				interDoc.setVisible(true);
-				interDoc.setModal(true);
-			}
+		JMenuItem btnInterfaz = new JMenuItem("Interfaz del Doctor");
+		btnInterfaz.addActionListener(e -> {
+			InterfazDoctor interDoc = new InterfazDoctor();
+			interDoc.setVisible(true);
 		});
 		btnInterfaz.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		btnAdministracion.add(btnInterfaz);
 
 		JMenuItem btnFacturar = new JMenuItem("Facturar");
-		btnFacturar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Facturacion factura = new Facturacion();
-				factura.setVisible(true);
-				factura.setModal(true);
-			}
+		btnFacturar.addActionListener(e -> {
+			Facturacion factura = new Facturacion();
+			factura.setVisible(true);
 		});
 		btnFacturar.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		btnAdministracion.add(btnFacturar);
 
+		// --- Menú Datos Ingresados / Resúmenes ---
 		btnResumenes = new JMenu("Datos Ingresados");
 		btnResumenes.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuBar.add(btnResumenes);
 
-		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Lista General");
-		mntmNewMenuItem_2.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		mntmNewMenuItem_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ListadoGeneral lista = new ListadoGeneral();
-				lista.setVisible(true);
-				lista.setModal(true);
-				 
-			}
+		JMenuItem mntmListadoGeneral = new JMenuItem("Lista General");
+		mntmListadoGeneral.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		mntmListadoGeneral.addActionListener(e -> {
+			ListadoGeneral lista = new ListadoGeneral();
+			lista.setVisible(true);
 		});
-		btnResumenes.add(mntmNewMenuItem_2);
+		btnResumenes.add(mntmListadoGeneral);
 
+		// --- Menú Enfermedades Vigiladas ---
 		btnEnfermedadesVigilancia = new JMenu("Enfermedades Vigiladas");
 		btnEnfermedadesVigilancia.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuBar.add(btnEnfermedadesVigilancia);
 
-		JButton btn_Registro_Vigilancia = new JButton("Registro Vigilancia");
-		btn_Registro_Vigilancia.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		btn_Registro_Vigilancia.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Visual_Control_enfermedades enfe = new Visual_Control_enfermedades();
-				enfe.setVisible(true);
-				enfe.setModal(true);
-			}
+		JMenuItem btnRegistroVigilancia = new JMenuItem("Registrar Vigilancia"); // Usando JMenuItem en lugar de JButton
+		btnRegistroVigilancia.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		btnRegistroVigilancia.addActionListener(e -> {
+			Visual_Control_enfermedades enfe = new Visual_Control_enfermedades();
+			enfe.setVisible(true);
 		});
-		btnEnfermedadesVigilancia.add(btn_Registro_Vigilancia);
+		btnEnfermedadesVigilancia.add(btnRegistroVigilancia);
 
-		JButton btn_Reporte_Vigilancia = new JButton("Reporte Vigilancia");
-		btn_Reporte_Vigilancia.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Reporte_control_enfermedades repor_enfe  = new Reporte_control_enfermedades();
-				repor_enfe.setVisible(true);
-				repor_enfe.setModal(true);
-			}
+		JMenuItem btnReporteVigilancia = new JMenuItem("Reporte de Vigilancia");
+		btnReporteVigilancia.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		btnReporteVigilancia.addActionListener(e -> {
+			Reporte_control_enfermedades repor_enfe = new Reporte_control_enfermedades();
+			repor_enfe.setVisible(true);
 		});
-		btn_Reporte_Vigilancia.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		btnEnfermedadesVigilancia.add(btn_Reporte_Vigilancia);
+		btnEnfermedadesVigilancia.add(btnReporteVigilancia);
 
-		btnVacunacion = new JMenu("Vacunaci\u00F3n");
+		// --- Menú Vacunación ---
+		btnVacunacion = new JMenu("Vacunación");
 		btnVacunacion.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuBar.add(btnVacunacion);
 		
-		btnregistro_vacuna = new JButton("Registro vacuna");
-		btnregistro_vacuna.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Visual_vacunacion vacu = new Visual_vacunacion();
-				vacu.setVisible(true);		
-				vacu.setModal(true);
-			}
+		JMenuItem btnRegistroVacuna = new JMenuItem("Registrar Aplicación");
+		btnRegistroVacuna.addActionListener(e -> {
+			Visual_vacunacion vacu = new Visual_vacunacion();
+			vacu.setVisible(true);
 		});
-		btnregistro_vacuna.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		btnVacunacion.add(btnregistro_vacuna);
+		btnRegistroVacuna.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		btnVacunacion.add(btnRegistroVacuna);
 		
-		btnReporteDeVacuna= new JButton("Reporte de vacuna");
-		btnReporteDeVacuna.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Reporte_Vacuna repor = new Reporte_Vacuna();
-				repor.setVisible(true);
-				repor.setModal(true);
-			}
+		JMenuItem btnReporteDeVacuna = new JMenuItem("Reporte de Vacunas");
+		btnReporteDeVacuna.addActionListener(e -> {
+			Reporte_Vacuna repor = new Reporte_Vacuna();
+			repor.setVisible(true);
 		});
 		btnReporteDeVacuna.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		btnVacunacion.add(btnReporteDeVacuna);
 
-		mntmNewMenuItem = new JMenuItem("Cerrar sesion");
-		mntmNewMenuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				CerrarSesion cerrar = new CerrarSesion();
-				cerrar.setVisible(true); 
-				cerrar.setModal(true);
-				dispose();
-			}
-		});
-
-		btnCita = new JMenuItem("Realizar cita");
-		btnCita.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Cita cita = new Cita();
-				cita.setVisible(true);
-				cita.setModal(true);
-			}
-		});
-
+		// --- Botones directos en la barra de menú ---
 		btnSeguro = new JMenuItem("Agregar Seguro");
-		btnSeguro.setFont(new Font("Segoe UI", Font.BOLD, 18));
-		btnSeguro.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				SeguroPaciente segPaciente = new SeguroPaciente();
-				segPaciente.setVisible(true);
-				segPaciente.setModal(true);
-			}
+		btnSeguro.setFont(new Font("Segoe UI", Font.BOLD, 16));
+		btnSeguro.addActionListener(e -> {
+			SeguroPaciente segPaciente = new SeguroPaciente();
+			segPaciente.setVisible(true);
 		});
 		menuBar.add(btnSeguro);
 
-		btnCita.setFont(new Font("Segoe UI", Font.BOLD, 18));
+		btnCita = new JMenuItem("Realizar Cita");
+		btnCita.addActionListener(e -> {
+			Cita cita = new Cita();
+			cita.setVisible(true);
+		});
+		btnCita.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuBar.add(btnCita);
-		mntmNewMenuItem.setForeground(Color.RED);
-		mntmNewMenuItem.setFont(new Font("Segoe UI", Font.BOLD, 16));
-		menuBar.add(mntmNewMenuItem);
+		
+		// --- Menú de Sesión ---
+		JMenu menuSesion = new JMenu("Sesión");
+		menuSesion.setFont(new Font("Segoe UI", Font.BOLD, 16));
+		menuBar.add(menuSesion);
+		
+		JMenuItem mntmCerrarSesion = new JMenuItem("Cerrar Sesión");
+		mntmCerrarSesion.addActionListener(e -> {
+			dispose(); // Cierra la ventana principal
+			InicioSesion login = new InicioSesion(); // Vuelve a la ventana de login
+			login.setVisible(true);
+		});
+		mntmCerrarSesion.setForeground(Color.RED);
+		mntmCerrarSesion.setFont(new Font("Segoe UI", Font.BOLD, 16));
+		menuSesion.add(mntmCerrarSesion);
+		
+		JMenuItem mntmRegistrarDoctor = new JMenuItem("Registrar Doctor");
+		mntmRegistrarDoctor.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		mntmRegistrarDoctor.addActionListener(e -> {
+			RegistrarUsuario regUser = new RegistrarUsuario();
+			regUser.setVisible(true);
+		});
+		menuSesion.add(mntmRegistrarDoctor);
 
-		// Asegúrate de que las correcciones en Clinica.java y InicioSesion.java estén aplicadas.
-		// Luego, elimina los comentarios de este bloque.
 
-		if (Clinica.getInstance().getLoginUser().getTipo().equalsIgnoreCase("Paciente") )
-		{
+		// --- Bloque de Control de Permisos ---
+		// Este bloque habilita o deshabilita los menús según el tipo de usuario logueado.
+		if (Clinica.getInstance().getLoginUser() == null) {
+			// Si no hay usuario (ej., al ejecutar esta clase directamente), se cierra.
+			dispose();
+			return;
+		}
+
+		String userType = Clinica.getInstance().getLoginUser().getTipo();
+
+		if (userType.equalsIgnoreCase("Paciente")) {
 		    btnAdministracion.setEnabled(false);
 		    btnResumenes.setEnabled(false);
 		    btnEnfermedadesVigilancia.setEnabled(false);
 		    btnVacunacion.setEnabled(true);
 		    btnSeguro.setEnabled(true);
-		    // Asumiendo que Facturar está dentro de Administracion, ya está deshabilitado.
+		    btnCita.setEnabled(true);
 
-		} else if (Clinica.getInstance().getLoginUser().getTipo().equalsIgnoreCase("Doctor")) {
+		} else if (userType.equalsIgnoreCase("Doctor")) {
 		    btnAdministracion.setEnabled(true);
-		    btnResumenes.setEnabled(false);
+		    btnResumenes.setEnabled(true);
 		    btnEnfermedadesVigilancia.setEnabled(true);
 		    btnVacunacion.setEnabled(true);
 		    btnCita.setEnabled(false);
 		    btnSeguro.setEnabled(false);
 
-		} else if (Clinica.getInstance().getLoginUser().getTipo().equalsIgnoreCase("Administrador")) {
-		    // El administrador puede hacer todo, pero no puede crear citas para sí mismo
-		    // ni asignarse un seguro directamente desde aquí.
+		} else if (userType.equalsIgnoreCase("Administrador")) {
+		    btnAdministracion.setEnabled(true);
+		    btnResumenes.setEnabled(true);
+		    btnEnfermedadesVigilancia.setEnabled(true);
+		    btnVacunacion.setEnabled(true);
+		    // Los administradores no realizan citas ni se asignan seguros para sí mismos
 		    btnCita.setEnabled(false);
 		    btnSeguro.setEnabled(false);
-		}
 		
+		} else if (userType.equalsIgnoreCase("Invitado")) {
+			// El invitado solo puede realizar una cita.
+			btnAdministracion.setEnabled(false);
+			btnResumenes.setEnabled(false);
+			btnEnfermedadesVigilancia.setEnabled(false);
+			btnVacunacion.setEnabled(false);
+			btnSeguro.setEnabled(false);
+			btnCita.setEnabled(true); // La única opción habilitada
+		}
 	}
 }
-

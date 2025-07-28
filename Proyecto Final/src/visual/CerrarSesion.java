@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
 
 public class CerrarSesion extends JDialog {
 
@@ -33,7 +34,7 @@ public class CerrarSesion extends JDialog {
 	 */
 	public CerrarSesion() {
 		setTitle("Opciones");
-		setBounds(100, 100, 578, 238);
+		setBounds(100, 100, 506, 238);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -51,21 +52,8 @@ public class CerrarSesion extends JDialog {
 			}
 		});
 		btnNewButton.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		btnNewButton.setBounds(67, 67, 180, 55);
+		btnNewButton.setBounds(133, 57, 180, 55);
 		contentPanel.add(btnNewButton);
-		
-		JButton btnRegistrarNuevoUsuario = new JButton("Registrar Nuevo Usuario");
-		btnRegistrarNuevoUsuario.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			RegistrarUsuario regUser = new RegistrarUsuario();
-			regUser.setVisible(true);
-			dispose();
-			setModal(true);
-			}
-		});
-		btnRegistrarNuevoUsuario.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 14));
-		btnRegistrarNuevoUsuario.setBounds(314, 67, 180, 55);
-		contentPanel.add(btnRegistrarNuevoUsuario);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
