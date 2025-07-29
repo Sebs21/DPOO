@@ -23,7 +23,11 @@ import logico.User;
 
 public class RegistrarUsuario extends JDialog {
 
-    private final JPanel contentPanel = new JPanel();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private final JPanel contentPanel = new JPanel();
     private JTextField txtUsuario; // Nombre del Doctor
     private JTextField txtApellido;
     private JTextField txtConfirmarCedula;
@@ -147,13 +151,13 @@ public class RegistrarUsuario extends JDialog {
         JButton btnNewButton = new JButton("Cerrar");
         btnNewButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
+        		dispose();
         		Principal prin = new Principal();
         		prin.setVisible(true);
         	}
         });
         btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 16));
         buttonPane.add(btnNewButton);
-        // ... (resto de los botones)
     }
 
     private boolean validacion() {

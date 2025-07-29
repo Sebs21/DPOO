@@ -29,13 +29,10 @@ public class InterfazDoctor extends JDialog {
     private static final long serialVersionUID = 1L;
     private final JPanel contentPanel = new JPanel();
     private JTable tblPacientes;
-    private DefaultTableModel modelo;
+    private DefaultTableModel modeloPacientes;
     private JTable tblCitas;
     private DefaultTableModel modeloCitas;
-    private Consultar consultar = null;
-    private Paciente paciente = null;
     private Doctor doctorLogin = null;
-    private Cita cita = null;
 
     public InterfazDoctor() {
         setTitle("Interfaz del Doctor");
@@ -47,10 +44,8 @@ public class InterfazDoctor extends JDialog {
         setLocationRelativeTo(null);
         setModal(true);
 
-        // Se obtiene el doctor que ha iniciado sesión
         doctorLogin = obtenerDoctorLogueado();
 
-        // Si no se encuentra un doctor (p. ej., si un admin abre la ventana), se cierra.
         if (doctorLogin == null) {
             JOptionPane.showMessageDialog(this, "No se pudo identificar al doctor. Asegúrese de iniciar sesión como un doctor.", "Error de Usuario", JOptionPane.ERROR_MESSAGE);
             dispose();
@@ -90,19 +85,23 @@ public class InterfazDoctor extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 int filaSeleccionada = tblCitas.getSelectedRow();
                 if (filaSeleccionada != -1) {
-                    // Se busca la cita correcta en la lista filtrada
-                    ArrayList<Cita> misCitas = obtenerCitasDelDoctor(doctorLogin);
-                    if(filaSeleccionada < misCitas.size()){
-                        cita = misCitas.get(filaSeleccionada);
-                        paciente = cita.getPaciente();
+                    // Se busca la cita correcta en la lista filtrada de pendientes
+                    ArrayList<Cita> misCitasPendientes = obtenerCitasPendientes(doctorLogin);
+                    if (filaSeleccionada < misCitasPendientes.size()) {
+                        Cita citaSeleccionada = misCitasPendientes.get(filaSeleccionada);
                         
-                        consultar = new Consultar();
-                        consultar.actualizarCampos(doctorLogin, paciente);
-                        consultar.setVisible(true);
+                        // Se crea y muestra la ventana de consulta
+                        Consultar consultar = new Consultar(InterfazDoctor.this); 
+                        consultar.actualizarCampos(citaSeleccionada.getDoctor(), citaSeleccionada.getPaciente());
+                        consultar.setVisible(true); // La ejecución se detiene aquí hasta que se cierre la ventana
 
-                        // Se actualizan las tablas después de cerrar la ventana de consulta
-                        actualizarTablaConsultas(doctorLogin.getCedula());
-                        actualizarTablaCitas();
+                        // Al cerrar la ventana 'Consultar', se ejecuta este código
+                        // Se marca la cita como 'Completada'
+                        citaSeleccionada.setEstado("Completada");
+                        
+                        // Se actualizan ambas tablas para reflejar los cambios
+                        actualizarTablaHistorial(doctorLogin.getCedula());
+                        actualizarTablaCitasPendientes();
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "Debe seleccionar una cita para proceder.", "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -115,25 +114,29 @@ public class InterfazDoctor extends JDialog {
         cancelButton.addActionListener(e -> dispose());
         buttonPane.add(cancelButton);
 
-        modelo = new DefaultTableModel();
+        modeloPacientes = new DefaultTableModel();
         String[] headersConsultas = {"Cédula", "Nombre", "Apellido", "Edad", "Seguro", "Último Diagnóstico"};
-        modelo.setColumnIdentifiers(headersConsultas);
-        tblPacientes.setModel(modelo);
+        modeloPacientes.setColumnIdentifiers(headersConsultas);
+        tblPacientes.setModel(modeloPacientes);
 
         modeloCitas = new DefaultTableModel();
-        String[] headersCitas = {"Nombre", "Apellido", "Edad", "Seguro"};
+        String[] headersCitas = {"Nombre Paciente", "Apellido", "Edad", "Seguro"};
         modeloCitas.setColumnIdentifiers(headersCitas);
         tblCitas.setModel(modeloCitas);
         
-        actualizarTablaConsultas(doctorLogin.getCedula());
-        actualizarTablaCitas();
+        // Cargar datos iniciales en las tablas
+        actualizarTablaHistorial(doctorLogin.getCedula());
+        actualizarTablaCitasPendientes();
     }
 
-    public void actualizarTablaCitas() {
+    /**
+     * Actualiza la tabla de la izquierda para mostrar solo las citas pendientes.
+     */
+    public void actualizarTablaCitasPendientes() {
         modeloCitas.setRowCount(0);
-        ArrayList<Cita> misCitas = obtenerCitasDelDoctor(doctorLogin);
+        ArrayList<Cita> misCitasPendientes = obtenerCitasPendientes(doctorLogin);
 
-        for (Cita cita : misCitas) {
+        for (Cita cita : misCitasPendientes) {
             Paciente paciente = cita.getPaciente();
             Object[] fila = {
                 paciente.getNombre(),
@@ -145,41 +148,49 @@ public class InterfazDoctor extends JDialog {
         }
     }
 
-    private ArrayList<Cita> obtenerCitasDelDoctor(Doctor doctor) {
-        ArrayList<Cita> citasDelDoctor = new ArrayList<>();
+    /**
+     * Obtiene una lista de citas que están asignadas al doctor y tienen estado "Pendiente".
+     */
+    private ArrayList<Cita> obtenerCitasPendientes(Doctor doctor) {
+        ArrayList<Cita> citasPendientes = new ArrayList<>();
         for (Cita cita : Clinica.getInstance().getMisCitas()) {
-            // <-- CAMBIO CRÍTICO: Se compara por cédula en lugar de por objeto
-            if (cita.getDoctor().getCedula().equalsIgnoreCase(doctor.getCedula())) {
-                citasDelDoctor.add(cita);
+            if (cita.getDoctor().getCedula().equalsIgnoreCase(doctor.getCedula()) && cita.getEstado().equalsIgnoreCase("Pendiente")) {
+                citasPendientes.add(cita);
             }
         }
-        return citasDelDoctor;
+        return citasPendientes;
     }
 
-    public void actualizarTablaConsultas(String cedulaDoctor) {
-        modelo.setRowCount(0);
-        Doctor aux = Clinica.getInstance().buscarDoctorByCedula(cedulaDoctor);
-        if (aux != null && aux.getMisPacientes() != null) {
-            for (Paciente paciente : aux.getMisPacientes()) {
-                // Asumiendo que quieres mostrar todos los pacientes que el doctor ha visto
+    /**
+     * Actualiza la tabla de la derecha para mostrar el historial de pacientes atendidos por el doctor.
+     */
+    public void actualizarTablaHistorial(String cedulaDoctor) {
+        modeloPacientes.setRowCount(0);
+        Doctor doctor = Clinica.getInstance().buscarDoctorByCedula(cedulaDoctor);
+        if (doctor != null && doctor.getMisPacientes() != null) {
+            for (Paciente paciente : doctor.getMisPacientes()) {
                 Object[] fila = {
                     paciente.getCedula(),
                     paciente.getNombre(),
                     paciente.getApellido(),
                     paciente.getEdad(),
                     paciente.getSeguro() != null ? paciente.getSeguro().getNombreEmpresa() : "N/A",
-                    paciente.getEnfermedad() // El último diagnóstico registrado
+                    paciente.getEnfermedad() // Muestra el último diagnóstico registrado
                 };
-                modelo.addRow(fila);
+                modeloPacientes.addRow(fila);
             }
         }
     }
 
+    /**
+     * Obtiene el objeto Doctor correspondiente al usuario que ha iniciado sesión.
+     */
     private Doctor obtenerDoctorLogueado() {
         User usuario = Clinica.getInstance().getLoginUser();
         if (usuario == null || !usuario.getTipo().equalsIgnoreCase("Doctor")) {
             return null; 
         }
+        // La contraseña del usuario doctor es su cédula
         return Clinica.getInstance().buscarDoctorByCedula(usuario.getPass());
     }
 }

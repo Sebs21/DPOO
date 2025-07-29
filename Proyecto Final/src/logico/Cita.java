@@ -3,66 +3,61 @@ package logico;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Cita implements Serializable
-{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private String idCita;
-	private Doctor doctor;
-	private Paciente paciente;
-	private Date fechaCita;
-	private boolean seleccionado;
+public class Cita implements Serializable {
+    
+    private static final long serialVersionUID = 1L;
+    private String idCita;
+    private Doctor doctor;
+    private Paciente paciente;
+    private Date fechaCita;
+    private String estado; // <-- CAMBIO: Se añade un estado a la cita
 
-	public Cita( String idCita, Doctor doctor, Paciente paciente, Date fechaCita ) 
-	{
-		super();
-		this.idCita = idCita;
-		this.doctor = doctor;
-		this.paciente = paciente;
-		this.fechaCita = fechaCita;
-	}
-	
-	public String getIdCita() {
-		return idCita;
-	}
+    public Cita(String idCita, Doctor doctor, Paciente paciente, Date fechaCita) {
+        super();
+        this.idCita = idCita;
+        this.doctor = doctor;
+        this.paciente = paciente;
+        this.fechaCita = fechaCita;
+        this.estado = "Pendiente"; 
+    }
 
-	public void setIdCita(String idCita) {
-		this.idCita = idCita;
-	}
+    public String getEstado() {
+        return estado;
+    }
 
-	public boolean getSeleccionado() {
-		return seleccionado;
-	}
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+    
+    public String getIdCita() {
+        return idCita;
+    }
 
-	public void setSeleccionado(boolean seleccionado) {
-		this.seleccionado = seleccionado;
-	}
-	
-	public Doctor getDoctor() {
-		return doctor;
-	}
-	
-	public void setDoctor(Doctor doctor) {
-		this.doctor = doctor;
-	}
-	
-	public Date getFechaCita() {
-		return fechaCita;
-	}
-	
-	public Paciente getPaciente() {
-		return paciente;
-	}
+    public void setIdCita(String idCita) {
+        this.idCita = idCita;
+    }
 
-	public void setPaciente(Paciente paciente) {
-		this.paciente = paciente;
-	}
+    public Doctor getDoctor() {
+        return doctor;
+    }
 
-	public void setFechaCita(Date fechaCita) {
-		this.fechaCita = fechaCita;
-	}
-	
-	
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
+    }
+
+    public Paciente getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(Paciente paciente) {
+        this.paciente = paciente;
+    }
+
+    public Date getFechaCita() {
+        return fechaCita;
+    }
+
+    public void setFechaCita(Date fechaCita) {
+        this.fechaCita = fechaCita;
+    }
 }

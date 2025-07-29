@@ -71,6 +71,8 @@ public class Clinica implements Serializable
 		idVacuna = 1;
 		idUser=1;
 		
+		 inventarioDeVacunas = new ArrayList<>();
+		
 	}
 	
 	public static Clinica getInstance ()
@@ -95,6 +97,23 @@ public class Clinica implements Serializable
 	            e.printStackTrace();
 	        }
 	    }
+	 
+	 public boolean administrarVacuna(Paciente paciente, vacunacion vacunaAUsar, Date fecha, int cantMl) {
+		    if (paciente != null && vacunaAUsar != null && vacunaAUsar.getCantidadDisponible() > 0) {
+		        vacunaAUsar.descontarStock(1);
+		        
+		        // Se crea el nuevo objeto de registro con todos los detalles
+		        RegistroVacunacion nuevoRegistro = new RegistroVacunacion(vacunaAUsar, fecha, cantMl);
+		        
+		        // Se añade el registro completo al historial del paciente
+		        paciente.agregarVacunaAplicada(nuevoRegistro);
+		        
+		        totalVacunasAplicadas++;
+		        guardarClinica();
+		        return true;
+		    }
+		    return false;
+		}
 
 	   
 	 public static Clinica cargarClinica() {
@@ -115,15 +134,14 @@ public class Clinica implements Serializable
 	                consulta.getPaciente(),
 	                consulta.getEnfermedad(),
 	                consulta.getDoctor(),
-	                new Date(), // Fecha actual como inicio
+	                new Date(),
 	                consulta
 	            );
 	            this.misVigilancias.add(nuevaVigilancia);
-	            guardarClinica(); // Si tienes un método para guardar el estado
+	            guardarClinica(); 
 	        }
 	    }
 	    
-	    //agregar paciente.
 	    
 	    public void agregar_Paciente(Paciente con)
 	    {

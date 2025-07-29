@@ -2,7 +2,6 @@ package visual;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -10,17 +9,13 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import java.awt.Font;
 import javax.swing.border.LineBorder;
-
 import logico.Clinica;
 import logico.User;
-
 import javax.swing.UIManager;
 import java.awt.Color;
 import java.awt.EventQueue;
-
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
@@ -33,28 +28,20 @@ import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
 
 public class InicioSesion extends JDialog {
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
-	/**
-	 * 
-	 */
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtNombre;
 	private JTextField txtPassword;
-	private boolean loginsuccesful = false;
-	private static final String clinica_info = "Clinica_info.dat";
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+	    
 	    EventQueue.invokeLater(new Runnable() {
 	        public void run() {
-	            // --- CAMBIO: TODA LA LÓGICA DE ARRANQUE VA AQUÍ DENTRO ---
-
-	            // PASO 1: Intentar cargar los datos de la clínica desde el archivo.
+	            // Intentar cargar los datos de la clínica desde el archivo.
 	            try {
 	                FileInputStream fis = new FileInputStream("Clinica_info.dat");
 	                ObjectInputStream ois = new ObjectInputStream(fis);
@@ -64,6 +51,7 @@ public class InicioSesion extends JDialog {
 	                ois.close();
 	            } catch (FileNotFoundException e) {
 	                // Si el archivo no existe, es el primer arranque. Se crea uno nuevo.
+	                System.out.println("Archivo no encontrado, creando uno nuevo...");
 	                try {
 	                    FileOutputStream fos = new FileOutputStream("Clinica_info.dat");
 	                    ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -74,15 +62,13 @@ public class InicioSesion extends JDialog {
 	                    oos.close();
 	                    fos.close();
 	                } catch (IOException ex) {
-	                    // Manejar error de escritura
 	                    ex.printStackTrace();
 	                }
 	            } catch (IOException | ClassNotFoundException e) {
-	                // Manejar otros errores de carga
 	                e.printStackTrace();
 	            }
 
-	            // PASO 2: Una vez cargados (o creados) los datos, mostrar la ventana de login.
+	            // Una vez cargados (o creados) los datos, mostrar la ventana de login.
 	            try {
 	                InicioSesion dialog = new InicioSesion();
 	                dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -92,22 +78,12 @@ public class InicioSesion extends JDialog {
 	            }
 	        }
 	    });
-
-		try {
-			InicioSesion dialog = new InicioSesion();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 	}
 
-	/**
-	 * Create the dialog.
-	 */
+
 	public InicioSesion() {
-		setIconImage(new ImageIcon(getClass().getResource("/visual/SIGIC_logo.jpg")).getImage());
+		setIconImage(new ImageIcon(getClass().getResource("/visual/SIGIC_logo.jpg"))
+        .getImage());
 		setTitle("Inicio de Sesion");
 		setBounds(100, 100, 492, 514);
 		getContentPane().setLayout(new BorderLayout());
@@ -115,7 +91,6 @@ public class InicioSesion extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		setLocationRelativeTo(null);
-		setModal(true);
 
 		JPanel panel_4 = new JPanel();
 		panel_4.setBorder(new TitledBorder(new LineBorder(new Color(95, 158, 160), 4, true), "Iniciar Sesion",
@@ -162,89 +137,43 @@ public class InicioSesion extends JDialog {
 		panel_3.setBounds(50, 124, 205, 75);
 		panel_4.add(panel_3);
 		panel_3.setBorder(new LineBorder(UIManager.getColor("activeCaption"), 3, true));
-		{
-			JPanel buttonPane = new JPanel();
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-			{
-				JButton okButton = new JButton("Iniciar Sesion");
-				okButton.addActionListener(new ActionListener() {
-				    public void actionPerformed(ActionEvent e) {
-				        // Se confirma el login. El método ConfirmarLogin ya establece el LoginUser.
-				        if (Clinica.getInstance().ConfirmarLogin(txtNombre.getText(), txtPassword.getText())) {
-
-				            // Si el login es correcto, simplemente se abre la ventana principal.
-				            // NO se vuelve a cargar el archivo aquí.
-				            Principal prin = new Principal();
-				            dispose(); 
-				            prin.setVisible(true); 
-
-				        } else {
-				            JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos.", "Error de Autenticación", JOptionPane.ERROR_MESSAGE);
-				        }
-				    }
-				});
-
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
-			}
-			{
-				JButton cancelButton = new JButton("Cancelar");
-				cancelButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						dispose();
-					}
-				});
-				
-				JButton btnNewButton = new JButton("Continuar como invitado");
-				btnNewButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						User guestUser = new User("Invitado", "", "Invitado");
-						Clinica.getInstance().setLoginUser(guestUser); // Se establece como usuario activo
-						
-						// Se cierra esta ventana y se abre la principal
-						dispose();
-						Principal prin = new Principal();
-						prin.setVisible(true);
-						dispose();
-					}
-				});
-				buttonPane.add(btnNewButton);
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
-			}
-		}
+		
+		JPanel buttonPane = new JPanel();
+		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		getContentPane().add(buttonPane, BorderLayout.SOUTH);
 		
 		JButton btnGuest = new JButton("Continuar como Invitado");
 		btnGuest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Se crea un usuario temporal de tipo "Invitado"
 				User guestUser = new User("Invitado", "", "Invitado");
-				Clinica.getInstance().setLoginUser(guestUser); // Se establece como usuario activo
-				
-				// Se cierra esta ventana y se abre la principal
+				Clinica.getInstance().setLoginUser(guestUser);
 				dispose();
 				Principal prin = new Principal();
 				prin.setVisible(true);
 			}
 		});
-	}
+		buttonPane.add(btnGuest);
+		
+		JButton okButton = new JButton("Iniciar Sesion");
+		okButton.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        if (Clinica.getInstance().ConfirmarLogin(txtNombre.getText(), txtPassword.getText())) {
+		            Principal prin = new Principal();
+		            dispose(); 
+		            prin.setVisible(true); 
+		        } else {
+		            JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos.", "Error de Autenticación", JOptionPane.ERROR_MESSAGE);
+		        }
+		    }
+		});
 
-	public JTextField getTxtNombre() {
-		return txtNombre;
+		okButton.setActionCommand("OK");
+		buttonPane.add(okButton);
+		getRootPane().setDefaultButton(okButton);
+		
+		JButton cancelButton = new JButton("Cancelar");
+		cancelButton.addActionListener(e -> dispose());
+		cancelButton.setActionCommand("Cancel");
+		buttonPane.add(cancelButton);
 	}
-
-	public void setTxtNombre(JTextField txtNombre) {
-		this.txtNombre = txtNombre;
-	}
-
-	public boolean isLoginsuccesful() {
-		return loginsuccesful;
-	}
-
-	public void setLoginsuccesful(boolean loginsuccesful) {
-		this.loginsuccesful = loginsuccesful;
-	}
-
 }

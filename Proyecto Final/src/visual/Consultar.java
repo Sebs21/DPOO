@@ -22,7 +22,6 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 import javax.swing.SpinnerDateModel;
 import java.util.Date;
-import java.util.Random;
 import java.util.Calendar;
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
@@ -44,38 +43,23 @@ public class Consultar extends JDialog {
     private JRadioButton rdbtnImportante;
     private JTextField txtIdfactura;
     private JSpinner spnFecha;
-    private final ButtonGroup buttonGroup = new ButtonGroup(); // Grupo para los radio buttons
+    private final ButtonGroup buttonGroup = new ButtonGroup();
 
-    // <-- CAMBIO: Atributos para guardar el doctor y paciente de la consulta actual
     private Doctor doctorActual;
     private Paciente pacienteActual;
 
-    /**
-     * Launch the application.
-     */
-    public static void main(String[] args) {
-        try {
-            Consultar dialog = new Consultar();
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            dialog.setVisible(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    public Consultar(JDialog parent) {
+        super(parent, true);
 
-    /**
-     * Create the dialog.
-     */
-    public Consultar() {
         setTitle("Consulta Médica");
         setBounds(100, 100, 1047, 723);
         getContentPane().setLayout(new BorderLayout());
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         getContentPane().add(contentPanel, BorderLayout.CENTER);
         contentPanel.setLayout(null);
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(parent);
 
-        // --- Interfaz Gráfica (se mantiene igual, solo se agrupan los radio buttons) ---
+        // --- (El resto de la interfaz gráfica se mantiene igual) ---
         JPanel panel_3 = new JPanel();
 		panel_3.setBorder(new TitledBorder(new LineBorder(new Color(175, 238, 238), 4, true), "Detalles de la Consulta",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -205,8 +189,6 @@ public class Consultar extends JDialog {
 		JButton btnHistoriaClinica = new JButton("Ver Historia Clínica");
 		btnHistoriaClinica.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Este código asume que tienes una ventana llamada HistoriaXPaciente
-				// y que funciona correctamente.
 				HistoriaXPaciente hXp = new HistoriaXPaciente();
 				hXp.actualizarTabla(txtCedula.getText());
 				hXp.setVisible(true);
@@ -219,19 +201,14 @@ public class Consultar extends JDialog {
 		JButton btnVerVacunas = new JButton("Ver Vacunas");
 		btnVerVacunas.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent arg0) {
-		        // Obtener la cédula del paciente que se está consultando
 		        String cedulaPaciente = txtCedula.getText();
 		        
-		        // Crear una instancia de la ventana de reporte correcta
-		        Reporte_Vacuna reporte = new Reporte_Vacuna();
+                // <-- CAMBIO CRÍTICO: Se pasa 'Consultar.this' como padre
+		        Reporte_Vacuna reporte = new Reporte_Vacuna(Consultar.this);
 		        
-		        // Llamar a los métodos públicos de esa ventana para cargar los datos
-		        // y mostrar directamente la tabla, saltando el paso de búsqueda.
 		        reporte.load_reporte(cedulaPaciente);
-		        reporte.mostrarVista("tabla"); // Asumiendo que este método es público
-		        
+		        reporte.mostrarVista("tabla");
 		        reporte.setVisible(true);
-		        reporte.setModal(true); // Para que la ventana de consulta espere
 		    }
 		});
 		
@@ -297,26 +274,17 @@ public class Consultar extends JDialog {
 		cancelButton.addActionListener(e -> dispose());
 		cancelButton.setActionCommand("Cancel");
 		buttonPane.add(cancelButton);
-	}
+    }
 
-    /**
-     * Carga los datos del doctor y paciente en la ventana.
-     * @param doctor El doctor de la consulta.
-     * @param paciente El paciente de la consulta.
-     */
 	public void actualizarCampos(Doctor doctor, Paciente paciente) {
-        // <-- CAMBIO: Se guardan las referencias al doctor y paciente actuales
         this.doctorActual = doctor;
         this.pacienteActual = paciente;
-
-        // Se llenan los campos de texto con la información
 		txtDoctor.setText(doctor.getNombre() + " " + doctor.getApellido());
-		txtIdConsulta.setText("C-" + Clinica.getInstance().getIdConsulta());
+		txtIdConsulta.setText("C-" + Clinica.getIdConsulta());
 		txtNombre.setText(paciente.getNombre());
 		txtApellido.setText(paciente.getApellido());
 		txtCedula.setText(paciente.getCedula());
 		txtEdad.setText(paciente.getEdad());
-        // Se añade una comprobación para evitar errores si el paciente no tiene seguro
         if (paciente.getSeguro() != null) {
 		    txtSeguro.setText(paciente.getSeguro().getNombreEmpresa());
         } else {
@@ -324,44 +292,31 @@ public class Consultar extends JDialog {
         }
 	}
 
-    /**
-     * Finaliza la consulta, creando un único registro con los datos correctos.
-     */
 	public void finalizarConsulta() {
-		// <-- CAMBIO: Toda la lógica fue reescrita para ser correcta y segura
-        
-        // 1. Validar que tenemos un doctor y un paciente activos en la ventana
-		if (doctorActual == null || pacienteActual == null) {
-			JOptionPane.showMessageDialog(this, "No se ha podido identificar al doctor o al paciente.", "Error", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-        
-        // 2. Recoger los datos del formulario
-        String id = txtIdConsulta.getText();
-        String descripcion = txtDescripcion.getText();
-        String enfermedad = txtEnfermedad.getText();
-        Date fecha = (Date) spnFecha.getValue();
-        boolean esImportante = rdbtnImportante.isSelected();
+	    if (doctorActual == null || pacienteActual == null) {
+	        JOptionPane.showMessageDialog(this, "No se ha podido identificar al doctor o al paciente.", "Error", JOptionPane.ERROR_MESSAGE);
+	        return;
+	    }
+	    
+	    String id = txtIdConsulta.getText();
+	    String descripcion = txtDescripcion.getText();
+	    String enfermedad = txtEnfermedad.getText();
+	    Date fecha = (Date) spnFecha.getValue();
+	    boolean esImportante = rdbtnImportante.isSelected();
 
-        // 3. Crear UNA SOLA instancia de Consulta con los datos correctos
-		Consulta nuevaConsulta = new Consulta(
-            id,
-            0, // El ID de factura debería gestionarse en un módulo de facturación
-            descripcion,
-            enfermedad,
-            fecha,
-            txtSeguro.getText(),
-            this.doctorActual,  // Usar el doctor guardado
-            this.pacienteActual, // Usar el paciente guardado
-            esImportante
-        );
+	    Consulta nuevaConsulta = new Consulta(id, 0, descripcion, enfermedad, fecha, txtSeguro.getText(), this.doctorActual, this.pacienteActual, esImportante);
 
-        // 4. Agregar la consulta a la lista central de la clínica
-		Clinica.getInstance().agregarConsulta(nuevaConsulta);
+	    Clinica.getInstance().agregarConsulta(nuevaConsulta);
 
-		JOptionPane.showMessageDialog(this, "Consulta registrada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-        
-        // 5. Cerrar la ventana después de registrar
-        dispose();
+	    pacienteActual.agregarConsultaAlHistorial(nuevaConsulta);
+
+	    if (!this.doctorActual.getMisPacientes().contains(this.pacienteActual)) {
+	        this.doctorActual.getMisPacientes().add(this.pacienteActual);
+	    }
+	    
+	    this.pacienteActual.setEnfermedad(enfermedad);
+
+	    JOptionPane.showMessageDialog(this, "Consulta registrada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+	    dispose();
 	}
 }

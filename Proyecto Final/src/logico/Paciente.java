@@ -14,10 +14,11 @@ public class Paciente extends Persona
 	private Seguro seguro;
 	private User user;
 	
-	private ArrayList<HistoriaClinica> miHistoriaClinica;
+	private HistoriaClinica miHistoriaClinica;
 	private ArrayList<vacunacion> miVacuna;
 	private ArrayList<Facturar> miFactura;
 	private ArrayList<Bajo_vigilancia>vigi;
+	private ArrayList<RegistroVacunacion> misVacunasAplicadas;
 	
 	private boolean seleccionado;
 	private boolean consultaPagada;
@@ -27,7 +28,38 @@ public class Paciente extends Persona
 		super(cedula, nombre, apellido, edad);
 		this.idCodPaciente = idCodPaciente;
 		this.user = user;
+		
+		this.miHistoriaClinica = new HistoriaClinica();
+        this.miVacuna = new ArrayList<>();
+        this.miFactura = new ArrayList<>();
+        this.vigi = new ArrayList<>();
+        this.misVacunasAplicadas = new ArrayList<>();
 	}
+	
+	public HistoriaClinica getMiHistoriaClinica() {
+        return miHistoriaClinica;
+    }
+
+    // <-- NUEVO: Método para añadir una consulta directamente al historial
+    public void agregarConsultaAlHistorial(Consulta consulta) {
+        if (this.miHistoriaClinica == null) {
+            this.miHistoriaClinica = new HistoriaClinica();
+        }
+        this.miHistoriaClinica.getMisConsultas().add(consulta);
+    }
+	
+	
+	public ArrayList<RegistroVacunacion> getMisVacunasAplicadas() {
+        return misVacunasAplicadas;
+    }
+
+    
+    public void agregarVacunaAplicada(RegistroVacunacion registro) {
+        if (this.misVacunasAplicadas == null) {
+            this.misVacunasAplicadas = new ArrayList<>();
+        }
+        misVacunasAplicadas.add(registro);
+    }
 	
 	public boolean isConsultaPagada() {
 		return consultaPagada;
@@ -86,13 +118,6 @@ public class Paciente extends Persona
 		this.idCodPaciente = idCodPaciente;
 	}
 
-	public ArrayList<HistoriaClinica> getMiHistoriaClinica() {
-		return miHistoriaClinica;
-	}
-
-	public void setMiHistoriaClinica(ArrayList<HistoriaClinica> miHistoriaClinica) {
-		this.miHistoriaClinica = miHistoriaClinica;
-	}
 	
 	public ArrayList<vacunacion> getMiVacuna() 
 	{
@@ -112,13 +137,18 @@ public class Paciente extends Persona
 	}
 
 	public void agregarVacuna(vacunacion newVacu) {
-		
-		miVacuna.add(newVacu);
-	}
-public void agregarenfermedad(Bajo_vigilancia neewnfe) {
-		
-		vigi.add(neewnfe);
-	}
+        if(this.miVacuna == null){
+            this.miVacuna = new ArrayList<>();
+        }
+        miVacuna.add(newVacu);
+    }
+    
+    public void agregarenfermedad(Bajo_vigilancia neewnfe) {
+        if(this.vigi == null){
+            this.vigi = new ArrayList<>();
+        }
+        vigi.add(neewnfe);
+    }
 	
 }
 

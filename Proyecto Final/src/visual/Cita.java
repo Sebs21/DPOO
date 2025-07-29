@@ -3,13 +3,15 @@ package visual;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -26,24 +28,32 @@ import javax.swing.table.DefaultTableModel;
 import logico.Clinica;
 import logico.Doctor;
 import logico.Paciente;
+import logico.Seguro;
 import logico.User;
 
 public class Cita extends JDialog {
 
-    private final JPanel contentPanel = new JPanel();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private final JPanel contentPanel = new JPanel();
     private JTable tableDoctores;
     private DefaultTableModel modeloDoctores;
     
-    // Campos de texto para los datos del paciente
     private JTextField txtCedulaPaciente;
     private JTextField txtNombrePaciente;
     private JTextField txtApellidoPaciente;
     private JTextField txtEdadPaciente;
     private JSpinner spnFechaCita;
+    private JButton btnBuscarPaciente;
+    
+    
+    private JComboBox<String> cbxSeguros;
 
     public Cita() {
         setTitle("Realizar Cita");
-        setBounds(100, 100, 820, 480);
+        setBounds(100, 100, 820, 520); // Se ajusta la altura
         getContentPane().setLayout(new BorderLayout());
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -51,21 +61,25 @@ public class Cita extends JDialog {
         setLocationRelativeTo(null);
         setModal(true);
 
-        // --- Panel de Datos del Paciente ---
         JPanel panelPaciente = new JPanel();
         panelPaciente.setBorder(new TitledBorder(null, "Información del Paciente", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-        panelPaciente.setBounds(10, 20, 340, 350);
+        panelPaciente.setBounds(10, 20, 340, 390); // Se ajusta la altura
         contentPanel.add(panelPaciente);
         panelPaciente.setLayout(null);
 
+        // --- (Campos de texto para Cédula, Nombre, Apellido, Edad se mantienen igual) ---
         JLabel lblCedula = new JLabel("Cédula:");
         lblCedula.setFont(new Font("Times New Roman", Font.PLAIN, 16));
         lblCedula.setBounds(20, 40, 80, 25);
         panelPaciente.add(lblCedula);
         txtCedulaPaciente = new JTextField();
-        txtCedulaPaciente.setBounds(110, 40, 210, 25);
+        txtCedulaPaciente.setBounds(110, 40, 140, 25);
         panelPaciente.add(txtCedulaPaciente);
 
+        btnBuscarPaciente = new JButton("Buscar");
+        btnBuscarPaciente.setBounds(255, 40, 75, 25);
+        panelPaciente.add(btnBuscarPaciente);
+        
         JLabel lblNombre = new JLabel("Nombre:");
         lblNombre.setFont(new Font("Times New Roman", Font.PLAIN, 16));
         lblNombre.setBounds(20, 80, 80, 25);
@@ -81,7 +95,7 @@ public class Cita extends JDialog {
         txtApellidoPaciente = new JTextField();
         txtApellidoPaciente.setBounds(110, 120, 210, 25);
         panelPaciente.add(txtApellidoPaciente);
-
+        
         JLabel lblEdad = new JLabel("Edad:");
         lblEdad.setFont(new Font("Times New Roman", Font.PLAIN, 16));
         lblEdad.setBounds(20, 160, 80, 25);
@@ -90,20 +104,30 @@ public class Cita extends JDialog {
         txtEdadPaciente.setBounds(110, 160, 210, 25);
         panelPaciente.add(txtEdadPaciente);
 
+        // <-- CAMBIO: Se añade el JComboBox para seleccionar el seguro
+        JLabel lblSeguro = new JLabel("Seguro:");
+        lblSeguro.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+        lblSeguro.setBounds(20, 200, 80, 25);
+        panelPaciente.add(lblSeguro);
+        
+        cbxSeguros = new JComboBox<>();
+        cbxSeguros.setBounds(110, 200, 210, 25);
+        panelPaciente.add(cbxSeguros);
+        
         JLabel lblFechaDeLa = new JLabel("Fecha de la Cita:");
         lblFechaDeLa.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        lblFechaDeLa.setBounds(20, 220, 120, 25);
+        lblFechaDeLa.setBounds(20, 260, 120, 25);
         panelPaciente.add(lblFechaDeLa);
         
         spnFechaCita = new JSpinner();
         spnFechaCita.setModel(new SpinnerDateModel(new Date(), null, null, Calendar.DAY_OF_MONTH));
-        spnFechaCita.setBounds(150, 215, 170, 30);
+        spnFechaCita.setBounds(150, 255, 170, 30);
         panelPaciente.add(spnFechaCita);
         
-        // --- Panel para seleccionar al Doctor ---
+        // --- (Panel de doctores y botones se mantienen igual) ---
         JPanel panelDoctores = new JPanel();
         panelDoctores.setBorder(new TitledBorder(null, "Seleccione un Doctor Disponible", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-        panelDoctores.setBounds(360, 20, 430, 350);
+        panelDoctores.setBounds(360, 20, 430, 390);
         contentPanel.add(panelDoctores);
         panelDoctores.setLayout(new BorderLayout(0, 0));
 
@@ -117,29 +141,66 @@ public class Cita extends JDialog {
         tableDoctores.setModel(modeloDoctores);
         scrollPane.setViewportView(tableDoctores);
         
-        // --- Botones de Acción ---
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
         getContentPane().add(buttonPane, BorderLayout.SOUTH);
-
+        
         JButton btnRegistrar = new JButton("Registrar Cita");
-        btnRegistrar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                registrarCita();
-            }
-        });
+        btnRegistrar.addActionListener(e -> registrarCita());
         buttonPane.add(btnRegistrar);
-
+        
         JButton cancelButton = new JButton("Cancelar");
         cancelButton.addActionListener(e -> dispose());
         buttonPane.add(cancelButton);
 
-        // Cargar la lista de doctores al iniciar la ventana
+        // Lógica de eventos
+        btnBuscarPaciente.addActionListener(e -> buscarPaciente());
+        txtCedulaPaciente.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                buscarPaciente();
+            }
+        });
+
+        // Cargar datos iniciales
         cargarDoctores();
+        cargarSegurosDisponibles();
+    }
+
+    private void cargarSegurosDisponibles() {
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+        model.addElement("< Sin Seguro >"); // Opción por defecto
+        for (Seguro seguro : Clinica.getInstance().getMisSeguros()) {
+            model.addElement(seguro.getNombreEmpresa());
+        }
+        cbxSeguros.setModel(model);
+    }
+
+    private void buscarPaciente() {
+        String cedula = txtCedulaPaciente.getText();
+        if (cedula.trim().isEmpty()) return;
+        
+        Paciente paciente = Clinica.getInstance().buscarPacienteByCedula(cedula);
+        if (paciente != null) {
+            txtNombrePaciente.setText(paciente.getNombre());
+            txtApellidoPaciente.setText(paciente.getApellido());
+            txtEdadPaciente.setText(paciente.getEdad());
+            // Si el paciente ya tiene un seguro, lo seleccionamos en el ComboBox
+            if (paciente.getSeguro() != null) {
+                cbxSeguros.setSelectedItem(paciente.getSeguro().getNombreEmpresa());
+            } else {
+                cbxSeguros.setSelectedIndex(0);
+            }
+        } else {
+            txtNombrePaciente.setText("");
+            txtApellidoPaciente.setText("");
+            txtEdadPaciente.setText("");
+            cbxSeguros.setSelectedIndex(0);
+            JOptionPane.showMessageDialog(this, "Paciente no encontrado. Puede registrarlo llenando los campos.", "Información", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     private void registrarCita() {
-        // 1. Validar los datos del paciente
         String cedula = txtCedulaPaciente.getText();
         String nombre = txtNombrePaciente.getText();
         String apellido = txtApellidoPaciente.getText();
@@ -149,55 +210,53 @@ public class Cita extends JDialog {
             return;
         }
 
-        // 2. Validar que se seleccionó un doctor
         int selectedRow = tableDoctores.getSelectedRow();
         if (selectedRow < 0) {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un doctor de la lista.", "Error de Selección", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un doctor.", "Error", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        // 3. Obtener el doctor seleccionado de forma segura
         Doctor doctorSeleccionado = Clinica.getInstance().getMisDoctores().get(selectedRow);
 
-        // 4. Buscar o crear al paciente
         Paciente pacienteParaLaCita = Clinica.getInstance().buscarPacienteByCedula(cedula);
-        if (pacienteParaLaCita == null) { // Si el paciente no existe, se crea uno nuevo
-            // Para el nuevo paciente, se crea un User genérico. La contraseña es su cédula.
+        if (pacienteParaLaCita == null) { 
             User usuarioPaciente = new User(nombre, cedula, "Paciente");
-            
             pacienteParaLaCita = new Paciente(cedula, nombre, apellido, Clinica.getIdPaciente(), edad, usuarioPaciente);
-            
-            // Se agregan ambos objetos a la clínica
             Clinica.getInstance().agregarPaciente(pacienteParaLaCita);
             Clinica.getInstance().agregarUsuario(usuarioPaciente);
-            
-            JOptionPane.showMessageDialog(this, "Nuevo paciente registrado en el sistema.", "Paciente Nuevo", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Nuevo paciente registrado.", "Paciente Nuevo", JOptionPane.INFORMATION_MESSAGE);
         }
 
-        // 5. Crear la Cita
+        // <-- CAMBIO: Asignar el seguro seleccionado al paciente
+        int indexSeguro = cbxSeguros.getSelectedIndex();
+        if (indexSeguro > 0) { // Si se seleccionó algo diferente a "< Sin Seguro >"
+            String nombreSeguro = cbxSeguros.getSelectedItem().toString();
+            for (Seguro seguro : Clinica.getInstance().getMisSeguros()) {
+                if (seguro.getNombreEmpresa().equals(nombreSeguro)) {
+                    pacienteParaLaCita.setSeguro(seguro);
+                    break;
+                }
+            }
+        } else {
+            pacienteParaLaCita.setSeguro(null); // No se seleccionó ningún seguro
+        }
+
         String idCita = "CITA-" + Clinica.getIdCita();
         Date fechaCita = (Date) spnFechaCita.getValue();
         logico.Cita nuevaCita = new logico.Cita(idCita, doctorSeleccionado, pacienteParaLaCita, fechaCita);
         Clinica.getInstance().agregarCita(nuevaCita);
         
-        JOptionPane.showMessageDialog(this, "Cita registrada con éxito para el paciente " + pacienteParaLaCita.getNombre(), "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Cita registrada con éxito.", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
         
-        // Se cierra la ventana después de registrar
         dispose();
     }
 
-    /**
-     * Carga la lista de doctores disponibles en la tabla.
-     */
     public void cargarDoctores() {
         modeloDoctores.setRowCount(0); 
         ArrayList<Doctor> doctores = Clinica.getInstance().getMisDoctores();
         if (doctores != null) {
             for (Doctor doctor : doctores) {
-                Object[] row = new Object[3];
-                row[0] = doctor.getNombre();
-                row[1] = doctor.getApellido();
-                row[2] = doctor.getEspecialidad();
+                Object[] row = { doctor.getNombre(), doctor.getApellido(), doctor.getEspecialidad() };
                 modeloDoctores.addRow(row);
             }
         }

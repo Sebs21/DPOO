@@ -2,6 +2,7 @@ package visual;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -14,88 +15,62 @@ import logico.Clinica;
 import logico.Consulta;
 import logico.Doctor;
 import logico.Paciente;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class HistoriaXPaciente extends JDialog {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private final JPanel contentPanel = new JPanel();
-	private JTable tblConsultas;
-	private DefaultTableModel modelo;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			HistoriaXPaciente dialog = new HistoriaXPaciente();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+    private static final long serialVersionUID = 1L;
+    private final JPanel contentPanel = new JPanel();
+    private JTable tblConsultas;
+    private DefaultTableModel modelo;
 
-	/**
-	 * Create the dialog.
-	 */
-	public HistoriaXPaciente() {
-		setBounds(100, 100, 824, 513);
-		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		setLocationRelativeTo(null);
-		{
-			JPanel buttonPane = new JPanel();
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-			{
-				JButton cancelButton = new JButton("Salir");
-				cancelButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						dispose();
-					}
-				});
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
-			}
-		}
+    public HistoriaXPaciente() {
+        setBounds(100, 100, 824, 513);
+        getContentPane().setLayout(new BorderLayout());
+        contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        getContentPane().add(contentPanel, BorderLayout.CENTER);
+        setLocationRelativeTo(null);
+        setModal(true); // Para que bloquee la ventana de atrás
 
-		modelo = new DefaultTableModel();
-		String[] headers = { "Doctor", "Nombre Paciente", "Fecha", "Enfermedad" };
-		modelo.setColumnIdentifiers(headers);
-		contentPanel.setLayout(null);
-		tblConsultas = new JTable(modelo);
+        JPanel buttonPane = new JPanel();
+        buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        getContentPane().add(buttonPane, BorderLayout.SOUTH);
 
-		JScrollPane scrollPane = new JScrollPane(tblConsultas);
-		scrollPane.setBounds(10, 11, 788, 419);
-		contentPanel.add(scrollPane);
-	}
+        JButton cancelButton = new JButton("Salir");
+        cancelButton.addActionListener(e -> dispose());
+        buttonPane.add(cancelButton);
 
-	public void actualizarTabla(String cedulaPaciente) {
-		modelo.setRowCount(0);
+        modelo = new DefaultTableModel();
+        String[] headers = { "Doctor", "Paciente", "Fecha", "Diagnóstico", "Descripción", "Importancia" };
+        modelo.setColumnIdentifiers(headers);
+        contentPanel.setLayout(null);
+        tblConsultas = new JTable(modelo);
 
-		Paciente paciente = Clinica.getInstance().buscarPacienteByCedula(cedulaPaciente);
-		if (paciente != null) {
-			ArrayList<Consulta> consultas = paciente.getMiHistoriaClinica().get(0).getMisConsultas();
+        JScrollPane scrollPane = new JScrollPane(tblConsultas);
+        scrollPane.setBounds(10, 11, 788, 419);
+        contentPanel.add(scrollPane);
+    }
 
-			for (Consulta consulta : consultas) {
-				if (consulta.isImportancia()) {
-					Doctor doctor = consulta.getDoctor();
-					String nombreDoctor = doctor.getNombre() + " " + doctor.getApellido();
-					String nombrePaciente = paciente.getNombre() + " " + paciente.getApellido();
-					String fecha = consulta.getFechaConsulta().toString();
-					String enfermedad = consulta.getEnfermedad();
+    public void actualizarTabla(String cedulaPaciente) {
+        modelo.setRowCount(0);
+        Paciente paciente = Clinica.getInstance().buscarPacienteByCedula(cedulaPaciente);
 
-					Object[] fila = { nombreDoctor, nombrePaciente, fecha, enfermedad };
-					modelo.addRow(fila);
-				}
-			}
-		}
-	}
+        // <-- CAMBIO: Se lee desde la nueva estructura de datos
+        if (paciente != null && paciente.getMiHistoriaClinica() != null) {
+            ArrayList<Consulta> consultas = paciente.getMiHistoriaClinica().getMisConsultas();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
+            for (Consulta consulta : consultas) {
+                Doctor doctor = consulta.getDoctor();
+                Object[] fila = {
+                    doctor.getNombre() + " " + doctor.getApellido(),
+                    paciente.getNombre() + " " + paciente.getApellido(),
+                    sdf.format(consulta.getFechaConsulta()),
+                    consulta.getEnfermedad(),
+                    consulta.getDescripcion(),
+                    consulta.isImportancia() ? "Urgente" : "Normal"
+                };
+                modelo.addRow(fila);
+            }
+        }
+    }
 }
