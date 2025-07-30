@@ -27,7 +27,7 @@ public class Clinica implements Serializable {
     
     private static Clinica clinica = null;
 
-    // --- Contadores de IDs ---
+    
     public static int idDoctor = 1;
     public static int idPaciente = 1;
     public static int idConsulta = 1;
@@ -51,6 +51,20 @@ public class Clinica implements Serializable {
         this.misVigilancias = new ArrayList<>();
         this.misEspecialidades = new ArrayList<>();
         this.totalVacunasAplicadas = 0;
+        
+        agregarStockVacuna(new vacunacion("VAC-1", "Influenza (Gripe)", "Sanofi Pasteur", 1200.00), 200);
+        agregarStockVacuna(new vacunacion("VAC-2", "COVID-19 (Pfizer)", "Pfizer-BioNTech", 1500.00), 300);
+        agregarStockVacuna(new vacunacion("VAC-3", "COVID-19 (Moderna)", "Moderna", 1450.00), 250);
+        agregarStockVacuna(new vacunacion("VAC-4", "Tétanos, Difteria y Tos ferina (Tdap)", "GSK", 800.00), 150);
+        agregarStockVacuna(new vacunacion("VAC-5", "Sarampión, Paperas y Rubéola (MMR)", "Merck", 950.00), 180);
+        agregarStockVacuna(new vacunacion("VAC-6", "Hepatitis B", "Merck", 1100.00), 120);
+        agregarStockVacuna(new vacunacion("VAC-7", "Hepatitis A", "GSK", 1000.00), 100);
+        agregarStockVacuna(new vacunacion("VAC-8", "Virus del Papiloma Humano (VPH)", "Merck", 4500.00), 90);
+        agregarStockVacuna(new vacunacion("VAC-9", "Varicela", "Merck", 1800.00), 80);
+        agregarStockVacuna(new vacunacion("VAC-10", "Neumocócica (Prevenar 13)", "Pfizer", 2500.00), 130);
+        agregarStockVacuna(new vacunacion("VAC-11", "Meningocócica", "Sanofi Pasteur", 3000.00), 70);
+        agregarStockVacuna(new vacunacion("VAC-12", "Fiebre Amarilla", "Sanofi Pasteur", 2200.00), 50);
+
         
         misSeguros.add(new Seguro("S-1", "ARS Humano (Plan Básico)", "Básico", 0.50));
         misSeguros.add(new Seguro("S-2", "ARS Humano (Plan Superior)", "Superior", 0.85));
@@ -99,12 +113,23 @@ public class Clinica implements Serializable {
     public static int getIdEspecialidad() { return idEspecialidad; }
 
   
+    
+    
     public void guardarClinica() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Clinica_info.dat"))) {
             oos.writeObject(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    public void agregarFactura(Facturar factura) {
+        if(this.misFacturas == null) {
+            this.misFacturas = new ArrayList<>();
+        }
+        misFacturas.add(factura);
+        idFactura++;
+        guardarClinica();
     }
 
     public boolean ConfirmarLogin(String nombreUsuario, String password) {
@@ -137,21 +162,35 @@ public class Clinica implements Serializable {
             vacuna.setCantidadDisponible(cantidad);
             inventarioDeVacunas.add(vacuna);
         }
-        guardarClinica();
     }
     
-    public void iniciarVigilancia(Consulta consulta) {
+    public void iniciarVigilancia(Consulta consulta, int horas) {
         if (consulta != null) {
             Bajo_vigilancia nuevaVigilancia = new Bajo_vigilancia(
                 consulta.getPaciente(),
                 consulta.getEnfermedad(),
                 consulta.getDoctor(),
                 new Date(),
-                consulta
+                consulta,
+                horas
             );
-            this.misVigilancias.add(nuevaVigilancia);
-            guardarClinica();
+            agregarVigilancia(nuevaVigilancia); // Llama al nuevo método centralizado
         }
+    }
+    
+    public void finalizarVigilancia(Bajo_vigilancia registro) {
+        if (registro != null) {
+            registro.setEstado("Finalizada");
+            guardarClinica(); // Se guardan los cambios en el archivo
+        }
+    }
+    
+    public void agregarVigilancia(Bajo_vigilancia vigilancia) {
+        if (this.misVigilancias == null) {
+            this.misVigilancias = new ArrayList<>();
+        }
+        this.misVigilancias.add(vigilancia);
+        guardarClinica();
     }
     
     public ArrayList<Especialidad> getMisEspecialidades() {
@@ -278,5 +317,9 @@ public class Clinica implements Serializable {
 
 	public void setMisFacturas(ArrayList<Facturar> misFacturas) {
 		this.misFacturas = misFacturas;
+	}
+
+	public ArrayList<Bajo_vigilancia> getMisVigilancias() {
+		return misVigilancias;	
 	}
 }

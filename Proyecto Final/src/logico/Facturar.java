@@ -1,74 +1,38 @@
 package logico;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 
-public class Facturar implements Serializable
-{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Consulta consulta;
-	private Seguro seguro;
-	private float montoPagar;
-	private String id;
-	
-	private boolean seleccionado;
-	private double precioApagar;
+public class Facturar implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private String id;
+    private Paciente paciente;
+    private Date fecha;
+    private ArrayList<Consulta> consultasFacturadas;
+    private ArrayList<RegistroVacunacion> vacunasFacturadas;
+    private double subTotal;
+    private double descuento;
+    private double totalPagado;
 
-	public Facturar ( String id, float montoPagar )
-	{
-		this.id = id;
-		this.montoPagar = montoPagar;
-	}
-	
-	public boolean getSeleccionado() {
-		return seleccionado;
-	}
+    public Facturar(String id, Paciente paciente, Date fecha, ArrayList<Consulta> consultas, ArrayList<RegistroVacunacion> vacunas, double subTotal, double descuento, double totalPagado) {
+        this.id = id;
+        this.paciente = paciente;
+        this.fecha = fecha;
+        this.consultasFacturadas = consultas;
+        this.vacunasFacturadas = vacunas;
+        this.subTotal = subTotal;
+        this.descuento = descuento;
+        this.totalPagado = totalPagado;
+    }
 
-	public void setSeleccionado(boolean seleccionado) {
-		this.seleccionado = seleccionado;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public float getMontoPagar() {
-		return montoPagar;
-	}
-
-	public void setMontoPagar(float montoPagar) {
-		this.montoPagar = montoPagar;
-	}
-
-	public Consulta getConsulta() {
-		return consulta;
-	}
-
-	public void setConsulta(Consulta consulta) {
-		this.consulta = consulta;
-	}
-
-	public Seguro getSeguro() {
-		return seguro;
-	}
-
-	public void setSeguro(Seguro seguro) {
-		this.seguro = seguro;
-	}
-	
-	public double getPrecioApagar() {
-		return precioApagar;
-	}
-
-	public void setPrecioApagar(double precioApagar) {
-		this.precioApagar = precioApagar;
-	}
-	
-	
+    // --- Getters ---
+    public String getId() { return id; }
+    public Paciente getPaciente() { return paciente; }
+    public Date getFecha() { return fecha; }
+    public ArrayList<Consulta> getConsultasFacturadas() { return consultasFacturadas; }
+    public ArrayList<RegistroVacunacion> getVacunasFacturadas() { return vacunasFacturadas; }
+    public double getSubTotal() { return subTotal; }
+    public double getDescuento() { return descuento; }
+    public double getTotalPagado() { return totalPagado; }
 }

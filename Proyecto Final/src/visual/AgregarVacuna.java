@@ -3,8 +3,6 @@ package visual;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -19,18 +17,16 @@ import logico.vacunacion;
 
 public class AgregarVacuna extends JDialog {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private final JPanel contentPanel = new JPanel();
+    private static final long serialVersionUID = 1L;
+    private final JPanel contentPanel = new JPanel();
     private JTextField txtNombreVacuna;
     private JTextField txtFabricante;
     private JSpinner spnCantidad;
+    private JSpinner spnPrecio; // <-- CAMBIO: Se añade un spinner para el precio
 
     public AgregarVacuna() {
         setTitle("Agregar Nueva Vacuna al Inventario");
-        setBounds(100, 100, 450, 300);
+        setBounds(100, 100, 480, 350); // Se ajusta el tamaño
         getContentPane().setLayout(new BorderLayout());
         contentPanel.setBorder(new TitledBorder(null, "Datos de la Vacuna", TitledBorder.LEADING, TitledBorder.TOP, null, null));
         getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -44,9 +40,8 @@ public class AgregarVacuna extends JDialog {
         contentPanel.add(lblNombre);
 
         txtNombreVacuna = new JTextField();
-        txtNombreVacuna.setBounds(190, 50, 200, 25);
+        txtNombreVacuna.setBounds(220, 50, 200, 25);
         contentPanel.add(txtNombreVacuna);
-        txtNombreVacuna.setColumns(10);
 
         JLabel lblFabricante = new JLabel("Fabricante:");
         lblFabricante.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -54,18 +49,28 @@ public class AgregarVacuna extends JDialog {
         contentPanel.add(lblFabricante);
 
         txtFabricante = new JTextField();
-        txtFabricante.setBounds(190, 90, 200, 25);
+        txtFabricante.setBounds(220, 90, 200, 25);
         contentPanel.add(txtFabricante);
-        txtFabricante.setColumns(10);
+
+        JLabel lblPrecio = new JLabel("Precio Unitario (RD$):");
+        lblPrecio.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblPrecio.setBounds(30, 130, 150, 25);
+        contentPanel.add(lblPrecio);
+
+        // <-- CAMBIO: Se añade el JSpinner para el precio -->
+        spnPrecio = new JSpinner();
+        spnPrecio.setModel(new SpinnerNumberModel(100.0, 0.0, 100000.0, 50.0));
+        spnPrecio.setBounds(220, 130, 100, 25);
+        contentPanel.add(spnPrecio);
 
         JLabel lblCantidad = new JLabel("Cantidad Inicial (Stock):");
         lblCantidad.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        lblCantidad.setBounds(30, 130, 150, 25);
+        lblCantidad.setBounds(30, 170, 150, 25);
         contentPanel.add(lblCantidad);
 
         spnCantidad = new JSpinner();
-        spnCantidad.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
-        spnCantidad.setBounds(190, 130, 80, 25);
+        spnCantidad.setModel(new SpinnerNumberModel(1, 1, null, 1));
+        spnCantidad.setBounds(220, 170, 100, 25);
         contentPanel.add(spnCantidad);
 
         JPanel buttonPane = new JPanel();
@@ -73,11 +78,7 @@ public class AgregarVacuna extends JDialog {
         getContentPane().add(buttonPane, BorderLayout.SOUTH);
 
         JButton okButton = new JButton("Agregar al Inventario");
-        okButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                agregarVacuna();
-            }
-        });
+        okButton.addActionListener(e -> agregarVacuna());
         buttonPane.add(okButton);
         getRootPane().setDefaultButton(okButton);
 
@@ -89,21 +90,22 @@ public class AgregarVacuna extends JDialog {
     private void agregarVacuna() {
         String nombre = txtNombreVacuna.getText();
         String fabricante = txtFabricante.getText();
+        double precio = (Double) spnPrecio.getValue(); // <-- CAMBIO: Se obtiene el precio
         int cantidad = (Integer) spnCantidad.getValue();
 
         if (nombre.trim().isEmpty() || fabricante.trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Debe completar todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
         
         String idVacuna = "VAC-" + (Clinica.getInstance().getInventarioDeVacunas().size() + 1);
 
-        vacunacion nuevaVacuna = new vacunacion(idVacuna, nombre, fabricante);
+        // <-- CAMBIO CRÍTICO: Se pasa el precio al constructor -->
+        vacunacion nuevaVacuna = new vacunacion(idVacuna, nombre, fabricante, precio);
         
         Clinica.getInstance().agregarStockVacuna(nuevaVacuna, cantidad);
 
-        JOptionPane.showMessageDialog(this, "Vacuna '" + nombre + "' agregada al inventario con " + cantidad + " unidades.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Vacuna '" + nombre + "' agregada al inventario.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         dispose();
     }
 }

@@ -52,6 +52,7 @@ public class InterfazDoctor extends JDialog {
             return;
         }
 
+        // --- (Paneles de Citas y Pacientes se mantienen igual) ---
         JPanel panelPacientes = new JPanel();
         panelPacientes.setBorder(new TitledBorder(new LineBorder(new Color(224, 255, 255), 3, true), "Historial de Pacientes Atendidos", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
         panelPacientes.setBounds(513, 11, 736, 709);
@@ -76,32 +77,39 @@ public class InterfazDoctor extends JDialog {
         tblCitas = new JTable();
         scrollPaneCitas.setViewportView(tblCitas);
 
+        // --- Panel de Botones ---
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
         getContentPane().add(buttonPane, BorderLayout.SOUTH);
+
+        // <-- CAMBIO: Se añade el nuevo botón para gestionar vigilancias -->
+        JButton btnGestionarVigilancia = new JButton("Gestionar Vigilancias");
+        btnGestionarVigilancia.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                GestionarVigilancia Gv = new GestionarVigilancia(InterfazDoctor.this);
+                Gv.setVisible(true);
+            }
+        });
+        buttonPane.add(btnGestionarVigilancia);
 
         JButton btnConsulta = new JButton("Proceder a Consulta");
         btnConsulta.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 int filaSeleccionada = tblCitas.getSelectedRow();
                 if (filaSeleccionada != -1) {
-                    // Se busca la cita correcta en la lista filtrada de pendientes
                     ArrayList<Cita> misCitasPendientes = obtenerCitasPendientes(doctorLogin);
                     if (filaSeleccionada < misCitasPendientes.size()) {
                         Cita citaSeleccionada = misCitasPendientes.get(filaSeleccionada);
                         
-                        // Se crea y muestra la ventana de consulta
                         Consultar consultar = new Consultar(InterfazDoctor.this); 
                         consultar.actualizarCampos(citaSeleccionada.getDoctor(), citaSeleccionada.getPaciente());
-                        consultar.setVisible(true); // La ejecución se detiene aquí hasta que se cierre la ventana
+                        consultar.setVisible(true);
 
-                        // Al cerrar la ventana 'Consultar', se ejecuta este código
-                        // Se marca la cita como 'Completada'
-                        citaSeleccionada.setEstado("Completada");
-                        
-                        // Se actualizan ambas tablas para reflejar los cambios
-                        actualizarTablaHistorial(doctorLogin.getCedula());
-                        actualizarTablaCitasPendientes();
+                        if (consultar.isConsultaFinalizada()) {
+                            citaSeleccionada.setEstado("Completada");
+                            actualizarTablaHistorial(doctorLogin.getCedula());
+                            actualizarTablaCitasPendientes();
+                        }
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "Debe seleccionar una cita para proceder.", "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -114,6 +122,7 @@ public class InterfazDoctor extends JDialog {
         cancelButton.addActionListener(e -> dispose());
         buttonPane.add(cancelButton);
 
+        // --- (El resto del constructor se mantiene igual) ---
         modeloPacientes = new DefaultTableModel();
         String[] headersConsultas = {"Cédula", "Nombre", "Apellido", "Edad", "Seguro", "Último Diagnóstico"};
         modeloPacientes.setColumnIdentifiers(headersConsultas);
@@ -124,14 +133,11 @@ public class InterfazDoctor extends JDialog {
         modeloCitas.setColumnIdentifiers(headersCitas);
         tblCitas.setModel(modeloCitas);
         
-        // Cargar datos iniciales en las tablas
         actualizarTablaHistorial(doctorLogin.getCedula());
         actualizarTablaCitasPendientes();
     }
 
-    /**
-     * Actualiza la tabla de la izquierda para mostrar solo las citas pendientes.
-     */
+    // --- (El resto de la clase se mantiene sin cambios) ---
     public void actualizarTablaCitasPendientes() {
         modeloCitas.setRowCount(0);
         ArrayList<Cita> misCitasPendientes = obtenerCitasPendientes(doctorLogin);
@@ -148,9 +154,6 @@ public class InterfazDoctor extends JDialog {
         }
     }
 
-    /**
-     * Obtiene una lista de citas que están asignadas al doctor y tienen estado "Pendiente".
-     */
     private ArrayList<Cita> obtenerCitasPendientes(Doctor doctor) {
         ArrayList<Cita> citasPendientes = new ArrayList<>();
         for (Cita cita : Clinica.getInstance().getMisCitas()) {
@@ -161,9 +164,6 @@ public class InterfazDoctor extends JDialog {
         return citasPendientes;
     }
 
-    /**
-     * Actualiza la tabla de la derecha para mostrar el historial de pacientes atendidos por el doctor.
-     */
     public void actualizarTablaHistorial(String cedulaDoctor) {
         modeloPacientes.setRowCount(0);
         Doctor doctor = Clinica.getInstance().buscarDoctorByCedula(cedulaDoctor);
@@ -175,22 +175,18 @@ public class InterfazDoctor extends JDialog {
                     paciente.getApellido(),
                     paciente.getEdad(),
                     paciente.getSeguro() != null ? paciente.getSeguro().getNombreEmpresa() : "N/A",
-                    paciente.getEnfermedad() // Muestra el último diagnóstico registrado
+                    paciente.getEnfermedad()
                 };
                 modeloPacientes.addRow(fila);
             }
         }
     }
 
-    /**
-     * Obtiene el objeto Doctor correspondiente al usuario que ha iniciado sesión.
-     */
     private Doctor obtenerDoctorLogueado() {
         User usuario = Clinica.getInstance().getLoginUser();
         if (usuario == null || !usuario.getTipo().equalsIgnoreCase("Doctor")) {
             return null; 
         }
-        // La contraseña del usuario doctor es su cédula
         return Clinica.getInstance().buscarDoctorByCedula(usuario.getPass());
     }
 }

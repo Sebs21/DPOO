@@ -18,21 +18,43 @@ public class Consulta implements Serializable
 	private Doctor doctor;
 	private Paciente paciente;
 	private boolean importancia; 
+	private double precio;      // <-- CAMBIO: Se añade el precio
+    private boolean pagada;
 	
-	public Consulta(String id, int idFactura, String descripcion, String enfermedad, Date fechaConsulta,
-			String seguro, Doctor doctor, Paciente paciente, boolean importancia) {
-		super();
-		this.id = id;
-		this.idFactura = idFactura;
-		this.descripcion = descripcion;
-		this.enfermedad = enfermedad;
-		this.fechaConsulta = fechaConsulta;
-		this.seguro = seguro;
-		this.doctor = doctor;
-		this.paciente = paciente;
-		this.importancia = importancia;
-	}
+    public Consulta(String id, int idFactura, String descripcion, String enfermedad, Date fechaConsulta,
+            String seguro, Doctor doctor, Paciente paciente, boolean importancia, double precio) { // Se añade precio al constructor
+        super();
+        this.id = id;
+        this.idFactura = idFactura;
+        this.descripcion = descripcion;
+        this.enfermedad = enfermedad;
+        this.fechaConsulta = fechaConsulta;
+        this.seguro = seguro;
+        this.doctor = doctor;
+        this.paciente = paciente;
+        this.importancia = importancia;
+        this.precio = precio;       // <-- CAMBIO
+        this.pagada = false;        // <-- CAMBIO: Por defecto, una consulta no está pagada
+    }
 
+	
+	public double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+
+    public boolean isPagada() {
+        return pagada;
+    }
+
+    public void setPagada(boolean pagada) {
+        this.pagada = pagada;
+    }
+	
+	
 	public int getIdFactura() {
 		return idFactura;
 	}

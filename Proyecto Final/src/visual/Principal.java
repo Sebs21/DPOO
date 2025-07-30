@@ -38,9 +38,7 @@ public class Principal extends JFrame {
 		setTitle("SIGIC - Sistema de Gestión de Información Clínica");
 		setIconImage(new ImageIcon(getClass().getResource("/visual/SIGIC_logo.jpg")).getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
-		dim = getToolkit().getScreenSize();
-		setSize(dim.width, dim.height - 40);
+		setSize(1920, 1080);
 		setLocationRelativeTo(null);
 		
 		contentPane = new JPanel();
@@ -53,7 +51,6 @@ public class Principal extends JFrame {
 		menuBar.setBackground(new Color(70, 130, 180));
 		setJMenuBar(menuBar);
 
-		// --- Menú Administración ---
 		btnAdministracion = new JMenu("Administración");
 		btnAdministracion.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuBar.add(btnAdministracion);
@@ -63,7 +60,6 @@ public class Principal extends JFrame {
 			InterfazDoctor interDoc = new InterfazDoctor();
 			interDoc.setVisible(true);
 		});
-		btnInterfaz.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		btnAdministracion.add(btnInterfaz);
 
 		JMenuItem btnFacturar = new JMenuItem("Facturar");
@@ -71,7 +67,6 @@ public class Principal extends JFrame {
 			Facturacion factura = new Facturacion();
 			factura.setVisible(true);
 		});
-		btnFacturar.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		btnAdministracion.add(btnFacturar);
 
         JMenuItem btnAgregarVacuna = new JMenuItem("Gestionar Inventario de Vacunas");
@@ -79,7 +74,6 @@ public class Principal extends JFrame {
             AgregarVacuna dialog = new AgregarVacuna();
             dialog.setVisible(true);
         });
-        btnAgregarVacuna.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         btnAdministracion.add(btnAgregarVacuna);
 
         JMenuItem btnAgregarSeguro = new JMenuItem("Gestionar Seguros");
@@ -87,7 +81,6 @@ public class Principal extends JFrame {
             AgregarSeguro dialog = new AgregarSeguro();
             dialog.setVisible(true);
         });
-        btnAgregarSeguro.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         btnAdministracion.add(btnAgregarSeguro);
         
         JMenuItem btnAgregarEspecialidad = new JMenuItem("Gestionar Especialidades");
@@ -95,44 +88,32 @@ public class Principal extends JFrame {
             AgregarEspecialidad dialog = new AgregarEspecialidad();
             dialog.setVisible(true);
         });
-        btnAgregarEspecialidad.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         btnAdministracion.add(btnAgregarEspecialidad);
 
-		// --- Menú Datos Ingresados / Resúmenes ---
 		btnResumenes = new JMenu("Datos Ingresados");
 		btnResumenes.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuBar.add(btnResumenes);
 
 		JMenuItem mntmListadoGeneral = new JMenuItem("Lista General");
-		mntmListadoGeneral.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		mntmListadoGeneral.addActionListener(e -> {
 			ListadoGeneral lista = new ListadoGeneral();
 			lista.setVisible(true);
 		});
 		btnResumenes.add(mntmListadoGeneral);
 
-		// --- Menú Enfermedades Vigiladas ---
 		btnEnfermedadesVigilancia = new JMenu("Enfermedades Vigiladas");
 		btnEnfermedadesVigilancia.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuBar.add(btnEnfermedadesVigilancia);
 
-		JMenuItem btnRegistroVigilancia = new JMenuItem("Registrar Vigilancia");
-		btnRegistroVigilancia.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		btnRegistroVigilancia.addActionListener(e -> {
-			Visual_Control_enfermedades enfe = new Visual_Control_enfermedades();
-			enfe.setVisible(true);
-		});
-		btnEnfermedadesVigilancia.add(btnRegistroVigilancia);
+		// <-- CAMBIO: Se elimina el botón "Registrar Vigilancia" de aquí -->
 
 		JMenuItem btnReporteVigilancia = new JMenuItem("Reporte de Vigilancia");
-		btnReporteVigilancia.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		btnReporteVigilancia.addActionListener(e -> {
 			Reporte_control_enfermedades repor_enfe = new Reporte_control_enfermedades();
 			repor_enfe.setVisible(true);
 		});
 		btnEnfermedadesVigilancia.add(btnReporteVigilancia);
 
-		// --- Menú Vacunación ---
 		btnVacunacion = new JMenu("Vacunación");
 		btnVacunacion.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuBar.add(btnVacunacion);
@@ -142,7 +123,6 @@ public class Principal extends JFrame {
 			Visual_vacunacion vacu = new Visual_vacunacion();
 			vacu.setVisible(true);
 		});
-		btnRegistroVacuna.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		btnVacunacion.add(btnRegistroVacuna);
 		
 		JMenuItem btnReporteDeVacuna = new JMenuItem("Reporte de Vacunas");
@@ -150,13 +130,10 @@ public class Principal extends JFrame {
 		    Reporte_Vacuna repor = new Reporte_Vacuna(this);
 		    repor.setVisible(true);
 		});
-		btnReporteDeVacuna.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		btnVacunacion.add(btnReporteDeVacuna);
-		
 		
 		menuBar.add(Box.createHorizontalGlue());
 
-		// --- Botón de Cita (Ahora como JMenu para consistencia) ---
 		JMenu menuCita = new JMenu("Citas");
 		menuCita.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		btnCita = new JMenuItem("Realizar Cita");
@@ -164,17 +141,14 @@ public class Principal extends JFrame {
 			Cita cita = new Cita();
 			cita.setVisible(true);
 		});
-		btnCita.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		menuCita.add(btnCita);
 		menuBar.add(menuCita);
 		
-		// --- Menú de Sesión (Alineado a la derecha) ---
 		JMenu menuSesion = new JMenu("Sesión");
 		menuSesion.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuBar.add(menuSesion);
 		
 		JMenuItem mntmRegistrarDoctor = new JMenuItem("Registrar Doctor");
-		mntmRegistrarDoctor.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		mntmRegistrarDoctor.addActionListener(e -> {
 			RegistrarUsuario regUser = new RegistrarUsuario();
 			regUser.setVisible(true);
@@ -190,8 +164,8 @@ public class Principal extends JFrame {
 			login.setVisible(true);
 		});
 		mntmCerrarSesion.setForeground(Color.RED);
-		mntmCerrarSesion.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuSesion.add(mntmCerrarSesion);
+		
 		
 		if (Clinica.getInstance().getLoginUser() == null) {
 			dispose();

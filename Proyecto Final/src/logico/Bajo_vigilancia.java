@@ -12,17 +12,28 @@ public class Bajo_vigilancia implements Serializable {
     private Date fechaInicio;
     private String estado;
     private Consulta consultaOrigen;
+    private int horasVigilancia; // <-- CAMBIO: Se añade el campo para las horas
 
-    public Bajo_vigilancia(Paciente paciente, String enfermedad, Doctor doctorResponsable, Date fechaInicio, Consulta consultaOrigen) {
+    public Bajo_vigilancia(Paciente paciente, String enfermedad, Doctor doctorResponsable, Date fechaInicio, Consulta consultaOrigen, int horasVigilancia) {
         this.paciente = paciente;
         this.enfermedad = enfermedad;
         this.doctorResponsable = doctorResponsable;
         this.fechaInicio = fechaInicio;
-        this.estado = "Activa"; // Por defecto, una nueva vigilancia está activa
+        this.estado = "Activa";
         this.consultaOrigen = consultaOrigen;
+        this.horasVigilancia = horasVigilancia; // <-- CAMBIO: Se asignan las horas
     }
 
-    // Getters y Setters para todos los atributos
+    // --- Getters y Setters ---
+    public int getHorasVigilancia() {
+        return horasVigilancia;
+    }
+
+    public void setHorasVigilancia(int horasVigilancia) {
+        this.horasVigilancia = horasVigilancia;
+    }
+    
+    // (El resto de los getters y setters se mantienen igual)
     public Paciente getPaciente() {
         return paciente;
     }
