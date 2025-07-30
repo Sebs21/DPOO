@@ -10,7 +10,7 @@ public class Bajo_vigilancia implements Serializable {
     private String enfermedad;
     private Doctor doctorResponsable;
     private Date fechaInicio;
-    private String estado; // Ej: "Activa", "Resuelta"
+    private String estado;
     private Consulta consultaOrigen;
 
     public Bajo_vigilancia(Paciente paciente, String enfermedad, Doctor doctorResponsable, Date fechaInicio, Consulta consultaOrigen) {

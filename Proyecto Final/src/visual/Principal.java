@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -24,7 +25,6 @@ public class Principal extends JFrame {
 	private JMenu btnEnfermedadesVigilancia;
 	private JMenu btnVacunacion;
 	private JMenu btnAdministracion;
-	private JMenuItem btnSeguro;
 	private JMenuItem btnCita;
 	
 	public Principal() {
@@ -74,7 +74,6 @@ public class Principal extends JFrame {
 		btnFacturar.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		btnAdministracion.add(btnFacturar);
 
-        // <-- CAMBIO: Se añade la nueva opción para agregar vacunas
         JMenuItem btnAgregarVacuna = new JMenuItem("Gestionar Inventario de Vacunas");
         btnAgregarVacuna.addActionListener(e -> {
             AgregarVacuna dialog = new AgregarVacuna();
@@ -83,7 +82,23 @@ public class Principal extends JFrame {
         btnAgregarVacuna.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         btnAdministracion.add(btnAgregarVacuna);
 
-		// --- (El resto de los menús se mantienen igual) ---
+        JMenuItem btnAgregarSeguro = new JMenuItem("Gestionar Seguros");
+        btnAgregarSeguro.addActionListener(e -> {
+            AgregarSeguro dialog = new AgregarSeguro();
+            dialog.setVisible(true);
+        });
+        btnAgregarSeguro.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        btnAdministracion.add(btnAgregarSeguro);
+        
+        JMenuItem btnAgregarEspecialidad = new JMenuItem("Gestionar Especialidades");
+        btnAgregarEspecialidad.addActionListener(e -> {
+            AgregarEspecialidad dialog = new AgregarEspecialidad();
+            dialog.setVisible(true);
+        });
+        btnAgregarEspecialidad.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        btnAdministracion.add(btnAgregarEspecialidad);
+
+		// --- Menú Datos Ingresados / Resúmenes ---
 		btnResumenes = new JMenu("Datos Ingresados");
 		btnResumenes.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuBar.add(btnResumenes);
@@ -96,6 +111,7 @@ public class Principal extends JFrame {
 		});
 		btnResumenes.add(mntmListadoGeneral);
 
+		// --- Menú Enfermedades Vigiladas ---
 		btnEnfermedadesVigilancia = new JMenu("Enfermedades Vigiladas");
 		btnEnfermedadesVigilancia.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuBar.add(btnEnfermedadesVigilancia);
@@ -116,6 +132,7 @@ public class Principal extends JFrame {
 		});
 		btnEnfermedadesVigilancia.add(btnReporteVigilancia);
 
+		// --- Menú Vacunación ---
 		btnVacunacion = new JMenu("Vacunación");
 		btnVacunacion.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuBar.add(btnVacunacion);
@@ -130,32 +147,41 @@ public class Principal extends JFrame {
 		
 		JMenuItem btnReporteDeVacuna = new JMenuItem("Reporte de Vacunas");
 		btnReporteDeVacuna.addActionListener(e -> {
-		    
 		    Reporte_Vacuna repor = new Reporte_Vacuna(this);
 		    repor.setVisible(true);
 		});
 		btnReporteDeVacuna.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		btnVacunacion.add(btnReporteDeVacuna);
+		
+		
+		menuBar.add(Box.createHorizontalGlue());
 
-		btnSeguro = new JMenuItem("Agregar Seguro");
-		btnSeguro.setFont(new Font("Segoe UI", Font.BOLD, 16));
-		btnSeguro.addActionListener(e -> {
-			SeguroPaciente segPaciente = new SeguroPaciente();
-			segPaciente.setVisible(true);
-		});
-		menuBar.add(btnSeguro);
-
+		// --- Botón de Cita (Ahora como JMenu para consistencia) ---
+		JMenu menuCita = new JMenu("Citas");
+		menuCita.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		btnCita = new JMenuItem("Realizar Cita");
 		btnCita.addActionListener(e -> {
 			Cita cita = new Cita();
 			cita.setVisible(true);
 		});
-		btnCita.setFont(new Font("Segoe UI", Font.BOLD, 16));
-		menuBar.add(btnCita);
+		btnCita.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		menuCita.add(btnCita);
+		menuBar.add(menuCita);
 		
+		// --- Menú de Sesión (Alineado a la derecha) ---
 		JMenu menuSesion = new JMenu("Sesión");
 		menuSesion.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuBar.add(menuSesion);
+		
+		JMenuItem mntmRegistrarDoctor = new JMenuItem("Registrar Doctor");
+		mntmRegistrarDoctor.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		mntmRegistrarDoctor.addActionListener(e -> {
+			RegistrarUsuario regUser = new RegistrarUsuario();
+			regUser.setVisible(true);
+		});
+		menuSesion.add(mntmRegistrarDoctor);
+		
+		menuSesion.addSeparator();
 		
 		JMenuItem mntmCerrarSesion = new JMenuItem("Cerrar Sesión");
 		mntmCerrarSesion.addActionListener(e -> {
@@ -167,15 +193,6 @@ public class Principal extends JFrame {
 		mntmCerrarSesion.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuSesion.add(mntmCerrarSesion);
 		
-		JMenuItem mntmRegistrarDoctor = new JMenuItem("Registrar Doctor");
-		mntmRegistrarDoctor.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		mntmRegistrarDoctor.addActionListener(e -> {
-			RegistrarUsuario regUser = new RegistrarUsuario();
-			regUser.setVisible(true);
-		});
-		menuSesion.add(mntmRegistrarDoctor);
-
-		// --- Bloque de Control de Permisos ---
 		if (Clinica.getInstance().getLoginUser() == null) {
 			dispose();
 			return;
@@ -184,37 +201,40 @@ public class Principal extends JFrame {
 		String userType = Clinica.getInstance().getLoginUser().getTipo();
 
 		if (userType.equalsIgnoreCase("Paciente")) {
-		    btnAdministracion.setEnabled(false);
+		    btnAdministracion.setEnabled(true);
 		    btnResumenes.setEnabled(false);
 		    btnEnfermedadesVigilancia.setEnabled(false);
 		    btnVacunacion.setEnabled(true);
-		    btnSeguro.setEnabled(true);
-		    btnCita.setEnabled(true);
+		    menuCita.setEnabled(true);
+		    btnInterfaz.setEnabled(false);
+		    btnAgregarVacuna.setEnabled(false);
+		    btnAgregarSeguro.setEnabled(false);	   
 
 		} else if (userType.equalsIgnoreCase("Doctor")) {
 		    btnAdministracion.setEnabled(true);
             btnAgregarVacuna.setVisible(false);
-		    btnResumenes.setEnabled(true);
+            btnAgregarSeguro.setVisible(false);
+		    btnResumenes.setEnabled(false);
 		    btnEnfermedadesVigilancia.setEnabled(true);
-		    btnVacunacion.setEnabled(true);
-		    btnCita.setEnabled(false);
-		    btnSeguro.setEnabled(false);
+		    btnVacunacion.setEnabled(false);
+		    btnAgregarEspecialidad.setVisible(false);
+		    menuCita.setEnabled(false);
 
 		} else if (userType.equalsIgnoreCase("Administrador")) {
 		    btnAdministracion.setEnabled(true);
 		    btnResumenes.setEnabled(true);
 		    btnEnfermedadesVigilancia.setEnabled(true);
 		    btnVacunacion.setEnabled(true);
-		    btnCita.setEnabled(false);
-		    btnSeguro.setEnabled(false);
+		    btnInterfaz.setEnabled(false);
+		    btnFacturar.setEnabled(false);
+		    menuCita.setEnabled(false);
 		
 		} else if (userType.equalsIgnoreCase("Invitado")) {
 			btnAdministracion.setEnabled(false);
 			btnResumenes.setEnabled(false);
 			btnEnfermedadesVigilancia.setEnabled(false);
 			btnVacunacion.setEnabled(false);
-			btnSeguro.setEnabled(true);
-			btnCita.setEnabled(true);
+			menuCita.setEnabled(true);
 		}
 	}
 }

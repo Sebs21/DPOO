@@ -2,66 +2,52 @@ package logico;
 
 import java.util.ArrayList;
 
-public class Paciente extends Persona 
-{	
+public class Paciente extends Persona {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int idCodPaciente;
-	private String enfermedad;
-	private Seguro seguro;
-	private User user;
-	
-	private HistoriaClinica miHistoriaClinica;
-	private ArrayList<vacunacion> miVacuna;
-	private ArrayList<Facturar> miFactura;
-	private ArrayList<Bajo_vigilancia>vigi;
-	private ArrayList<RegistroVacunacion> misVacunasAplicadas;
-	
-	private boolean seleccionado;
-	private boolean consultaPagada;
+    private static final long serialVersionUID = 1L;
+    private int idCodPaciente;
+    private String enfermedad;
+    private Seguro seguro;
+    private User user;
 
-	public Paciente( String cedula, String nombre, String apellido, int idCodPaciente ,String edad, User user) 
-	{
-		super(cedula, nombre, apellido, edad);
-		this.idCodPaciente = idCodPaciente;
-		this.user = user;
-		
-		this.miHistoriaClinica = new HistoriaClinica();
-        this.miVacuna = new ArrayList<>();
+    private HistoriaClinica miHistoriaClinica;
+    private ArrayList<Facturar> miFactura;
+    private ArrayList<Bajo_vigilancia> vigi;
+    private ArrayList<RegistroVacunacion> misVacunasAplicadas;
+
+    private boolean seleccionado;
+    private boolean consultaPagada;
+
+    public Paciente(String cedula, String nombre, String apellido, int idCodPaciente, String edad, User user) {
+        super(cedula, nombre, apellido, edad);
+        this.idCodPaciente = idCodPaciente;
+        this.user = user;
+
+        this.miHistoriaClinica = new HistoriaClinica();
         this.miFactura = new ArrayList<>();
         this.vigi = new ArrayList<>();
         this.misVacunasAplicadas = new ArrayList<>();
-	}
-	
-	public HistoriaClinica getMiHistoriaClinica() {
-        return miHistoriaClinica;
     }
-
-    // <-- NUEVO: Método para añadir una consulta directamente al historial
+    
     public void agregarConsultaAlHistorial(Consulta consulta) {
         if (this.miHistoriaClinica == null) {
             this.miHistoriaClinica = new HistoriaClinica();
         }
         this.miHistoriaClinica.getMisConsultas().add(consulta);
     }
-	
-	
-	public ArrayList<RegistroVacunacion> getMisVacunasAplicadas() {
+
+    public ArrayList<RegistroVacunacion> getMisVacunasAplicadas() {
         return misVacunasAplicadas;
     }
 
-    
     public void agregarVacunaAplicada(RegistroVacunacion registro) {
         if (this.misVacunasAplicadas == null) {
             this.misVacunasAplicadas = new ArrayList<>();
         }
         misVacunasAplicadas.add(registro);
     }
-	
-	public boolean isConsultaPagada() {
+
+    public boolean isConsultaPagada() {
 		return consultaPagada;
 	}
 
@@ -118,14 +104,12 @@ public class Paciente extends Persona
 		this.idCodPaciente = idCodPaciente;
 	}
 
-	
-	public ArrayList<vacunacion> getMiVacuna() 
-	{
-		return miVacuna;
+	public HistoriaClinica getMiHistoriaClinica() {
+		return miHistoriaClinica;
 	}
 
-	public void setMiVacuna(ArrayList<vacunacion> miVacuna) {
-		this.miVacuna = miVacuna;
+	public void setMiHistoriaClinica(HistoriaClinica miHistoriaClinica) {
+		this.miHistoriaClinica = miHistoriaClinica;
 	}
 	
 	public ArrayList<Facturar> getMiFactura() {
@@ -135,13 +119,6 @@ public class Paciente extends Persona
 	public void setMiFactura(ArrayList<Facturar> miFactura) {
 		this.miFactura = miFactura;
 	}
-
-	public void agregarVacuna(vacunacion newVacu) {
-        if(this.miVacuna == null){
-            this.miVacuna = new ArrayList<>();
-        }
-        miVacuna.add(newVacu);
-    }
     
     public void agregarenfermedad(Bajo_vigilancia neewnfe) {
         if(this.vigi == null){
@@ -149,6 +126,4 @@ public class Paciente extends Persona
         }
         vigi.add(neewnfe);
     }
-	
 }
-

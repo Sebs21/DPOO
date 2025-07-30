@@ -6,8 +6,11 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -19,34 +22,25 @@ import javax.swing.border.TitledBorder;
 
 import logico.Clinica;
 import logico.Doctor;
+import logico.Especialidad;
 import logico.User;
 
 public class RegistrarUsuario extends JDialog {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
     private JTextField txtUsuario; // Nombre del Doctor
     private JTextField txtApellido;
     private JTextField txtConfirmarCedula;
     private JTextField txtCedula;
-    private JTextField txtEspecialidad;
     private JTextField txtEdad;
-    
-    public static void main(String[] args) { try { 
-    	RegistrarUsuario dialog = new RegistrarUsuario(); 
-    	dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); 
-    	dialog.setVisible(true); } 
-    	catch (Exception e) { 
-    		e.printStackTrace(); 
-    	} 
-    }
+    private JComboBox<Especialidad> cbxEspecialidad;
+
+    // <-- CAMBIO CRÍTICO: Se elimina el método main() de esta clase -->
 
     public RegistrarUsuario() {
-        setTitle("Registro de Doctor"); // <-- CAMBIO: Título actualizado
-        setBounds(100, 100, 850, 400); // Tamaño ajustado
+        setTitle("Registro de Doctor");
+        setBounds(100, 100, 850, 400);
         getContentPane().setLayout(new BorderLayout());
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -61,7 +55,6 @@ public class RegistrarUsuario extends JDialog {
         contentPanel.add(panel);
         panel.setLayout(null);
 
-        // --- Interfaz Gráfica (simplificada para solo doctores) ---
         txtUsuario = new JTextField();
         txtUsuario.setBounds(40, 103, 150, 34);
         panel.add(txtUsuario);
@@ -86,11 +79,10 @@ public class RegistrarUsuario extends JDialog {
         lblIngresarEspecialidad.setBounds(40, 175, 161, 34);
         panel.add(lblIngresarEspecialidad);
         lblIngresarEspecialidad.setFont(new Font("Times New Roman", Font.BOLD, 15));
-
-        txtEspecialidad = new JTextField();
-        txtEspecialidad.setColumns(10);
-        txtEspecialidad.setBounds(40, 210, 161, 34);
-        panel.add(txtEspecialidad);
+        
+        cbxEspecialidad = new JComboBox<>();
+        cbxEspecialidad.setBounds(40, 210, 161, 34);
+        panel.add(cbxEspecialidad);
 
         JLabel lblEdad = new JLabel("Edad:");
         lblEdad.setFont(new Font("Times New Roman", Font.BOLD, 15));
@@ -122,7 +114,6 @@ public class RegistrarUsuario extends JDialog {
         panel.add(txtConfirmarCedula);
         txtConfirmarCedula.setColumns(10);
 
-        // --- Botones ---
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
         getContentPane().add(buttonPane, BorderLayout.SOUTH);
@@ -132,13 +123,13 @@ public class RegistrarUsuario extends JDialog {
         okButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (validacion()) {
-                    // <-- CAMBIO: Se crea un User tipo "Doctor" directamente
                     User usuario = new User(txtUsuario.getText(), txtCedula.getText(), "Doctor");
                     Clinica.getInstance().agregarUsuario(usuario);
 
-                    // <-- CAMBIO: Se crea el Doctor y se agrega a la clínica
+                    String especialidadSeleccionada = ((Especialidad) cbxEspecialidad.getSelectedItem()).getNombre();
+                    
                     Doctor doctor = new Doctor(txtCedula.getText(), txtUsuario.getText(),
-                            txtApellido.getText(), txtEspecialidad.getText(), txtEdad.getText(), usuario);
+                            txtApellido.getText(), especialidadSeleccionada, txtEdad.getText(), usuario);
                     Clinica.getInstance().agregarDoctor(doctor);
                     
                     JOptionPane.showMessageDialog(null, "Doctor registrado con éxito.", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
@@ -148,25 +139,37 @@ public class RegistrarUsuario extends JDialog {
         });
         buttonPane.add(okButton);
         
-        JButton btnNewButton = new JButton("Cerrar");
-        btnNewButton.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent arg0) {
-        		dispose();
-        		Principal prin = new Principal();
-        		prin.setVisible(true);
-        	}
-        });
-        btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 16));
-        buttonPane.add(btnNewButton);
+        JButton btnCerrar = new JButton("Cerrar");
+        btnCerrar.addActionListener(e -> dispose());
+        btnCerrar.setFont(new Font("Tahoma", Font.BOLD, 16));
+        buttonPane.add(btnCerrar);
+        
+        cargarEspecialidades();
+    }
+    
+    private void cargarEspecialidades() {
+        DefaultComboBoxModel<Especialidad> model = new DefaultComboBoxModel<>();
+        ArrayList<Especialidad> especialidades = Clinica.getInstance().getMisEspecialidades();
+        
+        for (Especialidad esp : especialidades) {
+            model.addElement(esp);
+        }
+        
+        cbxEspecialidad.setModel(model);
     }
 
     private boolean validacion() {
-        if (txtUsuario.getText().isEmpty() || txtApellido.getText().isEmpty() || txtCedula.getText().isEmpty() || txtEspecialidad.getText().isEmpty()) {
+        if (txtUsuario.getText().isEmpty() || txtApellido.getText().isEmpty() || txtCedula.getText().isEmpty() || cbxEspecialidad.getSelectedIndex() < 0) {
             JOptionPane.showMessageDialog(this, "Debe llenar todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         if (!txtCedula.getText().equals(txtConfirmarCedula.getText())) {
             JOptionPane.showMessageDialog(this, "Las cédulas no coinciden.", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        
+        if (Clinica.getInstance().buscarDoctorByCedula(txtCedula.getText()) != null) {
+            JOptionPane.showMessageDialog(this, "Ya existe un doctor con esa cédula.", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         return true;
@@ -176,7 +179,7 @@ public class RegistrarUsuario extends JDialog {
         txtUsuario.setText("");
         txtApellido.setText("");
         txtConfirmarCedula.setText("");
-        txtEspecialidad.setText("");
+        cbxEspecialidad.setSelectedIndex(0);
         txtEdad.setText("");
         txtCedula.setText("");
     }

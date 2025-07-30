@@ -8,16 +8,21 @@ public class vacunacion implements Serializable {
     private String idVacuna;
     private String nombre;
     private String fabricante;
-    private int cantidadDisponible; // ATRIBUTO CLAVE PARA EL INVENTARIO
+    private int cantidadDisponible;
 
     public vacunacion(String idVacuna, String nombre, String fabricante) {
         this.idVacuna = idVacuna;
         this.nombre = nombre;
         this.fabricante = fabricante;
-        this.cantidadDisponible = 0; // Inicia en 0 por defecto
+        this.cantidadDisponible = 0;
     }
 
-    // Métodos para manejar el stock
+    
+    @Override
+    public String toString() {
+        return nombre; 
+    }
+
     public void agregarStock(int cantidad) {
         if (cantidad > 0) {
             this.cantidadDisponible += cantidad;
@@ -30,7 +35,6 @@ public class vacunacion implements Serializable {
         }
     }
 
-    // Getters y Setters
     public int getCantidadDisponible() {
         return cantidadDisponible;
     }

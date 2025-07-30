@@ -8,22 +8,20 @@ public class Control_vacunacion implements Serializable
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	private Consulta consulta;
-	  private static ArrayList<Paciente> pacientes; 
-	    private static ArrayList<vacunacion> vacunaciones; 
+	private static ArrayList<Paciente> pacientes; 
+	private static ArrayList<vacunacion> vacunaciones; 
 	  
 	    
 		public static int code_vacu =1;
 	
-	
 		public Control_vacunacion() {
 			 Control_vacunacion.setPacientes(new ArrayList<>());
-		    Control_vacunacion.vacunaciones = new ArrayList<>();
-		    
+		    Control_vacunacion.vacunaciones = new ArrayList<>();    
 		}
 
 	    
-	
 	 public Consulta getConsulta() {
 			return consulta;
 		}
@@ -33,10 +31,6 @@ public class Control_vacunacion implements Serializable
 		public void setConsulta(Consulta consulta) {
 			this.consulta = consulta;
 		}
-
-
-
-		
 
 
 		public static ArrayList<vacunacion> getVacunaciones() {

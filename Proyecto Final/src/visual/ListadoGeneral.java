@@ -1,15 +1,20 @@
 package visual;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import logico.Cita;
@@ -19,103 +24,37 @@ import logico.Doctor;
 import logico.Paciente;
 import logico.Seguro;
 
-import javax.swing.border.BevelBorder;
-import java.awt.Font;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import java.util.ArrayList;
-
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.border.TitledBorder;
-import javax.swing.border.LineBorder;
-import java.awt.Color;
-import javax.swing.JComboBox;
-
 public class ListadoGeneral extends JDialog 
 {
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private Dimension dim;
 	
-	private static Object[] pacientesRow;
-	private static Object[] doctoresRow;
-	private static Object[] segurosRow;
-	private static Object[] consultasRow;
-	private static Object[] citasRow;
+	private DefaultTableModel modeloPacientes;
+	private DefaultTableModel modeloDoctores;
+	private DefaultTableModel modeloSeguros;
+	private DefaultTableModel modeloConsultas;
+	private DefaultTableModel modeloCitas;
 	
-	/*
-	private int indPacienteModificar = -1;
-	private int indDoctorModificar = -1;
-	private int indConsultaModificar = -1;
-	private int indSeguroModificar = -1;
-	private int indCitaModificar = -1;
-	
-	private Paciente selected = null;
-	private Doctor selected01 = null;
-	private Seguro selected02 = null;
-	private Cita selected03 = null;
-	private Consulta selected04 = null;
-	
-	*/ 
-	
-	private static DefaultTableModel modelo;
-	private static DefaultTableModel modelo1;
-	private static DefaultTableModel modelo2;
-	private static DefaultTableModel modelo3;
-	private static DefaultTableModel modelo4;
-	
-	private JButton btnCancelar;
-	
-	private JPanel panelDoctores;
-	
-	private JScrollPane scrollPane_1;
-	
-	private JTextField txtDoctoresTotales;
-	private JTextField txtSegurosTotales;
-	private JTextField txtCitasTotales;
-	private JTextField txtConsultasTotales;
-	private JTextField txtPacientesTotales;
 	private JTable tablePaciente;
 	private JTable tableDoctor;
 	private JTable tableSeguro;
 	private JTable tableConsulta;
 	private JTable tableCita;
-	
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			ListadoGeneral dialog = new ListadoGeneral();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Create the dialog.
-	 */
 	public ListadoGeneral() 
 	{
-		setIconImage(new ImageIcon (getClass().getResource("/visual/SIGIC_logo.jpg")).getImage());
-		setTitle("Listado General");
-		setBounds(100, 100, 903, 812);
+		setTitle("Listado General del Sistema");
+		setBounds(100, 100, 1450, 850);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
-		dim = getToolkit().getScreenSize();
-		setSize( dim.width, dim.height );
 		setLocationRelativeTo(null);
+        setModal(true);
 		
 		JPanel panelPacientes = new JPanel();
-		panelPacientes.setBorder(new TitledBorder(new LineBorder(new Color(224, 255, 255), 4, true), "Pacientes", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panelPacientes.setBounds(12, 13, 697, 295);
+		panelPacientes.setBorder(new TitledBorder(null, "Pacientes Registrados", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelPacientes.setBounds(12, 13, 697, 350);
 		contentPanel.add(panelPacientes);
 		panelPacientes.setLayout(new BorderLayout(0, 0));
 		
@@ -123,37 +62,33 @@ public class ListadoGeneral extends JDialog
 		panelPacientes.add(scrollPane);
 		
 		tablePaciente = new JTable();
-		scrollPane.setViewportView( tablePaciente );
+		scrollPane.setViewportView(tablePaciente);
 		
-		modelo = new DefaultTableModel();
-		String[] identificadores = { "Codigo", "Cedula", "Nombre", "Apellido", "Edad", "Seguro", "Vacuna" };
-		modelo.setColumnIdentifiers( identificadores );
-		tablePaciente.setModel( modelo );
+		modeloPacientes = new DefaultTableModel();
+		String[] identificadoresPacientes = { "Codigo", "Cedula", "Nombre", "Apellido", "Edad", "Seguro", "Vacunas Recibidas" };
+		modeloPacientes.setColumnIdentifiers(identificadoresPacientes);
+		tablePaciente.setModel(modeloPacientes);
 		
-		{
-			panelDoctores = new JPanel();
-			panelDoctores.setBorder(new TitledBorder(new LineBorder(new Color(224, 255, 255), 4, true), "Doctores", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-			panelDoctores.setBounds(12, 321, 697, 295);
-			contentPanel.add(panelDoctores);
-			panelDoctores.setLayout(new BorderLayout(0, 0));
-			{
-				scrollPane_1 = new JScrollPane();
-				panelDoctores.add(scrollPane_1);
-				
-				tableDoctor = new JTable();
-				scrollPane_1.setViewportView(tableDoctor);
-				{
-					modelo1 = new DefaultTableModel();
-					String[] identificadores01 = { "Cedula", "Nombre", "Apellido", "Especialidad" };
-					modelo1.setColumnIdentifiers( identificadores01 );
-					tableDoctor.setModel( modelo1 );
-				}
-			}
-		}
+		JPanel panelDoctores = new JPanel();
+		panelDoctores.setBorder(new TitledBorder(null, "Doctores Registrados", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelDoctores.setBounds(12, 380, 697, 350);
+		contentPanel.add(panelDoctores);
+		panelDoctores.setLayout(new BorderLayout(0, 0));
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		panelDoctores.add(scrollPane_1);
+		
+		tableDoctor = new JTable();
+		scrollPane_1.setViewportView(tableDoctor);
+		
+		modeloDoctores = new DefaultTableModel();
+		String[] identificadoresDoctores = { "Cedula", "Nombre", "Apellido", "Especialidad" };
+		modeloDoctores.setColumnIdentifiers(identificadoresDoctores);
+		tableDoctor.setModel(modeloDoctores);
 		
 		JPanel panelSeguros = new JPanel();
-		panelSeguros.setBorder(new TitledBorder(new LineBorder(new Color(224, 255, 255), 4, true), "Seguros", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panelSeguros.setBounds(721, 13, 697, 295);
+		panelSeguros.setBorder(new TitledBorder(null, "Seguros Disponibles", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelSeguros.setBounds(721, 13, 697, 150);
 		contentPanel.add(panelSeguros);
 		panelSeguros.setLayout(new BorderLayout(0, 0));
 		
@@ -162,14 +97,14 @@ public class ListadoGeneral extends JDialog
 		
 		tableSeguro = new JTable();
 		scrollPane_2.setViewportView(tableSeguro);
-		modelo2 = new DefaultTableModel();
-		String[] identificadores02 = { "ID Seguro", "Nombre de Empresa", "Tipo de Seguro" };
-		modelo2.setColumnIdentifiers( identificadores02 );
-		tableSeguro.setModel( modelo2 );
+		modeloSeguros = new DefaultTableModel();
+		String[] identificadoresSeguros = { "ID Seguro", "Nombre de Empresa", "Tipo de Seguro", "Descuento" };
+		modeloSeguros.setColumnIdentifiers(identificadoresSeguros);
+		tableSeguro.setModel(modeloSeguros);
 		
 		JPanel panelConsulta = new JPanel();
-		panelConsulta.setBorder(new TitledBorder(new LineBorder(new Color(224, 255, 255), 4, true), "Consultas", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panelConsulta.setBounds(721, 321, 691, 295);
+		panelConsulta.setBorder(new TitledBorder(null, "Historial de Consultas", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelConsulta.setBounds(721, 175, 691, 280);
 		contentPanel.add(panelConsulta);
 		panelConsulta.setLayout(new BorderLayout(0, 0));
 		
@@ -179,14 +114,14 @@ public class ListadoGeneral extends JDialog
 		tableConsulta = new JTable();
 		scrollPane_3.setViewportView(tableConsulta);
 		
-		modelo3 = new DefaultTableModel();
-		String[] identificadores03 = { "ID", "Enfermedad", "Fecha Consulta", "Descripción", "Importancia" };
-		modelo3.setColumnIdentifiers( identificadores03 );
-		tableConsulta.setModel( modelo3 );
+		modeloConsultas = new DefaultTableModel();
+		String[] identificadoresConsultas = { "ID", "Paciente", "Enfermedad", "Fecha", "Importancia" };
+		modeloConsultas.setColumnIdentifiers(identificadoresConsultas);
+		tableConsulta.setModel(modeloConsultas);
 		
 		JPanel panelCita = new JPanel();
-		panelCita.setBorder(new TitledBorder(new LineBorder(new Color(224, 255, 255), 4, true), "Citas", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelCita.setBounds(359, 643, 768, 336);
+		panelCita.setBorder(new TitledBorder(null, "Historial de Citas", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelCita.setBounds(721, 467, 691, 263);
 		contentPanel.add(panelCita);
 		panelCita.setLayout(new BorderLayout(0, 0));
 		
@@ -196,197 +131,104 @@ public class ListadoGeneral extends JDialog
 		tableCita = new JTable();
 		scrollPane_4.setViewportView(tableCita);
 		
-		modelo4 = new DefaultTableModel();
-		String[] identificadores04 = { "Doctor", "Paciente", "Fecha de Cita" };
-		modelo4.setColumnIdentifiers( identificadores04 );
-		tableCita.setModel( modelo4 );
+		modeloCitas = new DefaultTableModel();
+		String[] identificadoresCitas = { "Doctor", "Paciente", "Fecha de Cita", "Estado" };
+		modeloCitas.setColumnIdentifiers(identificadoresCitas);
+		tableCita.setModel(modeloCitas);
 		
-		JLabel lblNewLabel = new JLabel("Pacientes totales:");
-		lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 17));
-		lblNewLabel.setBounds(1604, 48, 135, 16);
-		contentPanel.add(lblNewLabel);
+		JPanel buttonPane = new JPanel();
+		buttonPane.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		getContentPane().add(buttonPane, BorderLayout.SOUTH);
 		
-		txtPacientesTotales = new JTextField();
-		txtPacientesTotales.setEditable(false);
-		txtPacientesTotales.setBounds(1611, 77, 116, 22);
-		contentPanel.add(txtPacientesTotales);
-		txtPacientesTotales.setColumns(10);
+		JButton btnCancelar = new JButton("Cerrar");
+		btnCancelar.addActionListener(e -> dispose());
+		buttonPane.add(btnCancelar);
 		
-		JLabel lblDoctoresTotales = new JLabel("Doctores totales:");
-		lblDoctoresTotales.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 17));
-		lblDoctoresTotales.setBounds(1604, 124, 135, 16);
-		contentPanel.add(lblDoctoresTotales);
-		
-		txtDoctoresTotales = new JTextField();
-		txtDoctoresTotales.setEditable(false);
-		txtDoctoresTotales.setColumns(10);
-		txtDoctoresTotales.setBounds(1611, 156, 116, 22);
-		contentPanel.add(txtDoctoresTotales);
-		
-		JLabel lblSegurosTotales = new JLabel("Seguros totales:");
-		lblSegurosTotales.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 17));
-		lblSegurosTotales.setBounds(1604, 205, 135, 16);
-		contentPanel.add(lblSegurosTotales);
-		
-		txtSegurosTotales = new JTextField();
-		txtSegurosTotales.setEditable(false);
-		txtSegurosTotales.setColumns(10);
-		txtSegurosTotales.setBounds(1611, 234, 116, 22);
-		contentPanel.add(txtSegurosTotales);
-		
-		JLabel lblCitasTotales = new JLabel("Citas totales:");
-		lblCitasTotales.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 17));
-		lblCitasTotales.setBounds(1604, 269, 135, 16);
-		contentPanel.add(lblCitasTotales);
-		
-		txtCitasTotales = new JTextField();
-		txtCitasTotales.setEditable(false);
-		txtCitasTotales.setColumns(10);
-		txtCitasTotales.setBounds(1614, 298, 116, 22);
-		contentPanel.add(txtCitasTotales);
-		
-		JLabel lblConsultasTotales = new JLabel("Consultas totales:");
-		lblConsultasTotales.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 17));
-		lblConsultasTotales.setBounds(1604, 342, 135, 16);
-		contentPanel.add(lblConsultasTotales);
-		
-		txtConsultasTotales = new JTextField();
-		txtConsultasTotales.setEditable(false);
-		txtConsultasTotales.setColumns(10);
-		txtConsultasTotales.setBounds(1611, 371, 116, 22);
-		contentPanel.add(txtConsultasTotales);
-		
-		{
-			JPanel buttonPane = new JPanel();
-			buttonPane.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-			{
-				btnCancelar = new JButton("Cancelar");
-				btnCancelar.addActionListener(new ActionListener() 
-				{
-					public void actionPerformed(ActionEvent arg0) 
-					{
-						dispose();
-					}
-				});
-				btnCancelar.setActionCommand("Cancel");
-				buttonPane.add(btnCancelar);
-			}
-		}
-		
+		cargarTodosLosDatos();
+	}
+	
+	private void cargarTodosLosDatos() {
 		datosPacientes();
-		datosDoctor();
-		datosSeguro();
-		datosConsulta();
-		datosCita();
-		
+		datosDoctores();
+		datosSeguros();
+		datosConsultas();
+		datosCitas();
 	}
 	
-	public void datosPacientes ()
-	{
-		modelo.setRowCount(0);
-		pacientesRow = new Object[7];
-		ArrayList<Paciente> aux = Clinica.getInstance().getMisPacientes();
+	public void datosPacientes() {
+		modeloPacientes.setRowCount(0);
+		ArrayList<Paciente> pacientes = Clinica.getInstance().getMisPacientes();
 		
-		for ( Paciente paciente : aux )
-		{
-			pacientesRow[0] = paciente.getIdCodPaciente();
-			pacientesRow[1] = paciente.getCedula();
-			pacientesRow[2] = paciente.getNombre();
-			pacientesRow[3] = paciente.getApellido();
-			pacientesRow[4] = paciente.getEdad();
-			pacientesRow[5] = paciente.getSeguro();
-			pacientesRow[6] = paciente.getMiVacuna();
+		for (Paciente paciente : pacientes) {
+			Object[] fila = new Object[7];
+			fila[0] = paciente.getIdCodPaciente();
+			fila[1] = paciente.getCedula();
+			fila[2] = paciente.getNombre();
+			fila[3] = paciente.getApellido();
+			fila[4] = paciente.getEdad();
+            // <-- CAMBIO: Se obtiene el nombre de la empresa del seguro, o "N/A" si no tiene.
+			fila[5] = (paciente.getSeguro() != null) ? paciente.getSeguro().getNombreEmpresa() : "N/A";
+            // <-- CAMBIO: Se muestra la cantidad de vacunas en lugar de la lista de objetos.
+			fila[6] = (paciente.getMisVacunasAplicadas() != null) ? paciente.getMisVacunasAplicadas().size() : 0;
 			
-			modelo.addRow( pacientesRow );
-			
+			modeloPacientes.addRow(fila);
 		}
-		
-		txtPacientesTotales.setText( String.valueOf( aux.size() ) );
-		
 	}
 	
-	public void datosDoctor ()
-	{
-		modelo1.setRowCount(0);
-		doctoresRow = new Object[4];
-		ArrayList<Doctor> aux = Clinica.getInstance().getMisDoctores();
+	public void datosDoctores() {
+		modeloDoctores.setRowCount(0);
+		ArrayList<Doctor> doctores = Clinica.getInstance().getMisDoctores();
 		
-		for ( Doctor doctor : aux )
-		{
-			doctoresRow[0] = doctor.getCedula();
-			doctoresRow[1] = doctor.getNombre();
-			doctoresRow[2] = doctor.getApellido();
-			doctoresRow[3] = doctor.getEspecialidad();
-			
-			modelo1.addRow( doctoresRow );
-			
+		for (Doctor doctor : doctores) {
+			Object[] fila = { doctor.getCedula(), doctor.getNombre(), doctor.getApellido(), doctor.getEspecialidad() };
+			modeloDoctores.addRow(fila);
 		}
-		
-		txtDoctoresTotales.setText( String.valueOf( aux.size() ) );
-		
 	}
 	
-	public void datosSeguro ()
-	{
-		modelo2.setRowCount(0);
-		segurosRow = new Object[3];
-		ArrayList<Seguro> aux = Clinica.getInstance().getMisSeguros();
+	public void datosSeguros() {
+		modeloSeguros.setRowCount(0);
+		ArrayList<Seguro> seguros = Clinica.getInstance().getMisSeguros();
 		
-		for ( Seguro seguro : aux ) 
-		{
-			segurosRow[0] = seguro.getIdSeguro();
-			segurosRow[1] = seguro.getNombreEmpresa();
-			segurosRow[2] = seguro.getTipoDeSeguro();
-			
-			modelo2.addRow( segurosRow );
-			
+		for (Seguro seguro : seguros) {
+			Object[] fila = { seguro.getIdSeguro(), seguro.getNombreEmpresa(), seguro.getTipoDeSeguro(), seguro.getDescuento() * 100 + "%" };
+			modeloSeguros.addRow(fila);
 		}
-		
-		txtSegurosTotales.setText( String.valueOf( aux.size() ) );
-		
 	}
 	
-	public void datosConsulta ()
-	{
-		modelo3.setRowCount(0);
-		consultasRow = new Object[5];
-		ArrayList<Consulta> aux = Clinica.getInstance().getMisConsultas();
+	public void datosConsultas() {
+		modeloConsultas.setRowCount(0);
+		ArrayList<Consulta> consultas = Clinica.getInstance().getMisConsultas();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
-		for ( Consulta consulta : aux )
-		{
-			consultasRow[0] = consulta.getId();
-			consultasRow[1] = consulta.getEnfermedad();
-			consultasRow[2] = consulta.getFechaConsulta();
-			consultasRow[3] = consulta.getDescripcion();
-			consultasRow[4] = consulta.isImportancia();
-			
-			modelo3.addRow( consultasRow );
-			
+		for (Consulta consulta : consultas) {
+			Object[] fila = {
+                consulta.getId(),
+                // <-- CAMBIO: Se muestra el nombre completo del paciente.
+                consulta.getPaciente().getNombre() + " " + consulta.getPaciente().getApellido(),
+                consulta.getEnfermedad(),
+                sdf.format(consulta.getFechaConsulta()),
+                consulta.isImportancia() ? "Urgente" : "Normal"
+            };
+			modeloConsultas.addRow(fila);
 		}
-	
-		txtConsultasTotales.setText( String.valueOf( aux.size() ) );
-		
 	}
 	
-	public void datosCita ()
-	{
-		modelo4.setRowCount(0);
-		citasRow = new Object[3];
-		ArrayList<Cita> aux = Clinica.getInstance().getMisCitas();
+	public void datosCitas() {
+		modeloCitas.setRowCount(0);
+		ArrayList<Cita> citas = Clinica.getInstance().getMisCitas();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
-		for ( Cita cita : aux ) 
-		{
-			citasRow[0] = cita.getDoctor();
-			citasRow[1] = cita.getPaciente();
-			citasRow[2] = cita.getFechaCita();
-			
-			modelo4.addRow( citasRow );
-			
+		for (Cita cita : citas) {
+			Object[] fila = {
+                // <-- CAMBIO: Se muestra el nombre completo del doctor.
+                cita.getDoctor().getNombre() + " " + cita.getDoctor().getApellido(),
+                // <-- CAMBIO: Se muestra el nombre completo del paciente.
+                cita.getPaciente().getNombre() + " " + cita.getPaciente().getApellido(),
+                sdf.format(cita.getFechaCita()),
+                cita.getEstado()
+            };
+			modeloCitas.addRow(fila);
 		}
-		
-		txtCitasTotales.setText( String.valueOf( aux.size() ) );
-		
 	}
 }

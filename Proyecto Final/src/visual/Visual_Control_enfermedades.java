@@ -35,7 +35,6 @@ public class Visual_Control_enfermedades extends JDialog {
     private JLabel lbl_Cant_hora;
     private JSpinner fecha_enfermeda;
     
-    // (El resto de tu constructor y la UI se mantienen igual...)
     
 	private void guardad_enfermeda(ActionEvent e) {
 		try {

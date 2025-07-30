@@ -24,23 +24,27 @@ import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 
-// <-- CAMBIO: Se eliminó la importación de 'Control_vacunacion'
 import logico.Clinica;
 import logico.Paciente;
 import logico.vacunacion;
 
 public class Visual_vacunacion extends JDialog {
 
-    private final JPanel contentPanel = new JPanel();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private final JPanel contentPanel = new JPanel();
     private JTextField txtCodeVacu;
     private JTextField txtCodePaciente;
     private JTextField txtNombrePaciente;
     private JButton btnGuardar;
-    private JComboBox<String> listVacuna; // Se especifica que es de tipo String
+    private JComboBox<String> listVacuna;
     private JSpinner fechaVacu;
     private JSpinner spnCantMl;
 
     public Visual_vacunacion() {
+        // (El constructor y la UI se mantienen igual)
         setIconImage(new ImageIcon(getClass().getResource("/visual/SIGIC_logo.jpg")).getImage());
         setTitle("Registro de Aplicación de Vacuna");
         setBounds(100, 100, 868, 564);
@@ -136,10 +140,48 @@ public class Visual_vacunacion extends JDialog {
         actualizarCodigoVacunacion();
     }
 
-    /**
-     * Carga la lista de vacunas desde el inventario de la clínica
-     * en el JComboBox, en lugar de tenerlas codificadas.
-     */
+    private void guardarVacunacion(ActionEvent e) {
+        try {
+            String codigoPaciente = txtCodePaciente.getText();
+            if (listVacuna.getSelectedIndex() == 0) {
+                 throw new IllegalArgumentException("Debe seleccionar una vacuna de la lista.");
+            }
+            String tipoVacunaNombre = listVacuna.getSelectedItem().toString();
+
+            Paciente paciente = Clinica.getInstance().buscarPacienteByCedula(codigoPaciente);
+            if (paciente == null) {
+                JOptionPane.showMessageDialog(this, "Paciente no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            vacunacion vacunaDelInventario = null;
+            for(vacunacion v : Clinica.getInstance().getInventarioDeVacunas()){
+                if(v.getNombre().equalsIgnoreCase(tipoVacunaNombre)){
+                    vacunaDelInventario = v;
+                    break;
+                }
+            }
+
+            // <-- CAMBIO: Se obtienen la fecha y los ml de la UI
+            Date fechaDeAplicacion = (Date) fechaVacu.getValue();
+            int cantidadMl = (Integer) spnCantMl.getValue();
+
+            // <-- CAMBIO: Se llama al método correcto con todos los parámetros
+            boolean exito = Clinica.getInstance().administrarVacuna(paciente, vacunaDelInventario, fechaDeAplicacion, cantidadMl);
+
+            if (exito) {
+                JOptionPane.showMessageDialog(this, "Vacuna registrada y descontada del inventario.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                clean();
+            } else {
+                JOptionPane.showMessageDialog(this, "No hay stock suficiente para esta vacuna.", "Error de Inventario", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al guardar: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // (El resto de la clase se mantiene igual)
     private void cargarVacunasDisponibles() {
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         model.addElement("<Seleccione>");
@@ -155,47 +197,7 @@ public class Visual_vacunacion extends JDialog {
         }
         listVacuna.setModel(model);
     }
-
-    private void guardarVacunacion(ActionEvent e) {
-        try {
-            String codigoPaciente = txtCodePaciente.getText();
-            // Validar que se seleccionó una vacuna
-            if (listVacuna.getSelectedIndex() == 0) {
-                 throw new IllegalArgumentException("Debe seleccionar una vacuna de la lista.");
-            }
-            String tipoVacunaNombre = listVacuna.getSelectedItem().toString();
-
-            // Buscar al paciente en la instancia de la clínica
-            Paciente paciente = Clinica.getInstance().buscarPacienteByCedula(codigoPaciente);
-            if (paciente == null) {
-                JOptionPane.showMessageDialog(this, "Paciente no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            // Buscar la vacuna seleccionada en el inventario
-            vacunacion vacunaDelInventario = null;
-            for(vacunacion v : Clinica.getInstance().getInventarioDeVacunas()){
-                if(v.getNombre().equalsIgnoreCase(tipoVacunaNombre)){
-                    vacunaDelInventario = v;
-                    break;
-                }
-            }
-
-            // Llamar al método centralizado de Clinica para administrar la vacuna
-            boolean exito = Clinica.getInstance().administrarVacuna(paciente, vacunaDelInventario);
-
-            if (exito) {
-                JOptionPane.showMessageDialog(this, "Vacuna registrada y descontada del inventario.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                clean();
-            } else {
-                JOptionPane.showMessageDialog(this, "No hay stock suficiente para esta vacuna.", "Error de Inventario", JOptionPane.ERROR_MESSAGE);
-            }
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Error al guardar: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
+    
     private void buscarPaciente(String cedulaPaciente) {
         if (cedulaPaciente.trim().isEmpty()) {
             txtNombrePaciente.setText("");
@@ -208,10 +210,7 @@ public class Visual_vacunacion extends JDialog {
             txtNombrePaciente.setText("No encontrado");
         }
     }
-
-    /**
-     * Limpia los campos del formulario para un nuevo registro.
-     */
+    
     private void clean() {
         fechaVacu.setValue(new Date());
         spnCantMl.setValue(1);
@@ -221,13 +220,8 @@ public class Visual_vacunacion extends JDialog {
         actualizarCodigoVacunacion();
     }
     
-    /**
-     * Actualiza el código de la vacunación. El ID debe ser manejado por Clinica.
-     */
     private void actualizarCodigoVacunacion() {
-        // Esta es una forma simple de generar un ID.
-        // Lo ideal sería que Clinica tuviera un contador para esto.
-        int proximoId = Clinica.getInstance().getTotalVacunasAplicadas() + 1; // Necesitarías crear este método en Clinica
+        int proximoId = Clinica.getInstance().getTotalVacunasAplicadas() + 1;
         txtCodeVacu.setText("VA-" + proximoId);
     }
 }

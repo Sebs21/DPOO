@@ -7,7 +7,6 @@ public class HistoriaClinica implements Serializable {
     private static final long serialVersionUID = 1L;
     private ArrayList<Consulta> misConsultas;
 
-    // <-- CAMBIO: Se añade un constructor vacío
     public HistoriaClinica() {
         this.misConsultas = new ArrayList<>();
     }

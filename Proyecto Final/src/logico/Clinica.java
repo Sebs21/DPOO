@@ -1,789 +1,136 @@
 package logico;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Clinica implements Serializable 
-{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	private ArrayList<Consulta> misConsultas;
-	private ArrayList<Facturar> misFacturas;
-	private ArrayList<Cita> misCitas;
-	private ArrayList<Control_enfermedad> control_enfer;
-	private ArrayList<Control_vacunacion> control_vacu;
-	private ArrayList<Paciente> misPacientes;
-	private ArrayList<Doctor> misDoctores;
-	private ArrayList<Seguro> misSeguros;
-	private ArrayList<User> misUsuarios;
-	private ArrayList<vacunacion> misvacunas;
-	
-	public static int idDoctor;
-	public static int idPaciente;
-	public static int idConsulta;
-	public static int idFactura;
-	public static int idCita;	
-	public static int idSeguro;
-	public static int idcontrolEnfermerdad;
-	public static int idcontrolVacuna;
-	public static int idVacuna;
-	public static int idUser;
-	private ArrayList<vacunacion> inventarioDeVacunas;
+public class Clinica implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    private ArrayList<Consulta> misConsultas;
+    private ArrayList<Facturar> misFacturas;
+    private ArrayList<Cita> misCitas;
+    private ArrayList<Paciente> misPacientes;
+    private ArrayList<Doctor> misDoctores;
+    private ArrayList<Seguro> misSeguros;
+    private ArrayList<User> misUsuarios;
+    private ArrayList<vacunacion> inventarioDeVacunas;
     private ArrayList<Bajo_vigilancia> misVigilancias;
+    private ArrayList<Especialidad> misEspecialidades;
+    
+    private User LoginUser;
     private int totalVacunasAplicadas;
     
-	private User LoginUser;
-	public static Clinica clinica = null;
-	
-	public Clinica() 
-	{
-		super();
-		misPacientes = new ArrayList<>();
-		misDoctores = new ArrayList<>();
-		misConsultas = new ArrayList<>();
-		misFacturas = new ArrayList<>();		
-		misSeguros = new ArrayList<>();
-		misCitas = new ArrayList<>();
-		control_enfer = new ArrayList<>();
-		control_vacu = new ArrayList<>();
-		misUsuarios = new ArrayList<>();
-		inventarioDeVacunas = new ArrayList<>();
-        misVigilancias = new ArrayList<>();
-		
-        totalVacunasAplicadas = 0;
-		idPaciente = 1;
-		idDoctor = 1;
-		idConsulta = 1;
-		idFactura = 1;
-		idcontrolEnfermerdad = 1;
-		idcontrolVacuna = 1;
-		idCita = 1;
-		idSeguro = 1;
-		idVacuna = 1;
-		idUser=1;
-		
-		 inventarioDeVacunas = new ArrayList<>();
-		
-	}
-	
-	public static Clinica getInstance ()
-	{
-		
-		if ( clinica == null )
-		{
-			clinica = new Clinica();
-		}
-		
-		return clinica;
-		
-	}
-	//Guarda informacion 
-	 public void guardarClinica() 
-	 {
-	        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Clinica_info.dat"))) {
-	            oos.writeObject(this);
-	          
-	        } catch (IOException e) {
-	          
-	            e.printStackTrace();
-	        }
-	    }
-	 
-	 public boolean administrarVacuna(Paciente paciente, vacunacion vacunaAUsar, Date fecha, int cantMl) {
-		    if (paciente != null && vacunaAUsar != null && vacunaAUsar.getCantidadDisponible() > 0) {
-		        vacunaAUsar.descontarStock(1);
-		        
-		        // Se crea el nuevo objeto de registro con todos los detalles
-		        RegistroVacunacion nuevoRegistro = new RegistroVacunacion(vacunaAUsar, fecha, cantMl);
-		        
-		        // Se añade el registro completo al historial del paciente
-		        paciente.agregarVacunaAplicada(nuevoRegistro);
-		        
-		        totalVacunasAplicadas++;
-		        guardarClinica();
-		        return true;
-		    }
-		    return false;
-		}
+    private static Clinica clinica = null;
 
-	   
-	 public static Clinica cargarClinica() {
-		    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("Clinica_info.dat"))) {
-		        clinica = (Clinica) ois.readObject();
-		        System.out.println("Datos cargados exitosamente"); 
-		        return clinica;
-		    } catch (IOException | ClassNotFoundException e) {
-		        System.out.println("Archivo no encontrado o error al cargar");
-		        e.printStackTrace();
-		        return null;
-		    }
-		}
-	 
-	 public void iniciarVigilancia(Consulta consulta) {
-	        if (consulta != null) {
-	            Bajo_vigilancia nuevaVigilancia = new Bajo_vigilancia(
-	                consulta.getPaciente(),
-	                consulta.getEnfermedad(),
-	                consulta.getDoctor(),
-	                new Date(),
-	                consulta
-	            );
-	            this.misVigilancias.add(nuevaVigilancia);
-	            guardarClinica(); 
-	        }
-	    }
-	    
-	    
-	    public void agregar_Paciente(Paciente con)
-	    {
-	    	if(misPacientes == null)
-	    	{
-	    		misPacientes = new ArrayList<>();
-	    		
-	    	}
-	    	misPacientes.add(con);
-	    }
-	    
-	    
-	    public ArrayList<Paciente> obtener_Paciente() {
-	        return misPacientes;
-	        
-	    }    
-	    
-	    
-	
-	    public void agregar_doctor(Doctor con)
-	    {
-	    	if(misDoctores == null)
-	    	{
-	    		misDoctores = new ArrayList<>();
-	    		
-	    	}
-	    	misDoctores.add(con);
-	    }
-	    
-	    
-	    public ArrayList<Doctor> obtener_doctor() {
-	        return misDoctores;
-	        
-	    }    
-	    
-	
-	    public void agregar_seguro(Seguro con)
-	    {
-	    	if(misSeguros == null)
-	    	{
-	    		misSeguros = new ArrayList<>();
-	    		
-	    	}
-	    	misSeguros.add(con);
-	    }
-	    
-	    
-	    public ArrayList<Seguro> obtener_seguro() {
-	        return misSeguros;
-	        
-	    }    
-	
-	   
-	
-	    public void agregar_cita(Cita con)
-	    {
-	    	if(misCitas == null)
-	    	{
-	    		misCitas = new ArrayList<>();
-	    		
-	    	}
-	    	misCitas.add(con);
-	    }
-	    
-	    
-	    public ArrayList<Cita> obtener_cita() {
-	        return misCitas;
-	        
-	    }    
-	
-	    public void agregar_Factura(Facturar con)
-	    {
-	    	if(misFacturas == null)
-	    	{
-	    		misFacturas = new ArrayList<>();
-	    		
-	    	}
-	    	misFacturas.add(con);
-	    }
-	    
-	    
-	    public ArrayList<Facturar> obtener_facturar() {
-	        return misFacturas;
-	        
-	    }    
-	
-	    
-	    
-	    
-	    public void agregar_consulta(Consulta con)
-	    {
-	    	if(misConsultas == null)
-	    	{
-	    		misConsultas = new ArrayList<>();
-	    		
-	    	}
-	    	misConsultas.add(con);
-	    }
-	    
-	    
-	    public ArrayList<Consulta> obtener_consulta() {
-	        return misConsultas;
-	        
-	    }    
-	
-	    
-	    
-	    public void agregar_control_enfermdedad(Control_enfermedad control)
-	    {
-	    	if(control_enfer == null)
-	    	{
-	    		control_enfer = new ArrayList<>();
-	    		
-	    	}
-	    	control_enfer.add(control);
-	    }
-	    public ArrayList<Control_enfermedad> obtener_control_enfermedad() {
-	        return control_enfer;
-	        
-	    }
-	    
-	    public void agregar_control_vacunacion(Control_vacunacion vacun)
-	    {
-	    	if(control_vacu == null)
-	    	{
-	    		control_vacu = new ArrayList<>();
-	    		
-	    	}
-	    	control_vacu.add(vacun);
-	    }
-	    
-	    
-	    public ArrayList<Control_vacunacion> obtener_vaunacion() {
-	        return control_vacu;
-	        
-	    }    
-	    
-	    
-	
-	public ArrayList<Control_enfermedad> getControl_enfer() {
-		return control_enfer;
-	}
-	
-	public ArrayList<Bajo_vigilancia> getMisVigilancias() {
-        return misVigilancias;
+    // --- Contadores de IDs ---
+    public static int idDoctor = 1;
+    public static int idPaciente = 1;
+    public static int idConsulta = 1;
+    public static int idFactura = 1;
+    public static int idCita = 1;
+    public static int idSeguro = 1;
+    public static int idUser = 1;
+    public static int idEspecialidad = 1;
+
+    private Clinica() {
+        
+        super();
+        this.misPacientes = new ArrayList<>();
+        this.misDoctores = new ArrayList<>();
+        this.misConsultas = new ArrayList<>();
+        this.setMisFacturas(new ArrayList<>());
+        this.misSeguros = new ArrayList<>();
+        this.misCitas = new ArrayList<>();
+        this.misUsuarios = new ArrayList<>();
+        this.inventarioDeVacunas = new ArrayList<>();
+        this.misVigilancias = new ArrayList<>();
+        this.misEspecialidades = new ArrayList<>();
+        this.totalVacunasAplicadas = 0;
+        
+        misSeguros.add(new Seguro("S-1", "ARS Humano (Plan Básico)", "Básico", 0.50));
+        misSeguros.add(new Seguro("S-2", "ARS Humano (Plan Superior)", "Superior", 0.85));
+        misSeguros.add(new Seguro("S-3", "ARS Universal (Plan Básico)", "Básico", 0.45));
+        misSeguros.add(new Seguro("S-4", "ARS Universal (Plan Premium)", "Premium", 0.80));
+        misSeguros.add(new Seguro("S-5", "Seguros Reservas (Mi Salud)", "Básico", 0.55));
+        misSeguros.add(new Seguro("S-6", "MAPFRE Salud ARS (Internacional)", "Internacional", 0.90));
+        misSeguros.add(new Seguro("S-7", "Primera ARS (Plan Voluntario)", "Voluntario", 0.70));
+        
+        agregarEspecialidad(new Especialidad("ESP-" + idEspecialidad, "Medicina General"));
+        agregarEspecialidad(new Especialidad("ESP-" + idEspecialidad, "Cardiología"));
+        agregarEspecialidad(new Especialidad("ESP-" + idEspecialidad, "Pediatría"));
+        agregarEspecialidad(new Especialidad("ESP-" + idEspecialidad, "Dermatología"));
+        agregarEspecialidad(new Especialidad("ESP-" + idEspecialidad, "Ginecología y Obstetricia"));
+        agregarEspecialidad(new Especialidad("ESP-" + idEspecialidad, "Neurología"));
+        agregarEspecialidad(new Especialidad("ESP-" + idEspecialidad, "Ortopedia y Traumatología"));
+        agregarEspecialidad(new Especialidad("ESP-" + idEspecialidad, "Oftalmología"));
+        agregarEspecialidad(new Especialidad("ESP-" + idEspecialidad, "Otorrinolaringología"));
+        agregarEspecialidad(new Especialidad("ESP-" + idEspecialidad, "Urología"));
+        agregarEspecialidad(new Especialidad("ESP-" + idEspecialidad, "Gastroenterología"));
+        agregarEspecialidad(new Especialidad("ESP-" + idEspecialidad, "Endocrinología"));
+        agregarEspecialidad(new Especialidad("ESP-" + idEspecialidad, "Psiquiatría"));
+        agregarEspecialidad(new Especialidad("ESP-" + idEspecialidad, "Oncología"));
+        agregarEspecialidad(new Especialidad("ESP-" + idEspecialidad, "Neumología"));
+        agregarEspecialidad(new Especialidad("ESP-" + idEspecialidad, "Reumatología"));
+        agregarEspecialidad(new Especialidad("ESP-" + idEspecialidad, "Nefrología"));
+        agregarEspecialidad(new Especialidad("ESP-" + idEspecialidad, "Medicina Interna"));
+        agregarEspecialidad(new Especialidad("ESP-" + idEspecialidad, "Cirugía General"));
+        agregarEspecialidad(new Especialidad("ESP-" + idEspecialidad, "Fisiatría"));
     }
 
-    public ArrayList<vacunacion> getInventarioDeVacunas() {
-        return inventarioDeVacunas;
-    }
-
-	public ArrayList<vacunacion> getMisvacunas() {
-		return misvacunas;
-	}
-
-	public void setMisvacunas(ArrayList<vacunacion> misvacunas) {
-		this.misvacunas = misvacunas;
-	}
-
-	public void setControl_enfer(ArrayList<Control_enfermedad> control_enfer) {
-		this.control_enfer = control_enfer;
-	}
-
-	public ArrayList<Control_vacunacion> getControl_vacu() {
-		return control_vacu;
-	}
-
-	public void setControl_vacu(ArrayList<Control_vacunacion> control_vacu) {
-		this.control_vacu = control_vacu;
-	}
-
-	public ArrayList<User> getMisUsuarios() {
-		return misUsuarios;
-	}
-
-	public void setMisUsuarios(ArrayList<User> misUsuarios) {
-		this.misUsuarios = misUsuarios;
-	}
-
-	public User getLoginUser() {
-		return LoginUser;
-	}
-
-	public void setLoginUser(User loginUser) {
-		LoginUser = loginUser;
-	}
-	
-	public ArrayList<Cita> getMisCitas() {
-		return misCitas;
-	}
-
-	public void setMisCitas(ArrayList<Cita> misCitas) {
-		this.misCitas = misCitas;
-	}
-
-	public static Clinica getClinica() {
-		return clinica;
-	}
-
-	public static void setClinica(Clinica clinica) {
-		Clinica.clinica = clinica;
-	}
-
-	public ArrayList<Paciente> getMisPacientes() {
-		return misPacientes;
-	}
-
-	public void setMisPacientes(ArrayList<Paciente> misPacientes) {
-		this.misPacientes = misPacientes;
-	}
-
-	public ArrayList<Doctor> getMisDoctores() {
-		return misDoctores;
-	}
-
-	public void setMisDoctores(ArrayList<Doctor> misDoctores) {
-		this.misDoctores = misDoctores;
-	}
-	
-	public ArrayList<Consulta> getMisConsultas() {
-		return misConsultas;
-	}
-	
-	public void setMisConsultas(ArrayList<Consulta> misConsultas) {
-		this.misConsultas = misConsultas;
-	}
-	
-	public ArrayList<Facturar> getMisFacturas() {
-		return misFacturas;
-	}
-	
-	public void setMisFacturas(ArrayList<Facturar> misFacturas) {
-		this.misFacturas = misFacturas;
-	}
-	
-	public ArrayList<Control_enfermedad> getControl_Enfer() {
-		return control_enfer;
-	}
-	
-	public void setControl_Enfer(ArrayList<Control_enfermedad> control_Enfer) {
-		this.control_enfer = control_Enfer;
-	}
-	
-	public ArrayList<Control_vacunacion> getControl_Vacu() {
-		return control_vacu;
-	}
-	
-	public void setControl_Vacu(ArrayList<Control_vacunacion> control_Vacu) {
-		this.control_vacu = control_Vacu;
-	}
-	
-	public static int getIdDoctor() {
-		return idDoctor;
-	}
-
-	public static void setIdDoctor(int idDoctor) {
-		Clinica.idDoctor = idDoctor;
-	}
-
-	public static int getIdPaciente() {
-		return idPaciente;
-	}
-
-	public static void setIdPaciente(int idPaciente) {
-		Clinica.idPaciente = idPaciente;
-	}
-
-	public static int getIdConsulta() {
-		return idConsulta;
-	}
-
-	public static void setIdConsulta(int idConsulta) {
-		Clinica.idConsulta = idConsulta;
-	}
-
-	public static int getIdCita() {
-		return idCita;
-	}
-
-	public static void setIdCita(int idCita) {
-		Clinica.idCita = idCita;
-	}
-
-	public static int getIdSeguro() {
-		return idSeguro;
-	}
-
-	public static void setIdSeguro(int idSeguro) {
-		Clinica.idSeguro = idSeguro;
-	}
-
-	public static int getIdVacuna() {
-		return idVacuna;
-	}
-
-	public static void setIdVacuna(int idVacuna) {
-		Clinica.idVacuna = idVacuna;
-	}
-
-	public static int getIdUser() {
-		return idUser;
-	}
-
-	public static void setIdUser(int idUser) {
-		Clinica.idUser = idUser;
-	}
-
-	public static int getIdFactura() {
-		return idFactura;
-	}
-
-	public static void setIdFactura(int idFactura) {
-		Clinica.idFactura = idFactura;
-	}
-	
-	public ArrayList<Seguro> getMisSeguros() {
-		return misSeguros;
-	}
-
-	public void setMisSeguros(ArrayList<Seguro> misSeguros) {
-		this.misSeguros = misSeguros;
-	}
-	
-	public boolean administrarVacuna(Paciente paciente, vacunacion vacunaAUsar) {
-        if (vacunaAUsar != null && vacunaAUsar.getCantidadDisponible() > 0) {
-            // 1. Descontar del inventario
-            vacunaAUsar.descontarStock(1);
-            
-            // 2. Registrar la vacuna en el historial del paciente (si es necesario)
-            if (paciente.getMiVacuna() != null) {
-                 paciente.getMiVacuna().add(vacunaAUsar);
-            }
-            guardarClinica();
-            return true; // La operación fue exitosa
+    public static Clinica getInstance() {
+        if (clinica == null) {
+            clinica = new Clinica();
         }
-        return false; // No hay stock o la vacuna no existe
+        return clinica;
     }
-	
-	public int getTotalVacunasAplicadas() {
-        return totalVacunasAplicadas;
+    
+    public static int getIdDoctor() { return idDoctor; }
+    public static int getIdPaciente() { return idPaciente; }
+    public static int getIdConsulta() { return idConsulta; }
+    public static int getIdFactura() { return idFactura; }
+    public static int getIdCita() { return idCita; }
+    public static int getIdSeguro() { return idSeguro; }
+    public static int getIdUser() { return idUser; }
+    public static int getIdEspecialidad() { return idEspecialidad; }
+
+  
+    public void guardarClinica() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Clinica_info.dat"))) {
+            oos.writeObject(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-	
-	
-	public Consulta buscarConsultaById ( String id )
-	{
-		
-		boolean findit = false;
-		Consulta aux = null;
-		int ind = 0;
-		
-		while ( !findit && ind < misConsultas.size() )
-		{
-			if ( misConsultas.get( ind ).getId().equalsIgnoreCase( id ) )
-			{
-				aux = misConsultas.get( ind );
-				findit = true;
-			}
-			
-			ind++;
-			
-		}
-		
-		return aux;
-		
-	}
-	
-	public Paciente buscarPacienteById ( int id )
-	{
-		
-		boolean findit = false;
-		Paciente aux = null;
-		int ind = 0;
-		
-		while ( !findit && ind < misPacientes.size() )
-		{
-			if ( misPacientes.get( ind ).getIdCodPaciente() == id )
-			{
-				aux = misPacientes.get( ind );
-				findit = true;
-			}
-			
-			ind++;
-			
-		}
-		
-		return aux;
-		
-	}
-	
-	public Doctor buscarDoctorByCedula ( String cedula )
-	{
-		
-		boolean findit = false;
-		Doctor aux = null;
-		int ind = 0;
-		
-		while ( !findit && ind < misDoctores.size() )
-		{
-			if ( misDoctores.get( ind ).getCedula().equalsIgnoreCase( cedula ) )
-			{
-				aux = misDoctores.get( ind );
-				findit = true;
-			}
-			
-			ind++;
-			
-		}
-		
-		return aux;
-		
-	}
-	
-	public Paciente buscarPacienteByCedula ( String cedula )
-	{
-		
-		boolean findit = false;
-		Paciente aux = null;
-		int ind = 0;
-		
-		while ( !findit && ind < misPacientes.size() )
-		{
-			if ( misPacientes.get( ind ).getCedula().equalsIgnoreCase( cedula ) )
-			{
-				aux = misPacientes.get( ind );
-				findit = true;
-			}
-			
-			ind++;
-			
-		}
-		
-		return aux;
-		
-	}
-	
-	public Facturar buscarFacturaById ( String id )
-	{
-		
-		boolean findit = false;
-		Facturar aux = null;
-		int ind = 0;
-		
-		while ( !findit && ind < misFacturas.size() )
-		{
-			if ( misFacturas.get( ind ).getId().equalsIgnoreCase( id ) )
-			{
-				aux = misFacturas.get( ind );
-				findit = true;
-			}
-			
-			ind++;
-			
-		}
-		
-		return aux;
-		
-	}
-	
-	public void eliminarPaciente( Paciente aux )
-	{
-		misPacientes.remove( aux );
-		idPaciente--;
-		guardarClinica();
-	}
-	
-	public void eliminarDoctor( Doctor aux )
-	{
-		misDoctores.remove( aux );
-		idDoctor--;
-		guardarClinica();
-	}
-	
-	public void eliminarConsulta( Consulta aux )
-	{
-		misConsultas.remove( aux );
-		idConsulta--;
-		guardarClinica();
-	}
-	
-	public void eliminarFactura( Facturar aux )
-	{
-		misFacturas.remove( aux );
-		idFactura--;
-		guardarClinica();
-	}
-	
-	public void eliminarCita ( Cita aux )
-	{
-		misCitas.remove( aux );
-		idCita--;
-		guardarClinica();
-	}
-	
-	public void eliminarSeguro ( Seguro aux )
-	{
-		misSeguros.remove( aux );
-		idSeguro--;
-		guardarClinica();
-	}
-	
 
-	
-	public void agregarDoctor ( Doctor aux )
-	{
-		misDoctores.add( aux );
-		idDoctor++;
-		guardarClinica();
-	}
-	
-	public void agregarPaciente ( Paciente aux )
-	{
-		misPacientes.add( aux );
-		idPaciente++;
-		guardarClinica();
-	}
-	
-	public void agregarConsulta ( Consulta aux )
-	{
-		misConsultas.add( aux );
-		idConsulta++;
-		guardarClinica();
-	}
-	
-	public void agregarCita ( Cita aux )
-	{
-		misCitas.add( aux );
-		idCita++;
-		guardarClinica();
-	}
-	
-	public void agregarFacturar ( Facturar aux )
-	{
-		misFacturas.add( aux );
-		idFactura++;
-		guardarClinica();
-	}
-	
-	public void agregarSeguro ( Seguro aux )
-	{
-		misSeguros.add( aux );
-		idSeguro++;
-		guardarClinica();
-	}
-	
-	public void agregarUsuario(User user) {
-		misUsuarios.add(user);
-		idUser++;
-		guardarClinica();
-	}
-	
-	
-	public void agregarControlVacunacion ( Control_vacunacion aux )
-	{
-		control_vacu.add( aux );
-		idcontrolVacuna++;
-		guardarClinica();
-	}
-	
-	public ArrayList<Paciente> pacientesSeleccionados ()
-	{
-		
-		ArrayList<Paciente> seleccionadosArrayList = new ArrayList<>();
-		
-		for ( Paciente paciente : misPacientes )
-		{
-			if ( !paciente.getSeleccionado() )
-			{
-				seleccionadosArrayList.add( paciente );
-			}
-		}
-		
-		return seleccionadosArrayList;
-		
-	}
-	
-	public ArrayList<Paciente> pacientesNoSeleccionados ()
-	{
-		
-		ArrayList<Paciente> seleccionadosArrayList = new ArrayList<>();
-		
-		for ( Paciente paciente : misPacientes )
-		{
-			if ( paciente.getSeleccionado() )
-			{
-				seleccionadosArrayList.add( paciente );
-			}
-		}
-		
-		return seleccionadosArrayList;
-		
-	}
-	
-	
-	public ArrayList<Doctor> doctoresSeleccionados ()
-	{
-		
-		ArrayList<Doctor> seleccionadosArrayList = new ArrayList<>();
-		
-		for ( Doctor doctor : misDoctores )
-		{
-			if ( doctor.getSeleccionado() )
-			{
-				seleccionadosArrayList.add( doctor );
-			}
-		}
-		
-		return seleccionadosArrayList;
-		
-	}
+    public boolean ConfirmarLogin(String nombreUsuario, String password) {
+        if (nombreUsuario == null || password == null) return false;
+        for (User usuario : misUsuarios) {
+            if (usuario.getUsuario().equals(nombreUsuario) && usuario.getPass().equals(password)) {
+                this.LoginUser = usuario;
+                return true;
+            }
+        }
+        return false;
+    }
 
-	public boolean ConfirmarLogin( String Nombre, String Cedula ) 
-	{
-		boolean aux = false;
-		
-		for ( User usuario : misUsuarios ) 
-		{
-	        if ( usuario.getUsuario().equals( Nombre ) && usuario.getPass().equals( Cedula ) ) 
-	        {
-	            LoginUser = usuario;
-	            aux = true;
-			}
-		}
-		
-		return aux;
-		
-	}
-	
-	public Doctor buscarDoctorByNombreEspecialidad(String nombre, String especialidad) {
-	    if (nombre == null || especialidad == null || misDoctores == null || misDoctores.isEmpty()) {
-	        return null;
-	    }
-
-	    for (Doctor doc : misDoctores) {
-	        if (nombre.equals(doc.getNombre()) && especialidad.equals(doc.getEspecialidad())) {
-	            return doc;
-	        }
-	    }
-
-	    return null; 
-	}
-	
-	public void agregarStockVacuna(vacunacion vacuna, int cantidad) {
+    public boolean administrarVacuna(Paciente paciente, vacunacion vacunaAUsar, Date fecha, int cantMl) {
+        if (paciente != null && vacunaAUsar != null && vacunaAUsar.getCantidadDisponible() > 0) {
+            vacunaAUsar.descontarStock(1);
+            RegistroVacunacion nuevoRegistro = new RegistroVacunacion(vacunaAUsar, fecha, cantMl);
+            paciente.agregarVacunaAplicada(nuevoRegistro);
+            totalVacunasAplicadas++;
+            guardarClinica();
+            return true;
+        }
+        return false;
+    }
+    
+    public void agregarStockVacuna(vacunacion vacuna, int cantidad) {
         if (inventarioDeVacunas.contains(vacuna)) {
             vacuna.agregarStock(cantidad);
         } else {
@@ -792,10 +139,144 @@ public class Clinica implements Serializable
         }
         guardarClinica();
     }
-	
+    
+    public void iniciarVigilancia(Consulta consulta) {
+        if (consulta != null) {
+            Bajo_vigilancia nuevaVigilancia = new Bajo_vigilancia(
+                consulta.getPaciente(),
+                consulta.getEnfermedad(),
+                consulta.getDoctor(),
+                new Date(),
+                consulta
+            );
+            this.misVigilancias.add(nuevaVigilancia);
+            guardarClinica();
+        }
+    }
+    
+    public ArrayList<Especialidad> getMisEspecialidades() {
+        if (misEspecialidades == null) {
+            misEspecialidades = new ArrayList<>();
+        }
+        return misEspecialidades;
+    }
+    
+    
+    public void agregarEspecialidad(Especialidad especialidad) {
+        if (misEspecialidades == null) {
+            misEspecialidades = new ArrayList<>();
+        }
+        misEspecialidades.add(especialidad);
+        idEspecialidad++;
+        guardarClinica();
+    }
+    
+    public void agregarDoctor(Doctor doctor) {
+        misDoctores.add(doctor);
+        idDoctor++;
+        guardarClinica();
+    }
+
+    public void agregarPaciente(Paciente paciente) {
+        misPacientes.add(paciente);
+        idPaciente++;
+        guardarClinica();
+    }
+    
+    public void agregarConsulta(Consulta consulta) {
+        misConsultas.add(consulta);
+        idConsulta++;
+        guardarClinica();
+    }
+
+    public void agregarCita(Cita cita) {
+        misCitas.add(cita);
+        idCita++;
+        guardarClinica();
+    }
+
+    public void agregarSeguro(Seguro seguro) {
+        misSeguros.add(seguro);
+        idSeguro++;
+        guardarClinica();
+    }
+
+    public void agregarUsuario(User user) {
+        misUsuarios.add(user);
+        idUser++;
+        guardarClinica();
+    }
+
+    public Doctor buscarDoctorByCedula(String cedula) {
+        for (Doctor doctor : misDoctores) {
+            if (doctor.getCedula().equalsIgnoreCase(cedula)) {
+                return doctor;
+            }
+        }
+        return null;
+    }
+
+    public Paciente buscarPacienteByCedula(String cedula) {
+        for (Paciente paciente : misPacientes) {
+            if (paciente.getCedula().equalsIgnoreCase(cedula)) {
+                return paciente;
+            }
+        }
+        return null;
+    }
+    
+    public void eliminarCita(Cita cita) {
+        if (cita != null) {
+            misCitas.remove(cita);
+            guardarClinica();
+        }
+    }
+
+    public User getLoginUser() {
+        return LoginUser;
+    }
+
+    public void setLoginUser(User loginUser) {
+        LoginUser = loginUser;
+    }
+
+    public static void setClinica(Clinica clinica) {
+        Clinica.clinica = clinica;
+    }
+
+    public ArrayList<Paciente> getMisPacientes() {
+        return misPacientes;
+    }
+
+    public ArrayList<Doctor> getMisDoctores() {
+        return misDoctores;
+    }
+
+    public ArrayList<Consulta> getMisConsultas() {
+        return misConsultas;
+    }
+    
+    public ArrayList<Cita> getMisCitas() {
+        return misCitas;
+    }
+
+    public ArrayList<Seguro> getMisSeguros() {
+        return misSeguros;
+    }
+
+    public ArrayList<vacunacion> getInventarioDeVacunas() {
+        return inventarioDeVacunas;
+    }
+    
+    public int getTotalVacunasAplicadas() {
+        return totalVacunasAplicadas;
+    }
+
+	public ArrayList<Facturar> getMisFacturas() {
+		return misFacturas;
+	}
+
+	public void setMisFacturas(ArrayList<Facturar> misFacturas) {
+		this.misFacturas = misFacturas;
+	}
 }
-
-
-
-
-

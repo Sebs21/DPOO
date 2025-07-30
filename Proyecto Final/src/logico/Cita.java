@@ -10,7 +10,7 @@ public class Cita implements Serializable {
     private Doctor doctor;
     private Paciente paciente;
     private Date fechaCita;
-    private String estado; // <-- CAMBIO: Se añade un estado a la cita
+    private String estado;
 
     public Cita(String idCita, Doctor doctor, Paciente paciente, Date fechaCita) {
         super();
