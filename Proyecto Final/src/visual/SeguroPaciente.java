@@ -20,12 +20,15 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.SoftBevelBorder;
 
 import logico.Clinica;
-import logico.Paciente;
 import logico.Seguro;
 import logico.User;
 
 public class SeguroPaciente extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtIdSeguro;
 	private JButton btnNo;
@@ -88,7 +91,8 @@ public class SeguroPaciente extends JDialog {
 		txtIdSeguro.setBounds(138, 169, 237, 30);
 		contentPanel.add(txtIdSeguro);
 		txtIdSeguro.setColumns(10);
-		txtIdSeguro.setText( " S - " +Clinica.getInstance().idSeguro );
+		Clinica.getInstance();
+		txtIdSeguro.setText( " S - " +Clinica.idSeguro );
 		
 		JLabel lblIdPaciente = new JLabel("Nombre del Paciente:");
 		lblIdPaciente.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
@@ -233,7 +237,8 @@ public class SeguroPaciente extends JDialog {
 	public void clean ()
 	{
 		txtNombrePaciente.setText("");
-		txtIdSeguro.setText( " S - " +Clinica.getInstance().idCita );
+		Clinica.getInstance();
+		txtIdSeguro.setText( " S - " +Clinica.idCita );
 		cbxNombreEmpresa.setSelectedItem( " < Seleccione Nombre de Empresa > " );
 		cbxTipoDeSeguro.setSelectedItem( " < Seleccione Seguro > ");
 	}

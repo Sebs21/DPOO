@@ -1,10 +1,7 @@
 package visual;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.FlowLayout;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -17,97 +14,74 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.border.TitledBorder;
 
 import logico.Bajo_vigilancia;
 import logico.Clinica;
-import logico.Paciente;
+import logico.Doctor;
 
 public class Reporte_control_enfermedades extends JDialog {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private final JPanel contentPanel;
+    private static final long serialVersionUID = 1L;
+    private JPanel contentPanel;
     private JTextField txt_code_paciente;
-    private JTextField txt_nombre_paciente;
     private JTable table;
     private DefaultTableModel model;
-    private final CardLayout cardLayout;
+    private Doctor doctorFiltro = null; // <-- CAMBIO: Para filtrar por doctor
+    private JPanel panelBusqueda;
 
+    /**
+     * Constructor para el Administrador (muestra la búsqueda).
+     */
     public Reporte_control_enfermedades() {
-        setTitle("Reporte de Pacientes en Vigilancia");
+        initComponents();
+        loadReporte(""); // Cargar todos los pacientes inicialmente
+    }
+    
+    /**
+     * Constructor para el Doctor (oculta la búsqueda y filtra la tabla).
+     */
+    public Reporte_control_enfermedades(Doctor doctor) {
+        this.doctorFiltro = doctor;
+        initComponents();
+        panelBusqueda.setVisible(false); // Ocultar el panel de búsqueda para el doctor
+        setTitle("Mis Pacientes en Vigilancia");
+        loadReporte(""); // Cargar solo los pacientes del doctor
+    }
+
+    private void initComponents() {
         setBounds(100, 100, 868, 564);
         setLocationRelativeTo(null);
         setIconImage(new ImageIcon(getClass().getResource("/visual/SIGIC_logo.jpg")).getImage());
         setModal(true);
 
-        contentPanel = new JPanel();
-        cardLayout = new CardLayout();
-        contentPanel.setLayout(cardLayout);
+        contentPanel = new JPanel(new BorderLayout());
         getContentPane().add(contentPanel, BorderLayout.CENTER);
-
-        initFormularioPanel();
-        initTablaPanel();
-    }
-
-    private void initFormularioPanel() {
-        JPanel panelFormulario = new JPanel();
-        panelFormulario.setLayout(null);
+        
+        panelBusqueda = new JPanel();
+        panelBusqueda.setLayout(null);
+        panelBusqueda.setPreferredSize(new java.awt.Dimension(0, 80));
 
         JLabel lblCodigoDepaciente = new JLabel("Cédula del Paciente (Opcional):");
         lblCodigoDepaciente.setBounds(21, 21, 192, 26);
-        panelFormulario.add(lblCodigoDepaciente);
+        panelBusqueda.add(lblCodigoDepaciente);
 
         txt_code_paciente = new JTextField();
         txt_code_paciente.setBounds(221, 21, 186, 32);
-        panelFormulario.add(txt_code_paciente);
+        panelBusqueda.add(txt_code_paciente);
+        
+        JButton btnBuscar = new JButton("Filtrar");
+        btnBuscar.addActionListener(e -> loadReporte(txt_code_paciente.getText()));
+        btnBuscar.setBounds(420, 21, 80, 32);
+        panelBusqueda.add(btnBuscar);
 
-        txt_nombre_paciente = new JTextField();
-        txt_nombre_paciente.setEditable(false);
-        txt_nombre_paciente.setBounds(428, 21, 186, 32);
-        panelFormulario.add(txt_nombre_paciente);
+        contentPanel.add(panelBusqueda, BorderLayout.NORTH);
 
-        JPanel panelBotones = new JPanel();
-        panelBotones.setBounds(0, 448, 842, 45);
-        panelFormulario.add(panelBotones);
-        panelBotones.setLayout(new FlowLayout(FlowLayout.RIGHT));
-
-        JButton btnVerReporte = new JButton("Ver Reporte");
-        btnVerReporte.addActionListener(e -> {
-            loadReporte(txt_code_paciente.getText());
-            mostrarVista("tabla");
-        });
-        panelBotones.add(btnVerReporte);
-
-        JButton btnCancelar = new JButton("Cancelar");
-        btnCancelar.addActionListener(e -> dispose());
-        panelBotones.add(btnCancelar);
-
-        contentPanel.add(panelFormulario, "formulario");
-        txt_code_paciente.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                buscarPaciente(txt_code_paciente.getText());
-            }
-        });
-    }
-
-    private void buscarPaciente(String codigoPaciente) {
-        // <-- CAMBIO: Se busca en la lista correcta de la clínica
-        Paciente paciente = Clinica.getInstance().buscarPacienteByCedula(codigoPaciente);
-        if (paciente != null) {
-            txt_nombre_paciente.setText(paciente.getNombre());
-        } else {
-            txt_nombre_paciente.setText("");
-        }
-    }
-
-    private void initTablaPanel() {
         JPanel panelTabla = new JPanel(new BorderLayout());
+        panelTabla.setBorder(new TitledBorder(null, "Pacientes en Vigilancia", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        contentPanel.add(panelTabla, BorderLayout.CENTER);
 
         model = new DefaultTableModel();
-        // <-- CAMBIO: Se actualizan las columnas
         String[] identificadores = {"Paciente", "Doctor Responsable", "Enfermedad", "Horas Vigilancia", "Fecha Inicio", "Estado"};
         model.setColumnIdentifiers(identificadores);
 
@@ -116,25 +90,23 @@ public class Reporte_control_enfermedades extends JDialog {
         panelTabla.add(scrollPane, BorderLayout.CENTER);
 
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        getContentPane().add(panelBotones, BorderLayout.SOUTH);
 
-        JButton btnVolver = new JButton("Volver");
-        btnVolver.addActionListener(e -> mostrarVista("formulario"));
-        panelBotones.add(btnVolver);
-
-        panelTabla.add(panelBotones, BorderLayout.SOUTH);
-
-        contentPanel.add(panelTabla, "tabla");
+        JButton btnCerrar = new JButton("Cerrar");
+        btnCerrar.addActionListener(e -> dispose());
+        panelBotones.add(btnCerrar);
     }
-
+    
     private void loadReporte(String cedulaFiltro) {
         model.setRowCount(0);
-        // <-- CAMBIO: Se lee desde la lista correcta de la clínica
         ArrayList<Bajo_vigilancia> vigilancias = Clinica.getInstance().getMisVigilancias();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         for (Bajo_vigilancia vigi : vigilancias) {
-            // Si se ingresó una cédula, se filtra. Si no, se muestran todos.
-            if (cedulaFiltro.isEmpty() || vigi.getPaciente().getCedula().equalsIgnoreCase(cedulaFiltro)) {
+            boolean doctorCoincide = (doctorFiltro == null || vigi.getDoctorResponsable().getCedula().equals(doctorFiltro.getCedula()));
+            boolean pacienteCoincide = (cedulaFiltro.isEmpty() || vigi.getPaciente().getCedula().equalsIgnoreCase(cedulaFiltro));
+
+            if (doctorCoincide && pacienteCoincide) {
                 Object[] fila = {
                     vigi.getPaciente().getNombre() + " " + vigi.getPaciente().getApellido(),
                     vigi.getDoctorResponsable().getNombre() + " " + vigi.getDoctorResponsable().getApellido(),
@@ -146,9 +118,5 @@ public class Reporte_control_enfermedades extends JDialog {
                 model.addRow(fila);
             }
         }
-    }
-
-    private void mostrarVista(String vista) {
-        cardLayout.show(contentPanel, vista);
     }
 }

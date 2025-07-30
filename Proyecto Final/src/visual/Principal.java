@@ -1,7 +1,6 @@
 package visual;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -15,12 +14,13 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import logico.Clinica;
+import logico.Doctor;
+import logico.User;
 
 public class Principal extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private Dimension dim;
 	private JMenu btnResumenes;
 	private JMenu btnEnfermedadesVigilancia;
 	private JMenu btnVacunacion;
@@ -105,13 +105,24 @@ public class Principal extends JFrame {
 		btnEnfermedadesVigilancia.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		menuBar.add(btnEnfermedadesVigilancia);
 
-		// <-- CAMBIO: Se elimina el botón "Registrar Vigilancia" de aquí -->
 
 		JMenuItem btnReporteVigilancia = new JMenuItem("Reporte de Vigilancia");
 		btnReporteVigilancia.addActionListener(e -> {
-			Reporte_control_enfermedades repor_enfe = new Reporte_control_enfermedades();
-			repor_enfe.setVisible(true);
-		});
+            // <-- CAMBIO CRÍTICO: Lógica para abrir el reporte correcto -->
+            User currentUser = Clinica.getInstance().getLoginUser();
+            if (currentUser != null && currentUser.getTipo().equalsIgnoreCase("Doctor")) {
+                // Si es un doctor, busca su objeto y lo pasa al constructor
+                Doctor doc = Clinica.getInstance().buscarDoctorByCedula(currentUser.getPass());
+                if (doc != null) {
+                    Reporte_control_enfermedades reporDoc = new Reporte_control_enfermedades(doc);
+                    reporDoc.setVisible(true);
+                }
+            } else {
+                // Si es administrador o cualquier otro rol, abre el reporte general
+                Reporte_control_enfermedades repor_enfe = new Reporte_control_enfermedades();
+                repor_enfe.setVisible(true);
+            }
+        });
 		btnEnfermedadesVigilancia.add(btnReporteVigilancia);
 
 		btnVacunacion = new JMenu("Vacunación");
@@ -182,7 +193,8 @@ public class Principal extends JFrame {
 		    menuCita.setEnabled(true);
 		    btnInterfaz.setEnabled(false);
 		    btnAgregarVacuna.setEnabled(false);
-		    btnAgregarSeguro.setEnabled(false);	   
+		    btnAgregarSeguro.setEnabled(false);
+		    btnAgregarEspecialidad.setVisible(false);
 
 		} else if (userType.equalsIgnoreCase("Doctor")) {
 		    btnAdministracion.setEnabled(true);
@@ -193,6 +205,8 @@ public class Principal extends JFrame {
 		    btnVacunacion.setEnabled(false);
 		    btnAgregarEspecialidad.setVisible(false);
 		    menuCita.setEnabled(false);
+		    btnFacturar.setEnabled(false);
+		    mntmRegistrarDoctor.setEnabled(false);
 
 		} else if (userType.equalsIgnoreCase("Administrador")) {
 		    btnAdministracion.setEnabled(true);

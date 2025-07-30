@@ -21,6 +21,7 @@ import logico.Cita;
 import logico.Clinica;
 import logico.Consulta;
 import logico.Doctor;
+import logico.Facturar;
 import logico.Paciente;
 import logico.Seguro;
 
@@ -34,17 +35,19 @@ public class ListadoGeneral extends JDialog
 	private DefaultTableModel modeloSeguros;
 	private DefaultTableModel modeloConsultas;
 	private DefaultTableModel modeloCitas;
-	
+    private DefaultTableModel modeloFacturas; // <-- Nuevo modelo para facturas
+
 	private JTable tablePaciente;
 	private JTable tableDoctor;
 	private JTable tableSeguro;
 	private JTable tableConsulta;
 	private JTable tableCita;
+    private JTable tableFacturas; // <-- Nueva tabla para facturas
 
 	public ListadoGeneral() 
 	{
 		setTitle("Listado General del Sistema");
-		setBounds(100, 100, 1450, 850);
+		setBounds(100, 100, 1600, 900); // Se ajusta el tamaño
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -54,7 +57,7 @@ public class ListadoGeneral extends JDialog
 		
 		JPanel panelPacientes = new JPanel();
 		panelPacientes.setBorder(new TitledBorder(null, "Pacientes Registrados", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelPacientes.setBounds(12, 13, 697, 350);
+		panelPacientes.setBounds(12, 13, 750, 250);
 		contentPanel.add(panelPacientes);
 		panelPacientes.setLayout(new BorderLayout(0, 0));
 		
@@ -71,7 +74,7 @@ public class ListadoGeneral extends JDialog
 		
 		JPanel panelDoctores = new JPanel();
 		panelDoctores.setBorder(new TitledBorder(null, "Doctores Registrados", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelDoctores.setBounds(12, 380, 697, 350);
+		panelDoctores.setBounds(12, 275, 750, 250);
 		contentPanel.add(panelDoctores);
 		panelDoctores.setLayout(new BorderLayout(0, 0));
 		
@@ -88,7 +91,7 @@ public class ListadoGeneral extends JDialog
 		
 		JPanel panelSeguros = new JPanel();
 		panelSeguros.setBorder(new TitledBorder(null, "Seguros Disponibles", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelSeguros.setBounds(721, 13, 697, 150);
+		panelSeguros.setBounds(12, 537, 750, 250);
 		contentPanel.add(panelSeguros);
 		panelSeguros.setLayout(new BorderLayout(0, 0));
 		
@@ -104,7 +107,7 @@ public class ListadoGeneral extends JDialog
 		
 		JPanel panelConsulta = new JPanel();
 		panelConsulta.setBorder(new TitledBorder(null, "Historial de Consultas", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panelConsulta.setBounds(721, 175, 691, 280);
+		panelConsulta.setBounds(780, 13, 750, 250);
 		contentPanel.add(panelConsulta);
 		panelConsulta.setLayout(new BorderLayout(0, 0));
 		
@@ -121,7 +124,7 @@ public class ListadoGeneral extends JDialog
 		
 		JPanel panelCita = new JPanel();
 		panelCita.setBorder(new TitledBorder(null, "Historial de Citas", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelCita.setBounds(721, 467, 691, 263);
+		panelCita.setBounds(780, 275, 750, 250);
 		contentPanel.add(panelCita);
 		panelCita.setLayout(new BorderLayout(0, 0));
 		
@@ -135,6 +138,23 @@ public class ListadoGeneral extends JDialog
 		String[] identificadoresCitas = { "Doctor", "Paciente", "Fecha de Cita", "Estado" };
 		modeloCitas.setColumnIdentifiers(identificadoresCitas);
 		tableCita.setModel(modeloCitas);
+
+        // <-- CAMBIO: Se añade el nuevo panel para las facturas -->
+        JPanel panelFacturas = new JPanel();
+        panelFacturas.setBorder(new TitledBorder(null, "Historial de Facturas", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        panelFacturas.setBounds(780, 537, 750, 250);
+        contentPanel.add(panelFacturas);
+        panelFacturas.setLayout(new BorderLayout(0, 0));
+
+        JScrollPane scrollPane_5 = new JScrollPane();
+        panelFacturas.add(scrollPane_5, BorderLayout.CENTER);
+
+        tableFacturas = new JTable();
+        modeloFacturas = new DefaultTableModel();
+        String[] headersFacturas = {"ID Factura", "Paciente", "Fecha", "Subtotal", "Descuento", "Total Pagado"};
+        modeloFacturas.setColumnIdentifiers(headersFacturas);
+        tableFacturas.setModel(modeloFacturas);
+        scrollPane_5.setViewportView(tableFacturas);
 		
 		JPanel buttonPane = new JPanel();
 		buttonPane.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
@@ -154,9 +174,32 @@ public class ListadoGeneral extends JDialog
 		datosSeguros();
 		datosConsultas();
 		datosCitas();
+        datosFacturas(); // <-- Se llama al nuevo método
 	}
 	
-	public void datosPacientes() {
+	// <-- CAMBIO: Nuevo método para cargar las facturas -->
+    private void datosFacturas() {
+        modeloFacturas.setRowCount(0);
+        ArrayList<Facturar> facturas = Clinica.getInstance().getMisFacturas();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        if (facturas != null) {
+            for (Facturar factura : facturas) {
+                Object[] row = {
+                    factura.getId(),
+                    factura.getPaciente().getNombre() + " " + factura.getPaciente().getApellido(),
+                    sdf.format(factura.getFecha()),
+                    String.format("%.2f", factura.getSubTotal()),
+                    String.format("%.2f", factura.getDescuento()),
+                    String.format("%.2f", factura.getTotalPagado())
+                };
+                modeloFacturas.addRow(row);
+            }
+        }
+    }
+	
+	// (El resto de los métodos 'datos...' se mantienen igual)
+    public void datosPacientes() {
 		modeloPacientes.setRowCount(0);
 		ArrayList<Paciente> pacientes = Clinica.getInstance().getMisPacientes();
 		
@@ -167,9 +210,7 @@ public class ListadoGeneral extends JDialog
 			fila[2] = paciente.getNombre();
 			fila[3] = paciente.getApellido();
 			fila[4] = paciente.getEdad();
-            // <-- CAMBIO: Se obtiene el nombre de la empresa del seguro, o "N/A" si no tiene.
 			fila[5] = (paciente.getSeguro() != null) ? paciente.getSeguro().getNombreEmpresa() : "N/A";
-            // <-- CAMBIO: Se muestra la cantidad de vacunas en lugar de la lista de objetos.
 			fila[6] = (paciente.getMisVacunasAplicadas() != null) ? paciente.getMisVacunasAplicadas().size() : 0;
 			
 			modeloPacientes.addRow(fila);
@@ -204,7 +245,6 @@ public class ListadoGeneral extends JDialog
 		for (Consulta consulta : consultas) {
 			Object[] fila = {
                 consulta.getId(),
-                // <-- CAMBIO: Se muestra el nombre completo del paciente.
                 consulta.getPaciente().getNombre() + " " + consulta.getPaciente().getApellido(),
                 consulta.getEnfermedad(),
                 sdf.format(consulta.getFechaConsulta()),
@@ -221,9 +261,7 @@ public class ListadoGeneral extends JDialog
 		
 		for (Cita cita : citas) {
 			Object[] fila = {
-                // <-- CAMBIO: Se muestra el nombre completo del doctor.
                 cita.getDoctor().getNombre() + " " + cita.getDoctor().getApellido(),
-                // <-- CAMBIO: Se muestra el nombre completo del paciente.
                 cita.getPaciente().getNombre() + " " + cita.getPaciente().getApellido(),
                 sdf.format(cita.getFechaCita()),
                 cita.getEstado()
