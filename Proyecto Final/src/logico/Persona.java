@@ -12,16 +12,26 @@ public abstract class Persona implements Serializable{
 	protected String nombre;
 	protected String apellido;
 	protected String edad;
+	protected String sexo;
 
-	public Persona( String cedula, String nombre, String apellido, String edad) 
+	public Persona( String cedula, String nombre, String apellido, String edad, String sexo) 
 	{
 		super();
 		this.cedula = cedula;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.edad= edad;
+		this.sexo = sexo;
 	}
 	
+	public String getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
+
 	public String getEdad() {
 		return edad;
 	}

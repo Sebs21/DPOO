@@ -18,8 +18,8 @@ public class Paciente extends Persona {
     private boolean seleccionado;
     private boolean consultaPagada;
 
-    public Paciente(String cedula, String nombre, String apellido, int idCodPaciente, String edad, User user) {
-        super(cedula, nombre, apellido, edad);
+    public Paciente(String cedula, String nombre, String apellido, int idCodPaciente, String edad, String sexo, User user) {
+        super(cedula, nombre, apellido, edad, sexo); // <-- Se pasa a la clase Persona
         this.idCodPaciente = idCodPaciente;
         this.user = user;
 

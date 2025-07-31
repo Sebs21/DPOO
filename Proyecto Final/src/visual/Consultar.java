@@ -44,6 +44,7 @@ public class Consultar extends JDialog {
     private JRadioButton rdbtnImportante;
     private JTextField txtIdfactura;
     private JSpinner spnFecha;
+    private JTextField txtSexo;
     private final ButtonGroup buttonGroup = new ButtonGroup();
     
     // Componente para decidir si se envía a vigilancia
@@ -161,31 +162,40 @@ public class Consultar extends JDialog {
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setLayout(null);
-		panel_2.setBorder(new TitledBorder(new LineBorder(new Color(173, 216, 230), 4, true), "Datos del Paciente", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_2.setBorder(new TitledBorder(new LineBorder(new Color(173, 216, 230), 4, true), "Datos del Paciente",
+				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_2.setBounds(356, 11, 665, 348);
 		contentPanel.add(panel_2);
 
 		JLabel lblNombrel = new JLabel("Nombre:");
 		lblNombrel.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		lblNombrel.setBounds(35, 134, 78, 23);
+		lblNombrel.setBounds(35, 80, 78, 23);
 		panel_2.add(lblNombrel);
 
 		txtNombre = new JTextField();
 		txtNombre.setEditable(false);
-		txtNombre.setColumns(10);
-		txtNombre.setBounds(148, 127, 165, 37);
+		txtNombre.setBounds(148, 76, 165, 37);
 		panel_2.add(txtNombre);
 
 		txtApellido = new JTextField();
 		txtApellido.setEditable(false);
-		txtApellido.setColumns(10);
-		txtApellido.setBounds(461, 127, 165, 37);
+		txtApellido.setBounds(461, 76, 165, 37);
 		panel_2.add(txtApellido);
 
 		JLabel lblApellido = new JLabel("Apellido:");
 		lblApellido.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		lblApellido.setBounds(348, 134, 78, 23);
+		lblApellido.setBounds(348, 80, 78, 23);
 		panel_2.add(lblApellido);
+		
+		JLabel lblSexo = new JLabel("Sexo:");
+        lblSexo.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
+        lblSexo.setBounds(348, 124, 78, 23);
+        panel_2.add(lblSexo);
+        
+        txtSexo = new JTextField();
+        txtSexo.setEditable(false);
+        txtSexo.setBounds(461, 124, 165, 37);
+        panel_2.add(txtSexo);
 
 		JButton btnHistoriaClinica = new JButton("Ver Historia Clínica");
 		btnHistoriaClinica.addActionListener(new ActionListener() {
@@ -216,24 +226,22 @@ public class Consultar extends JDialog {
 
 		txtCedula = new JTextField();
 		txtCedula.setEditable(false);
-		txtCedula.setColumns(10);
-		txtCedula.setBounds(148, 47, 165, 37);
+		txtCedula.setBounds(148, 29, 165, 37);
 		panel_2.add(txtCedula);
 
 		JLabel lblCedula = new JLabel("Cédula:");
 		lblCedula.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		lblCedula.setBounds(35, 54, 78, 23);
+		lblCedula.setBounds(35, 36, 78, 23);
 		panel_2.add(lblCedula);
 
 		JLabel lblEdad = new JLabel("Edad:");
 		lblEdad.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		lblEdad.setBounds(348, 54, 78, 23);
+		lblEdad.setBounds(35, 124, 78, 23);
 		panel_2.add(lblEdad);
 
 		txtEdad = new JTextField();
 		txtEdad.setEditable(false);
-		txtEdad.setColumns(10);
-		txtEdad.setBounds(461, 47, 165, 37);
+		txtEdad.setBounds(148, 124, 165, 37);
 		panel_2.add(txtEdad);
 
         // --- CAMBIO: Panel de Acciones rediseñado y limpiado ---
@@ -294,6 +302,7 @@ public class Consultar extends JDialog {
 		txtApellido.setText(paciente.getApellido());
 		txtCedula.setText(paciente.getCedula());
 		txtEdad.setText(paciente.getEdad());
+        txtSexo.setText(paciente.getSexo()); // <-- CAMBIO: Se muestra el sexo del paciente
         if (paciente.getSeguro() != null) {
 		    txtSeguro.setText(paciente.getSeguro().getNombreEmpresa());
         } else {

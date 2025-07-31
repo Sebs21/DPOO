@@ -15,9 +15,9 @@ public class Doctor extends Persona
 	
 	private boolean seleccionado;
 
-	public Doctor( String cedula, String nombre, String apellido, String especialidad, String edad, User user ) 
+	public Doctor( String cedula, String nombre, String apellido, String especialidad, String edad, String sexo, User user ) 
 	{
-		super(cedula, nombre, apellido,edad);
+		super(cedula, nombre, apellido, edad, sexo); // <-- Se pasa a la clase Persona
 		this.especialidad = especialidad;
 		this.misPacientes = new ArrayList<Paciente>();
 		this.user = user;

@@ -50,7 +50,7 @@ public class Cita extends JDialog {
     private JButton btnBuscarPaciente;
     private JComboBox<String> cbxSeguros;
     private JList<vacunacion> listaVacunas; // <-- CAMBIO: Se usa el tipo 'vacunacion'
-
+    private JComboBox<String> cbxSexo;
     public Cita() {
         setTitle("Realizar Cita y Aplicar Vacunas");
         setBounds(100, 100, 850, 600);
@@ -66,7 +66,7 @@ public class Cita extends JDialog {
         panelPaciente.setBorder(new TitledBorder(null, "Información del Paciente", TitledBorder.LEADING, TitledBorder.TOP, null, null));
         panelPaciente.setBounds(10, 20, 340, 320);
         contentPanel.add(panelPaciente);
-        panelPaciente.setLayout(null);
+        panelPaciente.setLayout(null);      
 
         JLabel lblCedula = new JLabel("Cédula:");
         lblCedula.setFont(new Font("Times New Roman", Font.PLAIN, 16));
@@ -103,30 +103,40 @@ public class Cita extends JDialog {
         txtEdadPaciente = new JTextField();
         txtEdadPaciente.setBounds(110, 160, 210, 25);
         panelPaciente.add(txtEdadPaciente);
-
+        
+        // <-- CAMBIO: Se ajusta la posición de los campos Sexo y Seguro -->
+        JLabel lblSexo = new JLabel("Sexo:");
+        lblSexo.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+        lblSexo.setBounds(20, 200, 80, 25);
+        panelPaciente.add(lblSexo);
+        
+        cbxSexo = new JComboBox<>();
+        cbxSexo.setModel(new DefaultComboBoxModel<>(new String[] {"<Seleccione>", "Masculino", "Femenino"}));
+        cbxSexo.setBounds(110, 200, 210, 25);
+        panelPaciente.add(cbxSexo);
+        
         JLabel lblSeguro = new JLabel("Seguro:");
         lblSeguro.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        lblSeguro.setBounds(20, 200, 80, 25);
+        lblSeguro.setBounds(20, 240, 80, 25); // Posición corregida
         panelPaciente.add(lblSeguro);
         
         cbxSeguros = new JComboBox<>();
-        cbxSeguros.setBounds(110, 200, 210, 25);
+        cbxSeguros.setBounds(110, 240, 210, 25); // Posición corregida
         panelPaciente.add(cbxSeguros);
-        cargarSegurosDisponibles();
         
         JLabel lblFechaDeLa = new JLabel("Fecha de la Cita:");
         lblFechaDeLa.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        lblFechaDeLa.setBounds(20, 260, 120, 25);
+        lblFechaDeLa.setBounds(20, 280, 120, 25);
         panelPaciente.add(lblFechaDeLa);
         
         spnFechaCita = new JSpinner();
         spnFechaCita.setModel(new SpinnerDateModel(new Date(), null, null, Calendar.DAY_OF_MONTH));
-        spnFechaCita.setBounds(150, 255, 170, 30);
+        spnFechaCita.setBounds(150, 275, 170, 30);
         panelPaciente.add(spnFechaCita);
         
         JPanel panelVacunas = new JPanel();
         panelVacunas.setBorder(new TitledBorder(null, "Seleccionar Vacunas a Aplicar", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-        panelVacunas.setBounds(10, 350, 340, 150);
+        panelVacunas.setBounds(10, 380, 340, 120); // Posición corregida
         contentPanel.add(panelVacunas);
         panelVacunas.setLayout(new BorderLayout(0, 0));
 
@@ -143,7 +153,7 @@ public class Cita extends JDialog {
 
         JScrollPane scrollPaneDoctores = new JScrollPane();
         panelDoctores.add(scrollPaneDoctores, BorderLayout.CENTER);
-
+        
         tableDoctores = new JTable();
         modeloDoctores = new DefaultTableModel();
         String[] identificadores = { "Nombre", "Apellido", "Especialidad" };
@@ -173,6 +183,7 @@ public class Cita extends JDialog {
 
         cargarDoctores();
         cargarVacunasDisponibles();
+        cargarSegurosDisponibles();
     }
 
     private void cargarVacunasDisponibles() {
@@ -204,10 +215,12 @@ public class Cita extends JDialog {
     }
 
     private void registrarCitaConVacunas() {
-        String cedula = txtCedulaPaciente.getText();
+    	String cedula = txtCedulaPaciente.getText();
         String nombre = txtNombrePaciente.getText();
         String apellido = txtApellidoPaciente.getText();
         String edad = txtEdadPaciente.getText();
+        String sexo = cbxSexo.getSelectedItem().toString();
+        
         if(cedula.trim().isEmpty() || nombre.trim().isEmpty() || apellido.trim().isEmpty() || edad.trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Debe llenar todos los datos del paciente.", "Campos Vacíos", JOptionPane.ERROR_MESSAGE);
             return;
@@ -224,7 +237,7 @@ public class Cita extends JDialog {
         Paciente pacienteParaLaCita = Clinica.getInstance().buscarPacienteByCedula(cedula);
         if (pacienteParaLaCita == null) { 
             User usuarioPaciente = new User(nombre, cedula, "Paciente");
-            pacienteParaLaCita = new Paciente(cedula, nombre, apellido, Clinica.getIdPaciente(), edad, usuarioPaciente);
+            pacienteParaLaCita = new Paciente(cedula, nombre, apellido, Clinica.getIdPaciente(), edad, sexo, usuarioPaciente); // <-- Se pasa el sexo al constructor
             Clinica.getInstance().agregarPaciente(pacienteParaLaCita);
             Clinica.getInstance().agregarUsuario(usuarioPaciente);
             JOptionPane.showMessageDialog(this, "Nuevo paciente registrado.", "Paciente Nuevo", JOptionPane.INFORMATION_MESSAGE);
