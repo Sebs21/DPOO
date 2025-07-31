@@ -47,7 +47,6 @@ public class Consultar extends JDialog {
     private JTextField txtSexo;
     private final ButtonGroup buttonGroup = new ButtonGroup();
     
-    // Componente para decidir si se envía a vigilancia
     private JCheckBox chckbxEnviarAVigilancia;
 
     private Doctor doctorActual;
