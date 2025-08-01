@@ -9,8 +9,10 @@ import java.awt.event.ActionListener;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -25,6 +27,7 @@ import javax.swing.border.TitledBorder;
 import logico.Clinica;
 import logico.Consulta;
 import logico.Doctor;
+import logico.Enfermedad;
 import logico.Paciente;
 
 public class Consultar extends JDialog {
@@ -35,7 +38,6 @@ public class Consultar extends JDialog {
     private JTextField txtIdConsulta;
     private JTextField txtSeguro;
     private JTextField txtDescripcion;
-    private JTextField txtEnfermedad;
     private JTextField txtNombre;
     private JTextField txtApellido;
     private JTextField txtCedula;
@@ -46,7 +48,7 @@ public class Consultar extends JDialog {
     private JSpinner spnFecha;
     private JTextField txtSexo;
     private final ButtonGroup buttonGroup = new ButtonGroup();
-    
+    private JComboBox<Enfermedad> cbxEnfermedad;
     private JCheckBox chckbxEnviarAVigilancia;
 
     private Doctor doctorActual;
@@ -77,11 +79,10 @@ public class Consultar extends JDialog {
 		panel_3.add(txtDescripcion);
 		txtDescripcion.setColumns(10);
 
-		txtEnfermedad = new JTextField();
-		txtEnfermedad.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		txtEnfermedad.setBounds(10, 82, 311, 177);
-		panel_3.add(txtEnfermedad);
-		txtEnfermedad.setColumns(10);
+		cbxEnfermedad = new JComboBox<>();
+		cbxEnfermedad.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		cbxEnfermedad.setBounds(10, 82, 311, 35); // Se ajusta el tamaño
+		panel_3.add(cbxEnfermedad);
 
 		JLabel lblNewLabel_2 = new JLabel("Descripción");
 		lblNewLabel_2.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
@@ -286,6 +287,8 @@ public class Consultar extends JDialog {
 		JButton cancelButton = new JButton("Cancelar");
 		cancelButton.addActionListener(e -> dispose());
 		buttonPane.add(cancelButton);
+		
+		 cargarEnfermedades();
     }
     
     public boolean isConsultaFinalizada() {
@@ -308,6 +311,15 @@ public class Consultar extends JDialog {
             txtSeguro.setText("No aplica");
         }
     }
+    
+    
+    private void cargarEnfermedades() {
+        DefaultComboBoxModel<Enfermedad> model = new DefaultComboBoxModel<>();
+        for (Enfermedad enf : Clinica.getInstance().getMisEnfermedades()) {
+            model.addElement(enf);
+        }
+        cbxEnfermedad.setModel(model);
+    }
 
     public void finalizarConsulta() {
         if (doctorActual == null || pacienteActual == null) {
@@ -317,30 +329,19 @@ public class Consultar extends JDialog {
         
         String id = txtIdConsulta.getText();
         String descripcion = txtDescripcion.getText();
-        String enfermedad = txtEnfermedad.getText();
+        Enfermedad enfermedadSeleccionada = (Enfermedad) cbxEnfermedad.getSelectedItem();
         Date fecha = (Date) spnFecha.getValue();
         boolean esImportante = rdbtnImportante.isSelected();
         double precioConsulta = 0;
 
-        // <-- CAMBIO: Se asigna un precio fijo según la importancia -->
+        
         if (esImportante) {
             precioConsulta = 3500.00; // Precio para consulta urgente
         } else {
             precioConsulta = 1500.00; // Precio para consulta normal
         }
 
-        Consulta nuevaConsulta = new Consulta(
-            id, 
-            Clinica.getIdFactura(), 
-            descripcion, 
-            enfermedad, 
-            fecha, 
-            txtSeguro.getText(), 
-            this.doctorActual, 
-            this.pacienteActual, 
-            esImportante, 
-            precioConsulta // Se pasa el precio al constructor
-        );
+        Consulta nuevaConsulta = new Consulta(id, Clinica.getIdFactura(), descripcion, enfermedadSeleccionada, fecha, txtSeguro.getText(), this.doctorActual, this.pacienteActual, esImportante, precioConsulta);
         Clinica.getInstance().agregarConsulta(nuevaConsulta);
         pacienteActual.agregarConsultaAlHistorial(nuevaConsulta);
 
@@ -348,7 +349,7 @@ public class Consultar extends JDialog {
             this.doctorActual.getMisPacientes().add(this.pacienteActual);
         }
         
-        this.pacienteActual.setEnfermedad(enfermedad);
+        pacienteActual.agregarEnfermedadAlHistorial(enfermedadSeleccionada);
 
         // --- CAMBIO CRÍTICO: La lógica de vigilancia ahora depende del CheckBox ---
         if (chckbxEnviarAVigilancia.isSelected()) {

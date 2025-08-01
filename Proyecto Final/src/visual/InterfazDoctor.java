@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -21,6 +22,7 @@ import javax.swing.table.DefaultTableModel;
 import logico.Cita;
 import logico.Clinica;
 import logico.Doctor;
+import logico.Enfermedad;
 import logico.Paciente;
 import logico.User;
 
@@ -86,7 +88,7 @@ public class InterfazDoctor extends JDialog {
         JButton btnGestionarVigilancia = new JButton("Gestionar Vigilancias");
         btnGestionarVigilancia.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                GestionarVigilancia Gv = new GestionarVigilancia(InterfazDoctor.this);
+            	Reporte_control_enfermedades Gv = new Reporte_control_enfermedades(doctorLogin);
                 Gv.setVisible(true);
             }
         });
@@ -169,13 +171,23 @@ public class InterfazDoctor extends JDialog {
         Doctor doctor = Clinica.getInstance().buscarDoctorByCedula(cedulaDoctor);
         if (doctor != null && doctor.getMisPacientes() != null) {
             for (Paciente paciente : doctor.getMisPacientes()) {
+                
+                // <-- CAMBIO CRÍTICO: Se obtienen y formatean todas las enfermedades del paciente -->
+                String enfermedadesStr = "N/A";
+                if (paciente.getHistorialDeEnfermedades() != null && !paciente.getHistorialDeEnfermedades().isEmpty()) {
+                    // Se usa Java Streams para convertir la lista de enfermedades a un String separado por comas
+                    enfermedadesStr = paciente.getHistorialDeEnfermedades().stream()
+                                            .map(Enfermedad::getNombre)
+                                            .collect(Collectors.joining(", "));
+                }
+
                 Object[] fila = {
                     paciente.getCedula(),
                     paciente.getNombre(),
                     paciente.getApellido(),
                     paciente.getEdad(),
                     paciente.getSeguro() != null ? paciente.getSeguro().getNombreEmpresa() : "N/A",
-                    paciente.getEnfermedad()
+                    enfermedadesStr // Se muestra la lista de enfermedades
                 };
                 modeloPacientes.addRow(fila);
             }

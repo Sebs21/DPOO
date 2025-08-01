@@ -35,6 +35,9 @@ public class Reporte_Vacuna extends JDialog {
     private DefaultTableModel model;
 
     
+    /**
+     * @wbp.parser.constructor
+     */
     public Reporte_Vacuna(JFrame parent) {
         super(parent, true);
         initComponents();

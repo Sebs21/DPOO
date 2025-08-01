@@ -12,7 +12,7 @@ public class Clinica implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private ArrayList<Consulta> misConsultas;
-    private ArrayList<Facturar> misFacturas;
+    private ArrayList<Factura> misFacturas;
     private ArrayList<Cita> misCitas;
     private ArrayList<Paciente> misPacientes;
     private ArrayList<Doctor> misDoctores;
@@ -21,6 +21,7 @@ public class Clinica implements Serializable {
     private ArrayList<vacunacion> inventarioDeVacunas;
     private ArrayList<Bajo_vigilancia> misVigilancias;
     private ArrayList<Especialidad> misEspecialidades;
+    private ArrayList<Enfermedad> misEnfermedades;
     
     private User LoginUser;
     private int totalVacunasAplicadas;
@@ -36,6 +37,7 @@ public class Clinica implements Serializable {
     public static int idSeguro = 1;
     public static int idUser = 1;
     public static int idEspecialidad = 1;
+    public static int idEnfermedad = 1;
 
     private Clinica() {
         
@@ -52,6 +54,58 @@ public class Clinica implements Serializable {
         this.misEspecialidades = new ArrayList<>();
         this.totalVacunasAplicadas = 0;
         
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Hipertensión Arterial"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Diabetes Mellitus Tipo 1"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Diabetes Mellitus Tipo 2"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Asma Bronquial"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Gripe Común (Influenza)"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Faringitis Aguda"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Migraña Crónica"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Rinitis Alérgica"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Gastritis"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Enfermedad por Reflujo Gastroesofágico (ERGE)"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Síndrome del Intestino Irritable"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Anemia por deficiencia de hierro"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Hipotiroidismo"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Hipertiroidismo"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Artritis Reumatoide"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Osteoartritis"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Depresión"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Trastorno de Ansiedad Generalizada"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Cefalea Tensional"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Infección del Tracto Urinario (ITU)"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Neumonía"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Bronquitis Aguda"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Dermatitis Atópica (Eczema)"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Acné Vulgar"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Psoriasis"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Insuficiencia Cardíaca Congestiva"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Enfermedad Coronaria"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Fibrilación Auricular"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Accidente Cerebrovascular (ACV)"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Epilepsia"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Enfermedad de Alzheimer"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Enfermedad de Parkinson"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Cataratas"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Glaucoma"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Hernia de Disco Lumbar"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Escoliosis"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Cálculos Renales (Nefrolitiasis)"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Insuficiencia Renal Crónica"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Hepatitis C"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "VIH/SIDA"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Cáncer de Mama"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Cáncer de Pulmón"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Cáncer de Próstata"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Cáncer Colorrectal"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Lupus Eritematoso Sistémico"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Fibromialgia"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Apendicitis Aguda"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Colecistitis Aguda"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Otitis Media"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Sinusitis"));
+        agregarEnfermedad(new Enfermedad("ENF-" + idEnfermedad, "Conjuntivitis"));
+        
         agregarStockVacuna(new vacunacion("VAC-1", "Influenza (Gripe)", "Sanofi Pasteur", 1200.00), 200);
         agregarStockVacuna(new vacunacion("VAC-2", "COVID-19 (Pfizer)", "Pfizer-BioNTech", 1500.00), 300);
         agregarStockVacuna(new vacunacion("VAC-3", "COVID-19 (Moderna)", "Moderna", 1450.00), 250);
@@ -66,6 +120,13 @@ public class Clinica implements Serializable {
         agregarStockVacuna(new vacunacion("VAC-12", "Fiebre Amarilla", "Sanofi Pasteur", 2200.00), 50);
 
         
+        misSeguros.add(new Seguro("S-0", "No", "Null", 0));
+        misSeguros.add(new Seguro("S-2", "ARS Humano (Plan Superior)", "Superior", 0.85));
+        misSeguros.add(new Seguro("S-3", "ARS Universal (Plan Básico)", "Básico", 0.45));
+        misSeguros.add(new Seguro("S-4", "ARS Universal (Plan Premium)", "Premium", 0.80));
+        misSeguros.add(new Seguro("S-5", "Seguros Reservas (Mi Salud)", "Básico", 0.55));
+        misSeguros.add(new Seguro("S-6", "MAPFRE Salud ARS (Internacional)", "Internacional", 0.90));
+        misSeguros.add(new Seguro("S-7", "Primera ARS (Plan Voluntario)", "Voluntario", 0.70));
         misSeguros.add(new Seguro("S-1", "ARS Humano (Plan Básico)", "Básico", 0.50));
         misSeguros.add(new Seguro("S-2", "ARS Humano (Plan Superior)", "Superior", 0.85));
         misSeguros.add(new Seguro("S-3", "ARS Universal (Plan Básico)", "Básico", 0.45));
@@ -112,7 +173,21 @@ public class Clinica implements Serializable {
     public static int getIdUser() { return idUser; }
     public static int getIdEspecialidad() { return idEspecialidad; }
 
-  
+    public static int getIdEnfermedad() { return idEnfermedad; }
+    
+    public void agregarEnfermedad(Enfermedad enfermedad) {
+        if (misEnfermedades == null) {
+            misEnfermedades = new ArrayList<>();
+        }
+        misEnfermedades.add(enfermedad);
+        idEnfermedad++;
+        
+    }
+    
+    public ArrayList<Enfermedad> getMisEnfermedades() {
+        if (misEnfermedades == null) misEnfermedades = new ArrayList<>();
+        return misEnfermedades;
+    }
     
     
     public void guardarClinica() {
@@ -123,7 +198,7 @@ public class Clinica implements Serializable {
         }
     }
     
-    public void agregarFactura(Facturar factura) {
+    public void agregarFactura(Factura factura) {
         if(this.misFacturas == null) {
             this.misFacturas = new ArrayList<>();
         }
@@ -311,11 +386,11 @@ public class Clinica implements Serializable {
         return totalVacunasAplicadas;
     }
 
-	public ArrayList<Facturar> getMisFacturas() {
+	public ArrayList<Factura> getMisFacturas() {
 		return misFacturas;
 	}
 
-	public void setMisFacturas(ArrayList<Facturar> misFacturas) {
+	public void setMisFacturas(ArrayList<Factura> misFacturas) {
 		this.misFacturas = misFacturas;
 	}
 

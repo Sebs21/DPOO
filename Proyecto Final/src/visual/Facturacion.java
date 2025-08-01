@@ -21,7 +21,7 @@ import javax.swing.table.DefaultTableModel;
 
 import logico.Clinica;
 import logico.Consulta;
-import logico.Facturar;
+import logico.Factura;
 import logico.Paciente;
 import logico.RegistroVacunacion;
 
@@ -214,7 +214,7 @@ public class Facturacion extends JDialog {
         double totalPagado = Double.parseDouble(txtTotalPagar.getText());
         double descuento = subtotal - totalPagado;
         
-        Facturar nuevaFactura = new Facturar(idFactura, pacienteSeleccionado, new Date(), consultasPendientes, vacunasPendientes, subtotal, descuento, totalPagado);
+        Factura nuevaFactura = new Factura(idFactura, pacienteSeleccionado, new Date(), consultasPendientes, vacunasPendientes, subtotal, descuento, totalPagado);
         Clinica.getInstance().agregarFactura(nuevaFactura); // Asumiendo que existe este método
 
         JOptionPane.showMessageDialog(this, "Factura generada y servicios marcados como pagados.", "Éxito", JOptionPane.INFORMATION_MESSAGE);

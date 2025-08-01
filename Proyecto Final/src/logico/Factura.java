@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Facturar implements Serializable {
+public class Factura implements Serializable {
     private static final long serialVersionUID = 1L;
     private String id;
     private Paciente paciente;
@@ -15,7 +15,7 @@ public class Facturar implements Serializable {
     private double descuento;
     private double totalPagado;
 
-    public Facturar(String id, Paciente paciente, Date fecha, ArrayList<Consulta> consultas, ArrayList<RegistroVacunacion> vacunas, double subTotal, double descuento, double totalPagado) {
+    public Factura(String id, Paciente paciente, Date fecha, ArrayList<Consulta> consultas, ArrayList<RegistroVacunacion> vacunas, double subTotal, double descuento, double totalPagado) {
         this.id = id;
         this.paciente = paciente;
         this.fecha = fecha;

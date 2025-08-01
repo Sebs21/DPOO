@@ -21,7 +21,7 @@ import logico.Cita;
 import logico.Clinica;
 import logico.Consulta;
 import logico.Doctor;
-import logico.Facturar;
+import logico.Factura;
 import logico.Paciente;
 import logico.Seguro;
 
@@ -180,11 +180,11 @@ public class ListadoGeneral extends JDialog
 	// <-- CAMBIO: Nuevo método para cargar las facturas -->
     private void datosFacturas() {
         modeloFacturas.setRowCount(0);
-        ArrayList<Facturar> facturas = Clinica.getInstance().getMisFacturas();
+        ArrayList<Factura> facturas = Clinica.getInstance().getMisFacturas();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         if (facturas != null) {
-            for (Facturar factura : facturas) {
+            for (Factura factura : facturas) {
                 Object[] row = {
                     factura.getId(),
                     factura.getPaciente().getNombre() + " " + factura.getPaciente().getApellido(),

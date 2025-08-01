@@ -1,6 +1,7 @@
 package logico;
 
 import java.io.Serializable;
+
 import java.util.Date;
 
 public class Consulta implements Serializable
@@ -12,16 +13,16 @@ public class Consulta implements Serializable
 	private String id;
 	private int idFactura;
 	private String descripcion;
-	private String enfermedad;
 	private Date fechaConsulta;
 	private String seguro;
 	private Doctor doctor;
+	private Enfermedad enfermedad;
 	private Paciente paciente;
 	private boolean importancia; 
 	private double precio;      // <-- CAMBIO: Se añade el precio
     private boolean pagada;
 	
-    public Consulta(String id, int idFactura, String descripcion, String enfermedad, Date fechaConsulta,
+    public Consulta(String id, int idFactura, String descripcion, Enfermedad enfermedad, Date fechaConsulta,
             String seguro, Doctor doctor, Paciente paciente, boolean importancia, double precio) { // Se añade precio al constructor
         super();
         this.id = id;
@@ -33,10 +34,18 @@ public class Consulta implements Serializable
         this.doctor = doctor;
         this.paciente = paciente;
         this.importancia = importancia;
-        this.precio = precio;       // <-- CAMBIO
-        this.pagada = false;        // <-- CAMBIO: Por defecto, una consulta no está pagada
+        this.precio = precio;    
+        this.pagada = false;  
+        this.enfermedad= enfermedad;
+    }
+    
+    public Enfermedad getEnfermedad() {
+        return enfermedad;
     }
 
+    public void setEnfermedad(Enfermedad enfermedad) {
+        this.enfermedad = enfermedad;
+    }
 	
 	public double getPrecio() {
         return precio;
@@ -85,14 +94,6 @@ public class Consulta implements Serializable
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
-	}
-
-	public String getEnfermedad() {
-		return enfermedad;
-	}
-
-	public void setEnfermedad(String enfermedad) {
-		this.enfermedad = enfermedad;
 	}
 
 	public Date getFechaConsulta() {

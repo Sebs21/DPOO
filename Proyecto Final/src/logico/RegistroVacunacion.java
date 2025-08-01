@@ -9,7 +9,7 @@ public class RegistroVacunacion implements Serializable {
     private vacunacion tipoVacuna; 
     private Date fechaAplicacion;
     private int cantidadMl;
-    private boolean pagada; // <-- CAMBIO: Se añade el estado de pago
+    private boolean pagada; 
 
     public RegistroVacunacion(vacunacion tipoVacuna, Date fechaAplicacion, int cantidadMl) {
         this.tipoVacuna = tipoVacuna;

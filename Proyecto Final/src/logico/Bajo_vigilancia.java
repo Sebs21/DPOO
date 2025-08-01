@@ -7,14 +7,14 @@ public class Bajo_vigilancia implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Paciente paciente;
-    private String enfermedad;
+    private Enfermedad enfermedad;
     private Doctor doctorResponsable;
     private Date fechaInicio;
     private String estado;
     private Consulta consultaOrigen;
-    private int horasVigilancia; // <-- CAMBIO: Se añade el campo para las horas
-
-    public Bajo_vigilancia(Paciente paciente, String enfermedad, Doctor doctorResponsable, Date fechaInicio, Consulta consultaOrigen, int horasVigilancia) {
+    private int horasVigilancia; 
+    
+    public Bajo_vigilancia(Paciente paciente, Enfermedad enfermedad, Doctor doctorResponsable, Date fechaInicio, Consulta consultaOrigen, int horasVigilancia) {
         this.paciente = paciente;
         this.enfermedad = enfermedad;
         this.doctorResponsable = doctorResponsable;
@@ -42,11 +42,11 @@ public class Bajo_vigilancia implements Serializable {
         this.paciente = paciente;
     }
 
-    public String getEnfermedad() {
+    public Enfermedad getEnfermedad() {
         return enfermedad;
     }
 
-    public void setEnfermedad(String enfermedad) {
+    public void setEnfermedad(Enfermedad enfermedad) {
         this.enfermedad = enfermedad;
     }
 

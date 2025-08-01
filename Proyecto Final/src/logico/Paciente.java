@@ -6,12 +6,12 @@ public class Paciente extends Persona {
 
     private static final long serialVersionUID = 1L;
     private int idCodPaciente;
-    private String enfermedad;
     private Seguro seguro;
     private User user;
+    private ArrayList<Enfermedad> historialDeEnfermedades;
 
     private HistoriaClinica miHistoriaClinica;
-    private ArrayList<Facturar> miFactura;
+    private ArrayList<Factura> miFactura;
     private ArrayList<Bajo_vigilancia> vigi;
     private ArrayList<RegistroVacunacion> misVacunasAplicadas;
 
@@ -19,7 +19,7 @@ public class Paciente extends Persona {
     private boolean consultaPagada;
 
     public Paciente(String cedula, String nombre, String apellido, int idCodPaciente, String edad, String sexo, User user) {
-        super(cedula, nombre, apellido, edad, sexo); // <-- Se pasa a la clase Persona
+        super(cedula, nombre, apellido, edad, sexo);
         this.idCodPaciente = idCodPaciente;
         this.user = user;
 
@@ -27,6 +27,25 @@ public class Paciente extends Persona {
         this.miFactura = new ArrayList<>();
         this.vigi = new ArrayList<>();
         this.misVacunasAplicadas = new ArrayList<>();
+        this.historialDeEnfermedades = new ArrayList<>();
+    }
+    
+    public ArrayList<Enfermedad> getHistorialDeEnfermedades() {
+        return historialDeEnfermedades;
+    }
+
+    public void setHistorialDeEnfermedades(ArrayList<Enfermedad> historialDeEnfermedades) {
+        this.historialDeEnfermedades = historialDeEnfermedades;
+    }
+    
+    public void agregarEnfermedadAlHistorial(Enfermedad enfermedad) {
+        if (this.historialDeEnfermedades == null) {
+            this.historialDeEnfermedades = new ArrayList<>();
+        }
+        
+        if (!this.historialDeEnfermedades.contains(enfermedad)) {
+            this.historialDeEnfermedades.add(enfermedad);
+        }
     }
     
     public void agregarConsultaAlHistorial(Consulta consulta) {
@@ -71,13 +90,7 @@ public class Paciente extends Persona {
 		this.seleccionado = seleccionado;
 	}
 
-	public String getEnfermedad() {
-		return enfermedad;
-	}
-
-	public void setEnfermedad(String enfermedad) {
-		this.enfermedad = enfermedad;
-	}
+	
 	
 	public String getEdad() {
 		return edad;
@@ -112,11 +125,11 @@ public class Paciente extends Persona {
 		this.miHistoriaClinica = miHistoriaClinica;
 	}
 	
-	public ArrayList<Facturar> getMiFactura() {
+	public ArrayList<Factura> getMiFactura() {
 		return miFactura;
 	}
 
-	public void setMiFactura(ArrayList<Facturar> miFactura) {
+	public void setMiFactura(ArrayList<Factura> miFactura) {
 		this.miFactura = miFactura;
 	}
     
