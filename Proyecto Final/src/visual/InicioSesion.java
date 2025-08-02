@@ -39,22 +39,17 @@ public class InicioSesion extends JDialog {
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
-                // --- LÓGICA DE ARRANQUE CON BASE DE DATOS ---
-
-                // PASO 1: Intentar conectar a la base de datos.
                 Connection cnx = ConexionDB.obtenerConexion();
 
                 if (cnx == null) {
-                    // Si la conexión falla, el programa no puede continuar.
                     JOptionPane.showMessageDialog(null, "Error Crítico: No se pudo conectar a la base de datos.\nEl programa se cerrará.", "Error de Conexión", JOptionPane.ERROR_MESSAGE);
-                    System.exit(1); // Cierra la aplicación
+                    System.exit(1);
                     return;
                 }
 
-                // PASO 2: Verificar si la base de datos está vacía (o si necesita poblarse).
-                // Usaremos la tabla 'Especialidad' como indicador.
-                boolean dbVacia = false;
+                // <-- CAMBIO CRÍTICO: Se añade el bloque try-catch aquí -->
                 try {
+                    boolean dbVacia = false;
                     String sql = "SELECT COUNT(*) FROM Especialidad";
                     PreparedStatement ps = cnx.prepareStatement(sql);
                     ResultSet rs = ps.executeQuery();
@@ -68,35 +63,29 @@ public class InicioSesion extends JDialog {
                     rs.close();
                     ps.close();
 
+                    if (dbVacia) {
+                        System.out.println("Base de datos vacía. Poblando con datos iniciales...");
+                        Clinica.getInstance().poblarBaseDeDatosInicial();
+                        JOptionPane.showMessageDialog(null, "La base de datos ha sido inicializada.", "Primer Arranque", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        System.out.println("La base de datos ya contiene datos.");
+                    }
+
                 } catch (SQLException e) {
-                    System.err.println("Error al verificar si la DB está vacía. Asumiendo que está vacía para intentar poblar.");
+                    // Si hay un error al consultar, es probable que las tablas no existan.
+                    // Se podría intentar poblarlas como plan de contingencia.
+                    System.err.println("Error al verificar la base de datos. Puede que las tablas no existan.");
                     e.printStackTrace();
-                    dbVacia = true; // Si hay un error, es mejor intentar poblar para no dejar la DB inconsistente
+                    // Opcional: Podrías intentar poblar la DB aquí si la consulta falla.
                 }
 
-                // PASO 3: Si la base de datos está vacía, poblarla con datos iniciales.
-                if (dbVacia) {
-                    System.out.println("Base de datos vacía. Poblando con datos iniciales...");
-                    Clinica.getInstance().poblarBaseDeDatosInicial(); // Llama al método de "seeding"
-                    JOptionPane.showMessageDialog(null, "La base de datos ha sido inicializada con los datos por defecto.", "Primer Arranque", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    System.out.println("La base de datos ya contiene datos. Cargando datos existentes.");
-                    // Si la DB no está vacía, Clinica.getInstance() ya se encargará de cargar los datos.
-                }
-
-                // PASO 4: Una vez verificada y/o poblada la DB, mostrar la ventana de login.
+                // Finalmente, se muestra la ventana de login
                 try {
                     InicioSesion dialog = new InicioSesion();
                     dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     dialog.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
-                } finally {
-                    // Opcional: Cerrar la conexión al finalizar la aplicación.
-                    // Esto es importante si la aplicación se cierra completamente.
-                    // Si la conexión se mantiene abierta durante toda la vida de la app,
-                    // se cerraría en un WindowListener del JFrame principal.
-                    // ConexionDB.cerrarConexion();
                 }
             }
         });
@@ -178,12 +167,12 @@ public class InicioSesion extends JDialog {
         okButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (Clinica.getInstance().ConfirmarLogin(txtNombre.getText(), txtPassword.getText())) {
-                    Principal prin = new Principal();
-                    dispose();
-                    prin.setVisible(true);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos.", "Error de Autenticación", JOptionPane.ERROR_MESSAGE);
-                }
+				    Principal prin = new Principal();
+				    dispose();
+				    prin.setVisible(true);
+				} else {
+				    JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos.", "Error de Autenticación", JOptionPane.ERROR_MESSAGE);
+				}
             }
         });
 
