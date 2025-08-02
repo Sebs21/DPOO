@@ -7,47 +7,95 @@ import java.sql.SQLException;
 public class ConexionDB {
 
     /**
-     * Intenta establecer y devolver una nueva conexión a la base de datos.
-     * @return Un objeto Connection si la conexión es exitosa, de lo contrario null.
+     * Intenta establecer y devolver una nueva conexiï¿½n a la base de datos.
+     * @return Un objeto Connection si la conexiï¿½n es exitosa, de lo contrario null.
      */
     public static Connection obtenerConexion() {
         try {
             // Se carga la clase del driver de SQL Server.
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             
-            // --- CADENA DE CONEXIÓN PARA AUTENTICACIÓN INTEGRADA (WINDOWS) ---
-            // 'integratedSecurity=true' le indica al driver que use las credenciales
-            // del usuario de Windows que está ejecutando el programa.
-            // Para que esto funcione, el argumento de la VM debe apuntar a la DLL de autenticación.
-            String url = "jdbc:sqlserver://localhost:1433;databaseName=Clinica;integratedSecurity=true;encrypt=true;trustServerCertificate=true;";
+            // --- CADENA DE CONEXIï¿½N PARA AUTENTICACIï¿½N SQL SERVER ---
+            // Configuraciï¿½n para conectarse al servidor SQL Server con autenticaciï¿½n de usuario
+            String url = "jdbc:sqlserver://16.0.1000.6:1433;databaseName=Clinica;encrypt=true;trustServerCertificate=true;";
+            String usuario = "SEBY";
+            String contrasena = "Eict@2025";
             
-            // Se establece la conexión. No se necesita usuario ni contraseña aquí.
-            Connection cnx = DriverManager.getConnection(url);
-            System.out.println("Conexión a la base de datos 'Clinica' establecida exitosamente.");
+            // Se establece la conexiï¿½n con las credenciales SQL Server.
+            Connection cnx = DriverManager.getConnection(url, usuario, contrasena);
+            System.out.println("Conexiï¿½n a la base de datos 'Clinica' establecida exitosamente en servidor 16.0.1000.6.");
             return cnx;
             
         } catch (ClassNotFoundException e) {
-            System.err.println("Error: No se encontró el driver JDBC de SQL Server. Asegúrate de que el archivo .jar esté añadido a las librerías del proyecto.");
+            System.err.println("Error: No se encontrï¿½ el driver JDBC de SQL Server. Asegï¿½rate de que el archivo .jar estï¿½ aï¿½adido a las librerï¿½as del proyecto.");
             e.printStackTrace();
             return null;
         } catch (SQLException e) {
             System.err.println("Error al conectar a la base de datos. Verifica lo siguiente:");
-            System.err.println("1. El servicio de SQL Server está en ejecución.");
+            System.err.println("1. El servicio de SQL Server estï¿½ en ejecuciï¿½n en 16.0.1000.6:1433.");
             System.err.println("2. El nombre de la base de datos 'Clinica' es correcto.");
-            System.err.println("3. Tu usuario de Windows tiene permisos para acceder a la base de datos.");
+            System.err.println("3. Las credenciales del usuario 'SEBY' son vï¿½lidas y tienen permisos.");
+            System.err.println("4. La conectividad de red al servidor remoto estï¿½ disponible.");
+            System.err.println("Cï¿½digo de error SQL: " + e.getErrorCode());
+            System.err.println("Estado SQL: " + e.getSQLState());
             e.printStackTrace();
             return null;
-        } catch (UnsatisfiedLinkError e) {
-            System.err.println("Error Crítico de Autenticación Integrada: No se encontró la DLL.");
-            System.err.println("Asegúrate de haber configurado el argumento de la VM '-Djava.library.path' para que apunte a la carpeta 'auth' del driver JDBC.");
+        } catch (Exception e) {
+            System.err.println("Error inesperado al intentar conectar a la base de datos:");
             e.printStackTrace();
             return null;
         }
     }
 
     /**
-     * Cierra una conexión de forma segura.
-     * @param cnx La conexión a cerrar.
+     * Mï¿½todo alternativo para conectarse usando autenticaciï¿½n integrada de Windows.
+     * Este mï¿½todo mantiene la funcionalidad original para casos donde se requiera.
+     * @return Un objeto Connection si la conexiï¿½n es exitosa, de lo contrario null.
+     */
+    public static Connection obtenerConexionIntegrada() {
+        try {
+            // Se carga la clase del driver de SQL Server.
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            
+            // --- CADENA DE CONEXIï¿½N PARA AUTENTICACIï¿½N INTEGRADA (WINDOWS) ---
+            // 'integratedSecurity=true' le indica al driver que use las credenciales
+            // del usuario de Windows que estï¿½ ejecutando el programa.
+            // Para que esto funcione, el argumento de la VM debe apuntar a la DLL de autenticaciï¿½n.
+            String url = "jdbc:sqlserver://localhost:1433;databaseName=Clinica;integratedSecurity=true;encrypt=true;trustServerCertificate=true;";
+            
+            // Se establece la conexiï¿½n. No se necesita usuario ni contraseï¿½a aquï¿½.
+            Connection cnx = DriverManager.getConnection(url);
+            System.out.println("Conexiï¿½n integrada a la base de datos 'Clinica' establecida exitosamente.");
+            return cnx;
+            
+        } catch (ClassNotFoundException e) {
+            System.err.println("Error: No se encontrï¿½ el driver JDBC de SQL Server. Asegï¿½rate de que el archivo .jar estï¿½ aï¿½adido a las librerï¿½as del proyecto.");
+            e.printStackTrace();
+            return null;
+        } catch (SQLException e) {
+            System.err.println("Error al conectar a la base de datos con autenticaciï¿½n integrada. Verifica lo siguiente:");
+            System.err.println("1. El servicio de SQL Server estï¿½ en ejecuciï¿½n en localhost:1433.");
+            System.err.println("2. El nombre de la base de datos 'Clinica' es correcto.");
+            System.err.println("3. Tu usuario de Windows tiene permisos para acceder a la base de datos.");
+            System.err.println("Cï¿½digo de error SQL: " + e.getErrorCode());
+            System.err.println("Estado SQL: " + e.getSQLState());
+            e.printStackTrace();
+            return null;
+        } catch (UnsatisfiedLinkError e) {
+            System.err.println("Error Crï¿½tico de Autenticaciï¿½n Integrada: No se encontrï¿½ la DLL.");
+            System.err.println("Asegï¿½rate de haber configurado el argumento de la VM '-Djava.library.path' para que apunte a la carpeta 'auth' del driver JDBC.");
+            e.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            System.err.println("Error inesperado al intentar conectar a la base de datos con autenticaciï¿½n integrada:");
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Cierra una conexiï¿½n de forma segura.
+     * @param cnx La conexiï¿½n a cerrar.
      */
     public static void cerrarConexion(Connection cnx) {
         if (cnx != null) {
