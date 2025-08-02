@@ -1,61 +1,42 @@
 package logico;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class ConexionDB {
-
-    /**
-     * Intenta establecer y devolver una nueva conexiÛn a la base de datos.
-     * @return Un objeto Connection si la conexiÛn es exitosa, de lo contrario null.
-     */
-    public static Connection obtenerConexion() {
+    private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=Clinica;encrypt=false;trustServerCertificate=true";
+    private static final String USER = "Sebastian";
+    private static final String PASSWORD = "12345";
+    
+    private static Connection connection = null;
+    
+    public static Connection getConnection() {
         try {
-            // Se carga la clase del driver de SQL Server.
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            
-            // --- CADENA DE CONEXI”N PARA AUTENTICACI”N INTEGRADA (WINDOWS) ---
-            // 'integratedSecurity=true' le indica al driver que use las credenciales
-            // del usuario de Windows que est· ejecutando el programa.
-            // Para que esto funcione, el argumento de la VM debe apuntar a la DLL de autenticaciÛn.
-            String url = "jdbc:sqlserver://localhost:1433;databaseName=Clinica;integratedSecurity=true;encrypt=true;trustServerCertificate=true;";
-            
-            // Se establece la conexiÛn. No se necesita usuario ni contraseÒa aquÌ.
-            Connection cnx = DriverManager.getConnection(url);
-            System.out.println("ConexiÛn a la base de datos 'Clinica' establecida exitosamente.");
-            return cnx;
-            
-        } catch (ClassNotFoundException e) {
-            System.err.println("Error: No se encontrÛ el driver JDBC de SQL Server. Aseg˙rate de que el archivo .jar estÈ aÒadido a las librerÌas del proyecto.");
-            e.printStackTrace();
-            return null;
-        } catch (SQLException e) {
-            System.err.println("Error al conectar a la base de datos. Verifica lo siguiente:");
-            System.err.println("1. El servicio de SQL Server est· en ejecuciÛn.");
-            System.err.println("2. El nombre de la base de datos 'Clinica' es correcto.");
-            System.err.println("3. Tu usuario de Windows tiene permisos para acceder a la base de datos.");
-            e.printStackTrace();
-            return null;
-        } catch (UnsatisfiedLinkError e) {
-            System.err.println("Error CrÌtico de AutenticaciÛn Integrada: No se encontrÛ la DLL.");
-            System.err.println("Aseg˙rate de haber configurado el argumento de la VM '-Djava.library.path' para que apunte a la carpeta 'auth' del driver JDBC.");
+            if (connection == null || connection.isClosed()) {
+                Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+                connection = DriverManager.getConnection(URL, USER, PASSWORD);
+                System.out.println("‚úÖ Conexi√≥n exitosa a SQL Server");
+            }
+            return connection;
+        } catch (Exception e) {
+            System.err.println("‚ùå Error de conexi√≥n: " + e.getMessage());
             e.printStackTrace();
             return null;
         }
     }
-
-    /**
-     * Cierra una conexiÛn de forma segura.
-     * @param cnx La conexiÛn a cerrar.
-     */
-    public static void cerrarConexion(Connection cnx) {
-        if (cnx != null) {
-            try {
-                cnx.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
+    
+    // ‚úÖ AGREGAR este m√©todo para compatibilidad
+    public static Connection obtenerConexion() {
+        return getConnection();
+    }
+    
+    public static void closeConnection() {
+        try {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                System.out.println("Conexi√≥n cerrada");
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

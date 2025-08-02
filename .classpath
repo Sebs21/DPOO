@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="Proyecto Final/src"/>
+	<classpathentry kind="lib" path="Proyecto Final/Driver/mssql-jdbc-12.10.1.jre8-javadoc.jar"/>
+	<classpathentry kind="lib" path="Proyecto Final/Driver/mssql-jdbc-12.10.1.jre8-sources.jar"/>
+	<classpathentry kind="lib" path="Proyecto Final/Driver/mssql-jdbc-12.10.1.jre8.jar"/>
+	<classpathentry kind="output" path="Proyecto Final/bin"/>
+</classpath>
