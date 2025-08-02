@@ -1,0 +1,29 @@
+# Compiled class files
+*.class
+
+# Binary directories
+bin/
+build/
+
+# IDE files
+.classpath
+.project
+.settings/
+
+# Temporary files
+/tmp/
+
+# Log files
+*.log
+
+# Package Files
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Database files
+*.dat
