@@ -2,21 +2,15 @@ package visual;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.sql.SQLException;
 
-import javax.swing.AbstractButton;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
@@ -38,7 +32,7 @@ public class Principal extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				Clinica.getInstance().guardarClinica();
+				
 			}
 		});
 
@@ -115,17 +109,14 @@ public class Principal extends JFrame {
 
 		JMenuItem btnReporteVigilancia = new JMenuItem("Reporte de Vigilancia");
 		btnReporteVigilancia.addActionListener(e -> {
-            // <-- CAMBIO CRÍTICO: Lógica para abrir el reporte correcto -->
             User currentUser = Clinica.getInstance().getLoginUser();
             if (currentUser != null && currentUser.getTipo().equalsIgnoreCase("Doctor")) {
-                // Si es un doctor, busca su objeto y lo pasa al constructor
                 Doctor doc = Clinica.getInstance().buscarDoctorByCedula(currentUser.getPass());
                 if (doc != null) {
                     Reporte_control_enfermedades reporDoc = new Reporte_control_enfermedades(doc);
                     reporDoc.setVisible(true);
                 }
             } else {
-                // Si es administrador o cualquier otro rol, abre el reporte general
                 Reporte_control_enfermedades repor_enfe = new Reporte_control_enfermedades();
                 repor_enfe.setVisible(true);
             }

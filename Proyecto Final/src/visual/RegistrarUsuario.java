@@ -35,11 +35,11 @@ public class RegistrarUsuario extends JDialog {
     private JTextField txtCedula;
     private JTextField txtEdad;
     private JComboBox<Especialidad> cbxEspecialidad;
-    private JComboBox<String> cbxSexo; // <-- CAMBIO: Se añade el ComboBox para el sexo
+    private JComboBox<String> cbxSexo;  
 
     public RegistrarUsuario() {
         setTitle("Registro de Doctor");
-        setBounds(100, 100, 850, 450); // Se ajusta la altura
+        setBounds(100, 100, 850, 450);  
         getContentPane().setLayout(new BorderLayout());
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -50,11 +50,11 @@ public class RegistrarUsuario extends JDialog {
         JPanel panel = new JPanel();
         panel.setBorder(new TitledBorder(new LineBorder(new Color(175, 238, 238), 4, true), "Información del Doctor",
                 TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-        panel.setBounds(10, 11, 814, 350); // Se ajusta la altura
+        panel.setBounds(10, 11, 814, 350); 
         contentPanel.add(panel);
         panel.setLayout(null);
 
-        // (El resto de la UI se mantiene igual)
+         
         txtUsuario = new JTextField();
         txtUsuario.setBounds(40, 103, 150, 34);
         panel.add(txtUsuario);
@@ -91,7 +91,7 @@ public class RegistrarUsuario extends JDialog {
         txtEdad.setBounds(400, 103, 141, 34);
         panel.add(txtEdad);
         
-        // <-- CAMBIO: Se añade el ComboBox para el sexo -->
+  
         JLabel lblSexo = new JLabel("Sexo:");
         lblSexo.setFont(new Font("Times New Roman", Font.BOLD, 15));
         lblSexo.setBounds(220, 175, 141, 34);
@@ -133,10 +133,10 @@ public class RegistrarUsuario extends JDialog {
                     Clinica.getInstance().agregarUsuario(usuario);
 
                     String especialidadSeleccionada = ((Especialidad) cbxEspecialidad.getSelectedItem()).getNombre();
-                    String sexoSeleccionado = cbxSexo.getSelectedItem().toString(); // <-- Se obtiene el sexo
+                    String sexoSeleccionado = cbxSexo.getSelectedItem().toString();  
                     
                     Doctor doctor = new Doctor(txtCedula.getText(), txtUsuario.getText(),
-                            txtApellido.getText(), especialidadSeleccionada, txtEdad.getText(), sexoSeleccionado, usuario); // <-- Se pasa al constructor
+                            txtApellido.getText(), especialidadSeleccionada, txtEdad.getText(), sexoSeleccionado, usuario); 
                     Clinica.getInstance().agregarDoctor(doctor);
                     
                     JOptionPane.showMessageDialog(null, "Doctor registrado con éxito.", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
@@ -184,7 +184,7 @@ public class RegistrarUsuario extends JDialog {
         txtApellido.setText("");
         txtConfirmarCedula.setText("");
         cbxEspecialidad.setSelectedIndex(0);
-        cbxSexo.setSelectedIndex(0); // <-- Se limpia el sexo
+        cbxSexo.setSelectedIndex(0); 
         txtEdad.setText("");
         txtCedula.setText("");
     }

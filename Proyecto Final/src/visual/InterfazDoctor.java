@@ -54,7 +54,6 @@ public class InterfazDoctor extends JDialog {
             return;
         }
 
-        // --- (Paneles de Citas y Pacientes se mantienen igual) ---
         JPanel panelPacientes = new JPanel();
         panelPacientes.setBorder(new TitledBorder(new LineBorder(new Color(224, 255, 255), 3, true), "Historial de Pacientes Atendidos", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
         panelPacientes.setBounds(513, 11, 736, 709);
@@ -79,12 +78,10 @@ public class InterfazDoctor extends JDialog {
         tblCitas = new JTable();
         scrollPaneCitas.setViewportView(tblCitas);
 
-        // --- Panel de Botones ---
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
         getContentPane().add(buttonPane, BorderLayout.SOUTH);
 
-        // <-- CAMBIO: Se añade el nuevo botón para gestionar vigilancias -->
         JButton btnGestionarVigilancia = new JButton("Gestionar Vigilancias");
         btnGestionarVigilancia.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -96,27 +93,30 @@ public class InterfazDoctor extends JDialog {
 
         JButton btnConsulta = new JButton("Proceder a Consulta");
         btnConsulta.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                int filaSeleccionada = tblCitas.getSelectedRow();
-                if (filaSeleccionada != -1) {
-                    ArrayList<Cita> misCitasPendientes = obtenerCitasPendientes(doctorLogin);
-                    if (filaSeleccionada < misCitasPendientes.size()) {
-                        Cita citaSeleccionada = misCitasPendientes.get(filaSeleccionada);
-                        
-                        Consultar consultar = new Consultar(InterfazDoctor.this); 
-                        consultar.actualizarCampos(citaSeleccionada.getDoctor(), citaSeleccionada.getPaciente());
-                        consultar.setVisible(true);
+        	public void actionPerformed(ActionEvent e) {
+        	    int filaSeleccionada = tblCitas.getSelectedRow();
+        	    if (filaSeleccionada != -1) {
+        	        ArrayList<Cita> misCitasPendientes = obtenerCitasPendientes(doctorLogin);
+        	        if (filaSeleccionada < misCitasPendientes.size()) {
+        	            Cita citaSeleccionada = misCitasPendientes.get(filaSeleccionada);
+        	            
+        	            Consultar consultar = new Consultar(InterfazDoctor.this); 
+        	            consultar.actualizarCampos(citaSeleccionada.getDoctor(), citaSeleccionada.getPaciente());
+        	            consultar.setVisible(true);
 
-                        if (consultar.isConsultaFinalizada()) {
-                            citaSeleccionada.setEstado("Completada");
-                            actualizarTablaHistorial(doctorLogin.getCedula());
-                            actualizarTablaCitasPendientes();
-                        }
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Debe seleccionar una cita para proceder.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                }
-            }
+        	            if (consultar.isConsultaFinalizada()) {
+        	                citaSeleccionada.setEstado("Completada");
+
+        	                Clinica.getInstance().actualizarEstadoCita(citaSeleccionada);
+
+        	                actualizarTablaHistorial(doctorLogin.getCedula());
+        	                actualizarTablaCitasPendientes();
+        	            }
+        	        }
+        	    } else {
+        	        JOptionPane.showMessageDialog(null, "Debe seleccionar una cita para proceder.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        	    }
+        	}
         });
         buttonPane.add(btnConsulta);
 
@@ -124,7 +124,6 @@ public class InterfazDoctor extends JDialog {
         cancelButton.addActionListener(e -> dispose());
         buttonPane.add(cancelButton);
 
-        // --- (El resto del constructor se mantiene igual) ---
         modeloPacientes = new DefaultTableModel();
         String[] headersConsultas = {"Cédula", "Nombre", "Apellido", "Edad", "Seguro", "Último Diagnóstico"};
         modeloPacientes.setColumnIdentifiers(headersConsultas);
@@ -139,7 +138,6 @@ public class InterfazDoctor extends JDialog {
         actualizarTablaCitasPendientes();
     }
 
-    // --- (El resto de la clase se mantiene sin cambios) ---
     public void actualizarTablaCitasPendientes() {
         modeloCitas.setRowCount(0);
         ArrayList<Cita> misCitasPendientes = obtenerCitasPendientes(doctorLogin);
@@ -172,10 +170,8 @@ public class InterfazDoctor extends JDialog {
         if (doctor != null && doctor.getMisPacientes() != null) {
             for (Paciente paciente : doctor.getMisPacientes()) {
                 
-                // <-- CAMBIO CRÍTICO: Se obtienen y formatean todas las enfermedades del paciente -->
                 String enfermedadesStr = "N/A";
                 if (paciente.getHistorialDeEnfermedades() != null && !paciente.getHistorialDeEnfermedades().isEmpty()) {
-                    // Se usa Java Streams para convertir la lista de enfermedades a un String separado por comas
                     enfermedadesStr = paciente.getHistorialDeEnfermedades().stream()
                                             .map(Enfermedad::getNombre)
                                             .collect(Collectors.joining(", "));
@@ -187,7 +183,7 @@ public class InterfazDoctor extends JDialog {
                     paciente.getApellido(),
                     paciente.getEdad(),
                     paciente.getSeguro() != null ? paciente.getSeguro().getNombreEmpresa() : "N/A",
-                    enfermedadesStr // Se muestra la lista de enfermedades
+                    enfermedadesStr
                 };
                 modeloPacientes.addRow(fila);
             }

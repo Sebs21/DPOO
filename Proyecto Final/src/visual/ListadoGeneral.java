@@ -35,19 +35,19 @@ public class ListadoGeneral extends JDialog
 	private DefaultTableModel modeloSeguros;
 	private DefaultTableModel modeloConsultas;
 	private DefaultTableModel modeloCitas;
-    private DefaultTableModel modeloFacturas; // <-- Nuevo modelo para facturas
+    private DefaultTableModel modeloFacturas; 
 
 	private JTable tablePaciente;
 	private JTable tableDoctor;
 	private JTable tableSeguro;
 	private JTable tableConsulta;
 	private JTable tableCita;
-    private JTable tableFacturas; // <-- Nueva tabla para facturas
+    private JTable tableFacturas; 
 
 	public ListadoGeneral() 
 	{
 		setTitle("Listado General del Sistema");
-		setBounds(100, 100, 1600, 900); // Se ajusta el tamaño
+		setBounds(100, 100, 1600, 900);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -139,7 +139,7 @@ public class ListadoGeneral extends JDialog
 		modeloCitas.setColumnIdentifiers(identificadoresCitas);
 		tableCita.setModel(modeloCitas);
 
-        // <-- CAMBIO: Se añade el nuevo panel para las facturas -->
+       
         JPanel panelFacturas = new JPanel();
         panelFacturas.setBorder(new TitledBorder(null, "Historial de Facturas", TitledBorder.LEADING, TitledBorder.TOP, null, null));
         panelFacturas.setBounds(780, 537, 750, 250);
@@ -174,15 +174,14 @@ public class ListadoGeneral extends JDialog
 		datosSeguros();
 		datosConsultas();
 		datosCitas();
-        datosFacturas(); // <-- Se llama al nuevo método
+        datosFacturas(); 
 	}
 	
-	// <-- CAMBIO: Nuevo método para cargar las facturas -->
-    private void datosFacturas() {
+	
+	private void datosFacturas() {
         modeloFacturas.setRowCount(0);
-        ArrayList<Factura> facturas = Clinica.getInstance().getMisFacturas();
+        ArrayList<Factura> facturas = Clinica.getInstance().obtenerFacturasDesdeDB(); 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
         if (facturas != null) {
             for (Factura factura : facturas) {
                 Object[] row = {
@@ -198,75 +197,89 @@ public class ListadoGeneral extends JDialog
         }
     }
 	
-	// (El resto de los métodos 'datos...' se mantienen igual)
+	
     public void datosPacientes() {
 		modeloPacientes.setRowCount(0);
-		ArrayList<Paciente> pacientes = Clinica.getInstance().getMisPacientes();
 		
-		for (Paciente paciente : pacientes) {
-			Object[] fila = new Object[7];
-			fila[0] = paciente.getIdCodPaciente();
-			fila[1] = paciente.getCedula();
-			fila[2] = paciente.getNombre();
-			fila[3] = paciente.getApellido();
-			fila[4] = paciente.getEdad();
-			fila[5] = (paciente.getSeguro() != null) ? paciente.getSeguro().getNombreEmpresa() : "N/A";
-			fila[6] = (paciente.getMisVacunasAplicadas() != null) ? paciente.getMisVacunasAplicadas().size() : 0;
-			
-			modeloPacientes.addRow(fila);
-		}
+       
+		ArrayList<Paciente> pacientes = Clinica.getInstance().obtenerPacientesDesdeDB();
+		
+		if (pacientes != null) {
+            for (Paciente paciente : pacientes) {
+                Object[] fila = new Object[7];
+                fila[0] = paciente.getIdCodPaciente();
+                fila[1] = paciente.getCedula();
+                fila[2] = paciente.getNombre();
+                fila[3] = paciente.getApellido();
+                fila[4] = paciente.getEdad();
+                fila[5] = (paciente.getSeguro() != null) ? paciente.getSeguro().getNombreEmpresa() : "N/A";             
+                fila[6] = 0; 
+                
+                modeloPacientes.addRow(fila);
+            }
+        }
 	}
 	
-	public void datosDoctores() {
+    public void datosDoctores() {
 		modeloDoctores.setRowCount(0);
-		ArrayList<Doctor> doctores = Clinica.getInstance().getMisDoctores();
+		ArrayList<Doctor> doctores = Clinica.getInstance().obtenerDoctoresDesdeDB();
 		
-		for (Doctor doctor : doctores) {
-			Object[] fila = { doctor.getCedula(), doctor.getNombre(), doctor.getApellido(), doctor.getEspecialidad() };
-			modeloDoctores.addRow(fila);
-		}
+		if (doctores != null) {
+            for (Doctor doctor : doctores) {
+                Object[] fila = { 
+                    doctor.getCedula(), 
+                    doctor.getNombre(), 
+                    doctor.getApellido(), 
+                    doctor.getEspecialidad() 
+                };
+                modeloDoctores.addRow(fila);
+            }
+        }
 	}
 	
-	public void datosSeguros() {
+    public void datosSeguros() {
 		modeloSeguros.setRowCount(0);
-		ArrayList<Seguro> seguros = Clinica.getInstance().getMisSeguros();
-		
-		for (Seguro seguro : seguros) {
-			Object[] fila = { seguro.getIdSeguro(), seguro.getNombreEmpresa(), seguro.getTipoDeSeguro(), seguro.getDescuento() * 100 + "%" };
-			modeloSeguros.addRow(fila);
-		}
+		ArrayList<Seguro> seguros = Clinica.getInstance().obtenerSegurosDesdeDB();
+		if (seguros != null) {
+            for (Seguro seguro : seguros) {
+                Object[] fila = { seguro.getIdSeguro(), seguro.getNombreEmpresa(), seguro.getTipoDeSeguro(), seguro.getDescuento() * 100 + "%" };
+                modeloSeguros.addRow(fila);
+            }
+        }
 	}
 	
 	public void datosConsultas() {
 		modeloConsultas.setRowCount(0);
-		ArrayList<Consulta> consultas = Clinica.getInstance().getMisConsultas();
+		ArrayList<Consulta> consultas = Clinica.getInstance().obtenerConsultasDesdeDB();
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		
-		for (Consulta consulta : consultas) {
-			Object[] fila = {
-                consulta.getId(),
-                consulta.getPaciente().getNombre() + " " + consulta.getPaciente().getApellido(),
-                consulta.getEnfermedad(),
-                sdf.format(consulta.getFechaConsulta()),
-                consulta.isImportancia() ? "Urgente" : "Normal"
-            };
-			modeloConsultas.addRow(fila);
-		}
+		if (consultas != null) {
+            for (Consulta consulta : consultas) {
+                Object[] fila = {
+                    consulta.getId(),
+                    consulta.getPaciente().getNombre() + " " + consulta.getPaciente().getApellido(),
+                    consulta.getEnfermedad().getNombre(),
+                    sdf.format(consulta.getFechaConsulta()),
+                    consulta.isImportancia() ? "Urgente" : "Normal"
+                };
+                modeloConsultas.addRow(fila);
+            }
+        }
 	}
 	
 	public void datosCitas() {
 		modeloCitas.setRowCount(0);
-		ArrayList<Cita> citas = Clinica.getInstance().getMisCitas();
+		ArrayList<Cita> citas = Clinica.getInstance().obtenerCitasDesdeDB();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		
-		for (Cita cita : citas) {
-			Object[] fila = {
-                cita.getDoctor().getNombre() + " " + cita.getDoctor().getApellido(),
-                cita.getPaciente().getNombre() + " " + cita.getPaciente().getApellido(),
-                sdf.format(cita.getFechaCita()),
-                cita.getEstado()
-            };
-			modeloCitas.addRow(fila);
-		}
+		if (citas != null) {
+            for (Cita cita : citas) {
+                Object[] fila = {
+                    cita.getDoctor().getNombre() + " " + cita.getDoctor().getApellido(),
+                    cita.getPaciente().getNombre() + " " + cita.getPaciente().getApellido(),
+                    sdf.format(cita.getFechaCita()),
+                    cita.getEstado()
+                };
+                modeloCitas.addRow(fila);
+            }
+        }
 	}
 }

@@ -44,7 +44,6 @@ public class Visual_vacunacion extends JDialog {
     private JSpinner spnCantMl;
 
     public Visual_vacunacion() {
-        // (El constructor y la UI se mantienen igual)
         setIconImage(new ImageIcon(getClass().getResource("/visual/SIGIC_logo.jpg")).getImage());
         setTitle("Registro de Aplicación de Vacuna");
         setBounds(100, 100, 868, 564);
@@ -55,7 +54,6 @@ public class Visual_vacunacion extends JDialog {
         getContentPane().add(contentPanel, BorderLayout.CENTER);
         contentPanel.setLayout(null);
 
-        // --- Configuración de la Interfaz Gráfica (se mantiene igual) ---
         JLabel lblCodeVacu = new JLabel("N.O");
         lblCodeVacu.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
         lblCodeVacu.setBounds(21, 32, 192, 26);
@@ -83,7 +81,7 @@ public class Visual_vacunacion extends JDialog {
         contentPanel.add(txtCodeVacu);
 
         txtCodePaciente = new JTextField();
-        txtCodePaciente.setBounds(174, 83, 186, 32); // Ajustado para no superponer
+        txtCodePaciente.setBounds(174, 83, 186, 32);
         contentPanel.add(txtCodePaciente);
 
         txtNombrePaciente = new JTextField();
@@ -125,9 +123,6 @@ public class Visual_vacunacion extends JDialog {
         cancelButton.addActionListener(e -> dispose());
         buttonPane.add(cancelButton);
 
-        // --- Lógica de la Ventana ---
-
-        // Evento para buscar paciente al perder el foco del campo de texto
         txtCodePaciente.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -135,7 +130,6 @@ public class Visual_vacunacion extends JDialog {
             }
         });
 
-        // Cargar los datos iniciales
         cargarVacunasDisponibles();
         actualizarCodigoVacunacion();
     }
@@ -162,11 +156,9 @@ public class Visual_vacunacion extends JDialog {
                 }
             }
 
-            // <-- CAMBIO: Se obtienen la fecha y los ml de la UI
             Date fechaDeAplicacion = (Date) fechaVacu.getValue();
             int cantidadMl = (Integer) spnCantMl.getValue();
 
-            // <-- CAMBIO: Se llama al método correcto con todos los parámetros
             boolean exito = Clinica.getInstance().administrarVacuna(paciente, vacunaDelInventario, fechaDeAplicacion, cantidadMl);
 
             if (exito) {
@@ -181,7 +173,6 @@ public class Visual_vacunacion extends JDialog {
         }
     }
 
-    // (El resto de la clase se mantiene igual)
     private void cargarVacunasDisponibles() {
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         model.addElement("<Seleccione>");
@@ -189,7 +180,6 @@ public class Visual_vacunacion extends JDialog {
         ArrayList<vacunacion> inventario = Clinica.getInstance().getInventarioDeVacunas();
         if (inventario != null) {
             for (vacunacion v : inventario) {
-                // Opcional: solo mostrar vacunas con stock disponible
                 if (v.getCantidadDisponible() > 0) {
                     model.addElement(v.getNombre());
                 }

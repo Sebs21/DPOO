@@ -27,7 +27,7 @@ public class Reporte_control_enfermedades extends JDialog {
     private JTextField txt_code_paciente;
     private JTable table;
     private DefaultTableModel model;
-    private Doctor doctorFiltro = null; // <-- CAMBIO: Para filtrar por doctor
+    private Doctor doctorFiltro = null;  
     private JPanel panelBusqueda;
 
     /**
@@ -35,18 +35,16 @@ public class Reporte_control_enfermedades extends JDialog {
      */
     public Reporte_control_enfermedades() {
         initComponents();
-        loadReporte(""); // Cargar todos los pacientes inicialmente
+        loadReporte("");  
     }
     
-    /**
-     * Constructor para el Doctor (oculta la búsqueda y filtra la tabla).
-     */
+    
     public Reporte_control_enfermedades(Doctor doctor) {
         this.doctorFiltro = doctor;
         initComponents();
-        panelBusqueda.setVisible(false); // Ocultar el panel de búsqueda para el doctor
+        panelBusqueda.setVisible(false);  
         setTitle("Mis Pacientes en Vigilancia");
-        loadReporte(""); // Cargar solo los pacientes del doctor
+        loadReporte("");  
     }
 
     private void initComponents() {

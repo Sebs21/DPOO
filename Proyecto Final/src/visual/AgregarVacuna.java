@@ -22,11 +22,11 @@ public class AgregarVacuna extends JDialog {
     private JTextField txtNombreVacuna;
     private JTextField txtFabricante;
     private JSpinner spnCantidad;
-    private JSpinner spnPrecio; // <-- CAMBIO: Se añade un spinner para el precio
+    private JSpinner spnPrecio; 
 
     public AgregarVacuna() {
         setTitle("Agregar Nueva Vacuna al Inventario");
-        setBounds(100, 100, 480, 350); // Se ajusta el tamaño
+        setBounds(100, 100, 480, 350); 
         getContentPane().setLayout(new BorderLayout());
         contentPanel.setBorder(new TitledBorder(null, "Datos de la Vacuna", TitledBorder.LEADING, TitledBorder.TOP, null, null));
         getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -57,7 +57,6 @@ public class AgregarVacuna extends JDialog {
         lblPrecio.setBounds(30, 130, 150, 25);
         contentPanel.add(lblPrecio);
 
-        // <-- CAMBIO: Se añade el JSpinner para el precio -->
         spnPrecio = new JSpinner();
         spnPrecio.setModel(new SpinnerNumberModel(100.0, 0.0, 100000.0, 50.0));
         spnPrecio.setBounds(220, 130, 100, 25);
@@ -90,7 +89,7 @@ public class AgregarVacuna extends JDialog {
     private void agregarVacuna() {
         String nombre = txtNombreVacuna.getText();
         String fabricante = txtFabricante.getText();
-        double precio = (Double) spnPrecio.getValue(); // <-- CAMBIO: Se obtiene el precio
+        double precio = (Double) spnPrecio.getValue(); 
         int cantidad = (Integer) spnCantidad.getValue();
 
         if (nombre.trim().isEmpty() || fabricante.trim().isEmpty()) {
@@ -100,7 +99,6 @@ public class AgregarVacuna extends JDialog {
         
         String idVacuna = "VAC-" + (Clinica.getInstance().getInventarioDeVacunas().size() + 1);
 
-        // <-- CAMBIO CRÍTICO: Se pasa el precio al constructor -->
         vacunacion nuevaVacuna = new vacunacion(idVacuna, nombre, fabricante, precio);
         
         Clinica.getInstance().agregarStockVacuna(nuevaVacuna, cantidad);

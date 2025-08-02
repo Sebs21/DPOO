@@ -153,7 +153,6 @@ public class Facturacion extends JDialog {
         double subtotal = 0;
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         
-        // Cargar consultas pendientes
         if (pacienteSeleccionado.getMiHistoriaClinica() != null) {
             for (Consulta c : pacienteSeleccionado.getMiHistoriaClinica().getMisConsultas()) {
                 if (!c.isPagada()) {
@@ -165,7 +164,6 @@ public class Facturacion extends JDialog {
             }
         }
         
-        // Cargar vacunas pendientes
         if (pacienteSeleccionado.getMisVacunasAplicadas() != null) {
             for (RegistroVacunacion r : pacienteSeleccionado.getMisVacunasAplicadas()) {
                 if (!r.isPagada()) {
@@ -200,7 +198,6 @@ public class Facturacion extends JDialog {
             return;
         }
 
-        // Marcar todos los servicios como pagados
         for (Consulta c : consultasPendientes) {
             c.setPagada(true);
         }
@@ -208,18 +205,16 @@ public class Facturacion extends JDialog {
             r.setPagada(true);
         }
 
-        // Crear y guardar la factura (lógica simplificada)
         String idFactura = "FACT-" + Clinica.getIdFactura();
         double subtotal = Double.parseDouble(txtSubtotal.getText());
         double totalPagado = Double.parseDouble(txtTotalPagar.getText());
         double descuento = subtotal - totalPagado;
         
         Factura nuevaFactura = new Factura(idFactura, pacienteSeleccionado, new Date(), consultasPendientes, vacunasPendientes, subtotal, descuento, totalPagado);
-        Clinica.getInstance().agregarFactura(nuevaFactura); // Asumiendo que existe este método
+        Clinica.getInstance().agregarFactura(nuevaFactura);
 
         JOptionPane.showMessageDialog(this, "Factura generada y servicios marcados como pagados.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         
-        // Limpiar la interfaz
         pacienteSeleccionado = null;
         txtCedulaPaciente.setText("");
         txtNombrePaciente.setText("");

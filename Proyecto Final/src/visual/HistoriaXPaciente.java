@@ -29,7 +29,7 @@ public class HistoriaXPaciente extends JDialog {
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         getContentPane().add(contentPanel, BorderLayout.CENTER);
         setLocationRelativeTo(null);
-        setModal(true); // Para que bloquee la ventana de atrás
+        setModal(true); 
 
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -54,7 +54,6 @@ public class HistoriaXPaciente extends JDialog {
         modelo.setRowCount(0);
         Paciente paciente = Clinica.getInstance().buscarPacienteByCedula(cedulaPaciente);
 
-        // <-- CAMBIO: Se lee desde la nueva estructura de datos
         if (paciente != null && paciente.getMiHistoriaClinica() != null) {
             ArrayList<Consulta> consultas = paciente.getMiHistoriaClinica().getMisConsultas();
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");

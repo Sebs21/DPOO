@@ -147,7 +147,7 @@ public class Cita extends JDialog {
         buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
         getContentPane().add(buttonPane, BorderLayout.SOUTH);
 
-        JButton btnRegistrar = new JButton("Registrar Cita"); // <-- CAMBIO: Se actualiza el texto del botón
+        JButton btnRegistrar = new JButton("Registrar Cita"); 
         btnRegistrar.addActionListener(e -> registrarCita());
         buttonPane.add(btnRegistrar);
 
@@ -193,7 +193,7 @@ public class Cita extends JDialog {
     }
 
     private void registrarCita() {
-    	String cedula = txtCedulaPaciente.getText();
+        String cedula = txtCedulaPaciente.getText();
         String nombre = txtNombrePaciente.getText();
         String apellido = txtApellidoPaciente.getText();
         String edad = txtEdadPaciente.getText();
@@ -209,16 +209,14 @@ public class Cita extends JDialog {
             JOptionPane.showMessageDialog(this, "Debe seleccionar un doctor.", "Error", JOptionPane.WARNING_MESSAGE);
             return;
         }
-
         Doctor doctorSeleccionado = Clinica.getInstance().getMisDoctores().get(selectedRow);
 
         Paciente pacienteParaLaCita = Clinica.getInstance().buscarPacienteByCedula(cedula);
+        boolean pacienteNuevo = false;
         if (pacienteParaLaCita == null) { 
+            pacienteNuevo = true;
             User usuarioPaciente = new User(nombre, cedula, "Paciente");
             pacienteParaLaCita = new Paciente(cedula, nombre, apellido, Clinica.getIdPaciente(), edad, sexo, usuarioPaciente);
-            Clinica.getInstance().agregarPaciente(pacienteParaLaCita);
-            Clinica.getInstance().agregarUsuario(usuarioPaciente);
-            JOptionPane.showMessageDialog(this, "Nuevo paciente registrado.", "Paciente Nuevo", JOptionPane.INFORMATION_MESSAGE);
         }
 
         int indexSeguro = cbxSeguros.getSelectedIndex();
@@ -234,7 +232,13 @@ public class Cita extends JDialog {
             pacienteParaLaCita.setSeguro(null);
         }
 
-        // <-- CAMBIO: Se elimina toda la lógica para aplicar vacunas desde esta ventana -->
+        if (pacienteNuevo) {
+            Clinica.getInstance().agregarPaciente(pacienteParaLaCita); 
+            Clinica.getInstance().agregarUsuario(pacienteParaLaCita.getUser());
+            JOptionPane.showMessageDialog(this, "Nuevo paciente registrado.", "Paciente Nuevo", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            Clinica.getInstance().actualizarPaciente(pacienteParaLaCita);
+        }
 
         String idCita = "CITA-" + Clinica.getIdCita();
         Date fechaCita = (Date) spnFechaCita.getValue();

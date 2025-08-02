@@ -66,9 +66,8 @@ public class GestionarVigilancia extends JDialog {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         for (Bajo_vigilancia vigi : Clinica.getInstance().getMisVigilancias()) {
-            // Solo mostramos las vigilancias que están "Activas"
             if (vigi.getEstado().equalsIgnoreCase("Activa")) {
-                vigilanciasActivas.add(vigi); // Guardamos la referencia
+                vigilanciasActivas.add(vigi);
                 Object[] row = {
                     vigi.getPaciente().getNombre() + " " + vigi.getPaciente().getApellido(),
                     vigi.getEnfermedad(),
@@ -85,7 +84,6 @@ public class GestionarVigilancia extends JDialog {
     private void finalizarVigilancia() {
         int selectedRow = tableVigilancia.getSelectedRow();
         if (selectedRow != -1) {
-            // Obtenemos el registro de vigilancia de nuestra lista filtrada
             Bajo_vigilancia registroSeleccionado = vigilanciasActivas.get(selectedRow);
 
             int confirm = JOptionPane.showConfirmDialog(this,
@@ -94,10 +92,9 @@ public class GestionarVigilancia extends JDialog {
                 JOptionPane.YES_NO_OPTION);
 
             if (confirm == JOptionPane.YES_OPTION) {
-                // Llamamos al método de la clínica para cambiar el estado
                 Clinica.getInstance().finalizarVigilancia(registroSeleccionado);
                 JOptionPane.showMessageDialog(this, "La vigilancia ha sido marcada como 'Finalizada'.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                cargarVigilanciasActivas(); // Recargamos la tabla para que el registro desaparezca
+                cargarVigilanciasActivas();
             }
         } else {
             JOptionPane.showMessageDialog(this, "Por favor, seleccione una vigilancia de la tabla para finalizar.", "Advertencia", JOptionPane.WARNING_MESSAGE);

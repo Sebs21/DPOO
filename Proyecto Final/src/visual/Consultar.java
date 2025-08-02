@@ -66,7 +66,6 @@ public class Consultar extends JDialog {
         contentPanel.setLayout(null);
         setLocationRelativeTo(parent);
 
-        // --- (El resto de la UI se mantiene igual) ---
         JPanel panel_3 = new JPanel();
 		panel_3.setBorder(new TitledBorder(new LineBorder(new Color(175, 238, 238), 4, true), "Detalles de la Consulta", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_3.setBounds(356, 370, 665, 270);
@@ -81,7 +80,7 @@ public class Consultar extends JDialog {
 
 		cbxEnfermedad = new JComboBox<>();
 		cbxEnfermedad.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		cbxEnfermedad.setBounds(10, 82, 311, 35); // Se ajusta el tamaño
+		cbxEnfermedad.setBounds(10, 82, 311, 35);
 		panel_3.add(cbxEnfermedad);
 
 		JLabel lblNewLabel_2 = new JLabel("Descripción");
@@ -244,7 +243,6 @@ public class Consultar extends JDialog {
 		txtEdad.setBounds(148, 124, 165, 37);
 		panel_2.add(txtEdad);
 
-        // --- CAMBIO: Panel de Acciones rediseñado y limpiado ---
         JPanel panel_4 = new JPanel();
         panel_4.setLayout(null);
         panel_4.setBorder(new TitledBorder(new LineBorder(new Color(173, 216, 230), 4, true), "Acciones Adicionales", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
@@ -274,7 +272,6 @@ public class Consultar extends JDialog {
         chckbxEnviarAVigilancia.setBounds(35, 100, 250, 23);
         panel_4.add(chckbxEnviarAVigilancia);
         
-        // --- Botones Finalizar y Cancelar ---
         JPanel buttonPane = new JPanel();
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
@@ -304,7 +301,7 @@ public class Consultar extends JDialog {
 		txtApellido.setText(paciente.getApellido());
 		txtCedula.setText(paciente.getCedula());
 		txtEdad.setText(paciente.getEdad());
-        txtSexo.setText(paciente.getSexo()); // <-- CAMBIO: Se muestra el sexo del paciente
+        txtSexo.setText(paciente.getSexo());
         if (paciente.getSeguro() != null) {
 		    txtSeguro.setText(paciente.getSeguro().getNombreEmpresa());
         } else {
@@ -336,9 +333,9 @@ public class Consultar extends JDialog {
 
         
         if (esImportante) {
-            precioConsulta = 3500.00; // Precio para consulta urgente
+            precioConsulta = 3500.00;
         } else {
-            precioConsulta = 1500.00; // Precio para consulta normal
+            precioConsulta = 1500.00; 
         }
 
         Consulta nuevaConsulta = new Consulta(id, Clinica.getIdFactura(), descripcion, enfermedadSeleccionada, fecha, txtSeguro.getText(), this.doctorActual, this.pacienteActual, esImportante, precioConsulta);
@@ -351,14 +348,13 @@ public class Consultar extends JDialog {
         
         pacienteActual.agregarEnfermedadAlHistorial(enfermedadSeleccionada);
 
-        // --- CAMBIO CRÍTICO: La lógica de vigilancia ahora depende del CheckBox ---
         if (chckbxEnviarAVigilancia.isSelected()) {
             boolean horasValidas = false;
             int horas = 0;
             while (!horasValidas) {
                 String horasStr = JOptionPane.showInputDialog(this, "La consulta es importante.\nIngrese las horas de vigilancia:", "Vigilancia Requerida", JOptionPane.QUESTION_MESSAGE);
                 try {
-                    if (horasStr == null) break; // Si el usuario presiona "Cancelar"
+                    if (horasStr == null) break;
                     horas = Integer.parseInt(horasStr);
                     if (horas > 0) {
                         horasValidas = true;
@@ -371,7 +367,6 @@ public class Consultar extends JDialog {
             }
 
             if (horasValidas) {
-                // Se llama al método de la clínica para iniciar la vigilancia
                 Clinica.getInstance().iniciarVigilancia(nuevaConsulta, horas);
                 JOptionPane.showMessageDialog(this, "Paciente enviado a vigilancia por " + horas + " horas.", "Vigilancia Iniciada", JOptionPane.INFORMATION_MESSAGE);
             }

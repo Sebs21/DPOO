@@ -62,7 +62,6 @@ public class AgregarSeguro extends JDialog {
         contentPanel.add(lblDescuento);
 
         spnDescuento = new JSpinner();
-        // Modelo para permitir valores de 1 a 100 (porcentaje)
         spnDescuento.setModel(new SpinnerNumberModel(50, 1, 100, 1));
         spnDescuento.setBounds(190, 130, 80, 25);
         contentPanel.add(spnDescuento);
@@ -91,7 +90,6 @@ public class AgregarSeguro extends JDialog {
             return;
         }
 
-        // Convertir el porcentaje a un valor decimal para los cálculos
         double descuentoDecimal = porcientoDescuento / 100.0;
 
         String idSeguro = "S-" + Clinica.getIdSeguro();

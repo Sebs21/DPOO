@@ -61,11 +61,9 @@ public class AgregarEspecialidad extends JDialog {
             return;
         }
 
-        // <-- CAMBIO CRÍTICO: Se genera el ID antes de crear el objeto -->
         String nuevoId = "ESP-" + Clinica.getIdEspecialidad();
         Especialidad nuevaEspecialidad = new Especialidad(nuevoId, nombre);
-        
-        // Se llama al método de la clínica que ahora también incrementa el contador
+
         Clinica.getInstance().agregarEspecialidad(nuevaEspecialidad);
 
         JOptionPane.showMessageDialog(this, "Especialidad '" + nombre + "' agregada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);

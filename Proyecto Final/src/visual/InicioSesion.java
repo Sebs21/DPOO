@@ -42,12 +42,11 @@ public class InicioSesion extends JDialog {
                 Connection cnx = ConexionDB.obtenerConexion();
 
                 if (cnx == null) {
-                    JOptionPane.showMessageDialog(null, "Error Crítico: No se pudo conectar a la base de datos.\nEl programa se cerrará.", "Error de Conexión", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "No se pudo conectar a la base de datos.", "Error de Conexión", JOptionPane.ERROR_MESSAGE);
                     System.exit(1);
                     return;
                 }
 
-                // <-- CAMBIO CRÍTICO: Se añade el bloque try-catch aquí -->
                 try {
                     boolean dbVacia = false;
                     String sql = "SELECT COUNT(*) FROM Especialidad";
@@ -64,7 +63,6 @@ public class InicioSesion extends JDialog {
                     ps.close();
 
                     if (dbVacia) {
-                        System.out.println("Base de datos vacía. Poblando con datos iniciales...");
                         Clinica.getInstance().poblarBaseDeDatosInicial();
                         JOptionPane.showMessageDialog(null, "La base de datos ha sido inicializada.", "Primer Arranque", JOptionPane.INFORMATION_MESSAGE);
                     } else {
@@ -72,14 +70,12 @@ public class InicioSesion extends JDialog {
                     }
 
                 } catch (SQLException e) {
-                    // Si hay un error al consultar, es probable que las tablas no existan.
-                    // Se podría intentar poblarlas como plan de contingencia.
+
                     System.err.println("Error al verificar la base de datos. Puede que las tablas no existan.");
                     e.printStackTrace();
-                    // Opcional: Podrías intentar poblar la DB aquí si la consulta falla.
+
                 }
 
-                // Finalmente, se muestra la ventana de login
                 try {
                     InicioSesion dialog = new InicioSesion();
                     dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
