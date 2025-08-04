@@ -296,7 +296,7 @@ public class Consultar extends JDialog {
         this.doctorActual = doctor;
         this.pacienteActual = paciente;
 		txtDoctor.setText(doctor.getNombre() + " " + doctor.getApellido());
-		txtIdConsulta.setText("C-" + Clinica.getIdConsulta());
+		txtIdConsulta.setText("CON-" + Clinica.getIdConsulta());
 		txtNombre.setText(paciente.getNombre());
 		txtApellido.setText(paciente.getApellido());
 		txtCedula.setText(paciente.getCedula());

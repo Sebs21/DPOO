@@ -8,11 +8,10 @@ public class HistoriaClinica implements Serializable
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Consulta>misConsultas;
 
-	// <-- CAMBIO CRÍTICO: Se reemplaza el constructor anterior por uno vacío -->
 	public HistoriaClinica() 
 	{
 		super();
-		this.misConsultas = new ArrayList<>(); // Se inicializa la lista vacía
+		this.misConsultas = new ArrayList<>(); 
 	}
 
 	public ArrayList<Consulta> getMisConsultas() {

@@ -21,7 +21,7 @@ public class Bajo_vigilancia implements Serializable {
         this.fechaInicio = fechaInicio;
         this.estado = "Activa";
         this.consultaOrigen = consultaOrigen;
-        this.horasVigilancia = horasVigilancia; // <-- CAMBIO: Se asignan las horas
+        this.horasVigilancia = horasVigilancia;
     }
 
     // --- Getters y Setters ---
@@ -33,7 +33,6 @@ public class Bajo_vigilancia implements Serializable {
         this.horasVigilancia = horasVigilancia;
     }
     
-    // (El resto de los getters y setters se mantienen igual)
     public Paciente getPaciente() {
         return paciente;
     }

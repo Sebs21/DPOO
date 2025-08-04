@@ -24,15 +24,15 @@ public class ConexionDB {
             );
             
             Connection cnx = DriverManager.getConnection(url);
-            System.out.println("Conexión local a la base de datos 'Clinica' establecida exitosamente.");
+            System.out.println("Conexión local a la base de datos Clinica.");
             return cnx;
             
         } catch (ClassNotFoundException e) {
-            System.err.println("Error: No se encontró el driver JDBC de SQL Server. Asegúrate de que el archivo .jar esté añadido a las librerías del proyecto.");
+            System.err.println("Error");
             e.printStackTrace();
             return null;
         } catch (SQLException e) {
-            System.err.println("Error ");          
+            System.err.println("Error");          
             e.printStackTrace();
             return null;
         } catch (UnsatisfiedLinkError e) {

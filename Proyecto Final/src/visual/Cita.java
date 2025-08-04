@@ -187,8 +187,7 @@ public class Cita extends JDialog {
             txtApellidoPaciente.setText("");
             txtEdadPaciente.setText("");
             cbxSexo.setSelectedIndex(0);
-            cbxSeguros.setSelectedIndex(0);
-            JOptionPane.showMessageDialog(this, "Paciente no encontrado. Puede registrarlo llenando los campos.", "Información", JOptionPane.INFORMATION_MESSAGE);
+            cbxSeguros.setSelectedIndex(0);            
         }
     }
 
@@ -234,8 +233,7 @@ public class Cita extends JDialog {
 
         if (pacienteNuevo) {
             Clinica.getInstance().agregarPaciente(pacienteParaLaCita); 
-            Clinica.getInstance().agregarUsuario(pacienteParaLaCita.getUser());
-            JOptionPane.showMessageDialog(this, "Nuevo paciente registrado.", "Paciente Nuevo", JOptionPane.INFORMATION_MESSAGE);
+            Clinica.getInstance().agregarUsuario(pacienteParaLaCita.getUser());            
         } else {
             Clinica.getInstance().actualizarPaciente(pacienteParaLaCita);
         }

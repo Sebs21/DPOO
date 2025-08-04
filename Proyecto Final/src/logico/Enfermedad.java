@@ -29,7 +29,6 @@ public class Enfermedad implements Serializable {
         this.nombre = nombre;
     }
 
-    // Sobrescribimos toString() para que los JComboBox muestren el nombre
     @Override
     public String toString() {
         return nombre;

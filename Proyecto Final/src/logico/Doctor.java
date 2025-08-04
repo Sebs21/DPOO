@@ -4,10 +4,6 @@ import java.util.ArrayList;
 
 public class Doctor extends Persona  
 {
-	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private String especialidad;
 	private ArrayList<Paciente>misPacientes;
@@ -17,7 +13,7 @@ public class Doctor extends Persona
 
 	public Doctor( String cedula, String nombre, String apellido, String especialidad, String edad, String sexo, User user ) 
 	{
-		super(cedula, nombre, apellido, edad, sexo); // <-- Se pasa a la clase Persona
+		super(cedula, nombre, apellido, edad, sexo);
 		this.especialidad = especialidad;
 		this.misPacientes = new ArrayList<Paciente>();
 		this.user = user;

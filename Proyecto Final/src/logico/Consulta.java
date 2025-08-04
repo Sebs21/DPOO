@@ -6,9 +6,6 @@ import java.util.Date;
 
 public class Consulta implements Serializable
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private String id;
 	private int idFactura;
@@ -19,11 +16,11 @@ public class Consulta implements Serializable
 	private Enfermedad enfermedad;
 	private Paciente paciente;
 	private boolean importancia; 
-	private double precio;      // <-- CAMBIO: Se añade el precio
+	private double precio;     
     private boolean pagada;
 	
     public Consulta(String id, int idFactura, String descripcion, Enfermedad enfermedad, Date fechaConsulta,
-            String seguro, Doctor doctor, Paciente paciente, boolean importancia, double precio) { // Se añade precio al constructor
+            String seguro, Doctor doctor, Paciente paciente, boolean importancia, double precio) { 
         super();
         this.id = id;
         this.idFactura = idFactura;

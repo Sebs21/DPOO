@@ -26,13 +26,35 @@ public class Factura implements Serializable {
         this.totalPagado = totalPagado;
     }
 
-    // --- Getters ---
-    public String getId() { return id; }
-    public Paciente getPaciente() { return paciente; }
-    public Date getFecha() { return fecha; }
-    public ArrayList<Consulta> getConsultasFacturadas() { return consultasFacturadas; }
-    public ArrayList<RegistroVacunacion> getVacunasFacturadas() { return vacunasFacturadas; }
-    public double getSubTotal() { return subTotal; }
-    public double getDescuento() { return descuento; }
-    public double getTotalPagado() { return totalPagado; }
+    public String getId() { 
+    	return id; 
+    	}
+    
+    public Paciente getPaciente() { 
+    	return paciente; 
+    }
+    
+    public Date getFecha() { 
+    	return fecha; 
+    }
+    
+    public ArrayList<Consulta> getConsultasFacturadas() { 
+    	return consultasFacturadas; 
+    }
+    
+    public ArrayList<RegistroVacunacion> getVacunasFacturadas() { 
+    	return vacunasFacturadas; 
+    }
+    
+    public double getSubTotal() { 
+    	return subTotal; 
+    }
+    
+    public double getDescuento() { 
+    	return descuento; 
+    }
+    
+    public double getTotalPagado() { 
+    	return totalPagado; 
+    }
 }

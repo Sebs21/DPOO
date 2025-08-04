@@ -9,14 +9,14 @@ public class vacunacion implements Serializable {
     private String nombre;
     private String fabricante;
     private int cantidadDisponible;
-    private double precio; // <-- CAMBIO: Se añade el precio
+    private double precio;
 
     public vacunacion(String idVacuna, String nombre, String fabricante, double precio) {
         this.idVacuna = idVacuna;
         this.nombre = nombre;
         this.fabricante = fabricante;
         this.cantidadDisponible = 0;
-        this.precio = precio; // <-- CAMBIO: Se asigna el precio
+        this.precio = precio;
     }
 
     @Override
@@ -24,7 +24,6 @@ public class vacunacion implements Serializable {
         return nombre;
     }
     
-    // --- Getters y Setters ---
     public double getPrecio() {
         return precio;
     }
@@ -33,15 +32,42 @@ public class vacunacion implements Serializable {
         this.precio = precio;
     }
 
-    // (El resto de la clase se mantiene igual)
-    public void agregarStock(int cantidad) { if (cantidad > 0) this.cantidadDisponible += cantidad; }
-    public void descontarStock(int cantidad) { if (cantidad > 0 && this.cantidadDisponible >= cantidad) this.cantidadDisponible -= cantidad; }
-    public int getCantidadDisponible() { return cantidadDisponible; }
-    public void setCantidadDisponible(int cantidadDisponible) { this.cantidadDisponible = cantidadDisponible; }
-    public String getIdVacuna() { return idVacuna; }
-    public void setIdVacuna(String idVacuna) { this.idVacuna = idVacuna; }
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
-    public String getFabricante() { return fabricante; }
-    public void setFabricante(String fabricante) { this.fabricante = fabricante; }
+    public void agregarStock(int cantidad) { 
+    	if (cantidad > 0) this.cantidadDisponible += cantidad; 
+    }
+    
+    public void descontarStock(int cantidad) { 
+    	if (cantidad > 0 && this.cantidadDisponible >= cantidad) this.cantidadDisponible -= cantidad; 
+    }
+    public int getCantidadDisponible() { 
+    	return cantidadDisponible; 
+    }
+    
+    public void setCantidadDisponible(int cantidadDisponible) { 
+    	this.cantidadDisponible = cantidadDisponible; 
+    }
+    
+    public String getIdVacuna() { 
+    	return idVacuna; 
+    }
+    
+    public void setIdVacuna(String idVacuna) { 
+    	this.idVacuna = idVacuna; 
+    }
+    
+    public String getNombre() { 
+    	return nombre; 
+    }
+    
+    public void setNombre(String nombre) { 
+    	this.nombre = nombre; 
+    }
+    
+    public String getFabricante() { 
+    	return fabricante; 
+    }
+    
+    public void setFabricante(String fabricante) { 
+    	this.fabricante = fabricante; 
+    }
 }

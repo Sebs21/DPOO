@@ -65,17 +65,10 @@ public class InicioSesion extends JDialog {
                     if (dbVacia) {
                         Clinica.getInstance().poblarBaseDeDatosInicial();
                         JOptionPane.showMessageDialog(null, "La base de datos ha sido inicializada.", "Primer Arranque", JOptionPane.INFORMATION_MESSAGE);
-                    } else {
-                        System.out.println("La base de datos ya contiene datos.");
-                    }
-
-                } catch (SQLException e) {
-
-                    System.err.println("Error al verificar la base de datos. Puede que las tablas no existan.");
+                    } 
+                } catch (SQLException e) {                  
                     e.printStackTrace();
-
                 }
-
                 try {
                     InicioSesion dialog = new InicioSesion();
                     dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);

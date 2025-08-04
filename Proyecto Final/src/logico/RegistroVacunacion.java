@@ -15,7 +15,7 @@ public class RegistroVacunacion implements Serializable {
         this.tipoVacuna = tipoVacuna;
         this.fechaAplicacion = fechaAplicacion;
         this.cantidadMl = cantidadMl;
-        this.pagada = false; // <-- CAMBIO: Por defecto, no está pagada
+        this.pagada = false; 
     }
     
     public boolean isPagada() {
@@ -26,7 +26,6 @@ public class RegistroVacunacion implements Serializable {
         this.pagada = pagada;
     }
     
-    // --- Getters ---
     public vacunacion getTipoVacuna() {
         return tipoVacuna;
     }
