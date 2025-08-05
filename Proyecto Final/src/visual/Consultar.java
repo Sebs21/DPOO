@@ -11,7 +11,6 @@ import java.util.Date;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -49,7 +48,6 @@ public class Consultar extends JDialog {
     private JTextField txtSexo;
     private final ButtonGroup buttonGroup = new ButtonGroup();
     private JComboBox<Enfermedad> cbxEnfermedad;
-    private JCheckBox chckbxEnviarAVigilancia;
 
     private Doctor doctorActual;
     private Paciente pacienteActual;
@@ -268,11 +266,6 @@ public class Consultar extends JDialog {
         rdbtnImportante.setFont(new Font("Times New Roman", Font.ITALIC, 15));
         rdbtnImportante.setBounds(192, 55, 109, 23);
         panel_4.add(rdbtnImportante);
-
-        chckbxEnviarAVigilancia = new JCheckBox("Enviar Paciente a Vigilancia");
-        chckbxEnviarAVigilancia.setFont(new Font("Times New Roman", Font.BOLD, 15));
-        chckbxEnviarAVigilancia.setBounds(35, 100, 250, 23);
-        panel_4.add(chckbxEnviarAVigilancia);
         
         JPanel buttonPane = new JPanel();
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));

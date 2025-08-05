@@ -12,6 +12,7 @@ public class Bajo_vigilancia implements Serializable {
     private Date fechaInicio;
     private String estado;
     private Consulta consultaOrigen;
+    private int idVigilancia;
     private int horasVigilancia; 
     
     public Bajo_vigilancia(Paciente paciente, Enfermedad enfermedad, Doctor doctorResponsable, Date fechaInicio, Consulta consultaOrigen, int horasVigilancia) {
@@ -24,9 +25,16 @@ public class Bajo_vigilancia implements Serializable {
         this.horasVigilancia = horasVigilancia;
     }
 
-    // --- Getters y Setters ---
     public int getHorasVigilancia() {
         return horasVigilancia;
+    }
+    
+    public int getIdVigilancia() { 
+    	return idVigilancia; 
+    }
+    
+    public void setIdVigilancia(int idVigilancia) { 
+    	this.idVigilancia = idVigilancia; 
     }
 
     public void setHorasVigilancia(int horasVigilancia) {

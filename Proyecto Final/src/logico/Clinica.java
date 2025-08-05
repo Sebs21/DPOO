@@ -763,7 +763,7 @@ public class Clinica implements Serializable {
     }
 
     private void cargarVigilanciasDesdeDB() {
-        misVigilancias.clear(); // Limpia la lista primero
+        misVigilancias.clear();
         Connection cnx = ConexionDB.obtenerConexion();
         if (cnx == null) return;
 
@@ -789,6 +789,7 @@ public class Clinica implements Serializable {
                         rs.getInt("horas_vigilancia")
                     );
                     vigilancia.setEstado(rs.getString("estado"));
+                    vigilancia.setIdVigilancia(rs.getInt("id_vigilancia"));
                     misVigilancias.add(vigilancia);
                 }
             }
@@ -1486,13 +1487,26 @@ public class Clinica implements Serializable {
         Connection cnx = ConexionDB.obtenerConexion();
         if (cnx == null) return;
 
-        String sql = "UPDATE Bajo_vigilancia SET estado = 'Finalizada' WHERE cedula_paciente = ? AND id_enfermedad = ? AND fecha_inicio = ?";
+        String sql = "UPDATE Bajo_vigilancia SET estado = 'Finalizada' WHERE id_vigilancia = ?";
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {
-            ps.setString(1, registro.getPaciente().getCedula());
-            ps.setString(2, registro.getEnfermedad().getId());
-            ps.setTimestamp(3, new java.sql.Timestamp(registro.getFechaInicio().getTime()));
+            ps.setInt(1, registro.getIdVigilancia());
             ps.executeUpdate();
             registro.setEstado("Finalizada");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        ConexionDB.cerrarConexion(cnx);
+    }
+    
+    public void eliminarVigilancia(Bajo_vigilancia registro) {
+        Connection cnx = ConexionDB.obtenerConexion();
+        if (cnx == null) return;
+       
+        String sql = "DELETE FROM Bajo_vigilancia WHERE id_vigilancia = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setInt(1, registro.getIdVigilancia());
+            ps.executeUpdate();            
+            misVigilancias.remove(registro);
         } catch (SQLException e) {
             e.printStackTrace();
         }
