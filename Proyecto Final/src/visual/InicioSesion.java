@@ -76,7 +76,8 @@ public class InicioSesion extends JDialog {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
+                ConexionDB.cerrarConexion(cnx);
+            }         
         });
     }
 

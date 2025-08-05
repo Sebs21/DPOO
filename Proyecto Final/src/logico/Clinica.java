@@ -567,7 +567,8 @@ public class Clinica implements Serializable {
         return misConsultas;
     }
 
-    private void cargarConsultasDesdeDB() {
+    public void cargarConsultasDesdeDB() {
+    	misConsultas.clear();
         Connection cnx = ConexionDB.obtenerConexion();
         if (cnx == null) return;
         
@@ -958,11 +959,12 @@ public class Clinica implements Serializable {
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {
         	ps.setString(1, consulta.getId());
             
-            if (consulta.getIdFactura() > 0) {
-                ps.setInt(2, consulta.getIdFactura());
-            } else {
-                ps.setNull(2, java.sql.Types.INTEGER);
-            }
+        	ps.setString(1, consulta.getId());
+        	if (consulta.getIdFactura() > 0) {
+        	    ps.setInt(2, consulta.getIdFactura());
+        	} else {
+        	    ps.setNull(2, java.sql.Types.INTEGER);
+        	}
             
             ps.setString(3, consulta.getDescripcion());
             ps.setTimestamp(4, new java.sql.Timestamp(consulta.getFechaConsulta().getTime()));
@@ -973,8 +975,13 @@ public class Clinica implements Serializable {
             ps.setString(9, consulta.getPaciente().getCedula());
             ps.setString(10, consulta.getDoctor().getCedula());
             ps.setString(11, consulta.getEnfermedad().getId());                     
-            this.misConsultas.add(consulta);
-            idConsulta++;
+            
+            int filas = ps.executeUpdate();
+            if (filas > 0) {
+                this.misConsultas.add(consulta);
+                idConsulta++;
+                System.out.println("Filas insertadas en Consulta: " + filas);
+            }
             
 
         } catch (SQLException e) {           
@@ -1144,6 +1151,45 @@ public class Clinica implements Serializable {
                     );
                     consulta.setPagada(rs.getBoolean("pagada"));
                     consultas.add(consulta);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            ConexionDB.cerrarConexion(cnx);
+        }
+        return consultas;
+    }
+    
+    public ArrayList<Consulta> obtenerConsultasDelDoctor(String cedulaDoctor) {
+        ArrayList<Consulta> consultas = new ArrayList<>();
+        Connection cnx = ConexionDB.obtenerConexion();
+        if (cnx == null) return consultas;
+        String sql = "SELECT * FROM Consulta WHERE cedula_doctor = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setString(1, cedulaDoctor);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    String id = rs.getString("id_consulta");
+                    int idFactura = rs.getInt("id_factura");
+                    String descripcion = rs.getString("descripcion");
+                    String idEnfermedad = rs.getString("id_enfermedad");
+                    java.util.Date fecha = rs.getTimestamp("fecha_consulta");
+                    String seguro = rs.getString("seguro_aplicado");
+                    String cedulaPaciente = rs.getString("cedula_paciente");
+                    boolean esImportante = rs.getBoolean("importancia");
+                    double precioConsulta = rs.getDouble("precio");
+ 
+                    Enfermedad enfermedad = buscarEnfermedadById(idEnfermedad);
+                    Doctor doctor = buscarDoctorByCedula(cedulaDoctor);
+                    Paciente paciente = buscarPacienteByCedula(cedulaPaciente);
+                    
+                    if (paciente != null && doctor != null) {
+                        Consulta consulta = new Consulta(
+                            id, idFactura, descripcion, enfermedad, fecha, seguro, doctor, paciente, esImportante, precioConsulta
+                        );
+                        consultas.add(consulta);
+                    }
                 }
             }
         } catch (SQLException e) {
@@ -1349,8 +1395,7 @@ public class Clinica implements Serializable {
     }
 
     public void iniciarVigilancia(Consulta consulta, int horas) {
-        if (consulta == null) return;
-
+        if (consulta == null) return;       
         Connection cnx = ConexionDB.obtenerConexion();
         if (cnx == null) return;
 
@@ -1372,13 +1417,17 @@ public class Clinica implements Serializable {
             ps.setString(3, nuevaVigilancia.getDoctorResponsable().getCedula());
             ps.setTimestamp(4, new java.sql.Timestamp(nuevaVigilancia.getFechaInicio().getTime()));
             ps.setString(5, nuevaVigilancia.getEstado());
-            ps.setString(6, nuevaVigilancia.getConsultaOrigen().getId());
+            if (nuevaVigilancia.getConsultaOrigen() != null) {
+                ps.setString(6, nuevaVigilancia.getConsultaOrigen().getId());
+            } else {
+                ps.setNull(6, java.sql.Types.VARCHAR);
+            }
             ps.setInt(7, nuevaVigilancia.getHorasVigilancia());
             
             ps.executeUpdate();
                       
             this.misVigilancias.add(nuevaVigilancia);     
-        } catch (SQLException e) {        
+        } catch (SQLException e) {               
             e.printStackTrace();
         } finally {
             ConexionDB.cerrarConexion(cnx);
@@ -1438,89 +1487,97 @@ public class Clinica implements Serializable {
 
 
     public Doctor buscarDoctorByCedula(String cedula) {
-
-        for (Doctor doctor : misDoctores) {
-            if (doctor.getCedula().equalsIgnoreCase(cedula)) {
-                return doctor;
+        for (Doctor doc : misDoctores) {
+            if (doc.getCedula().equals(cedula)) {
+                return doc;
             }
         }
 
         Connection cnx = ConexionDB.obtenerConexion();
         if (cnx == null) return null;
-        String sql = "SELECT d.cedula, d.nombre, d.apellido, d.edad, d.sexo, e.nombre AS especialidad_nombre, u.nombre AS user_nombre, u.password AS user_password, u.tipo AS user_tipo " +
-                     "FROM Doctor d JOIN Especialidad e ON d.id_especialidad = e.id_especialidad " +
-                     "LEFT JOIN Usuario u ON d.cedula = u.password AND u.tipo = 'Doctor' WHERE d.cedula = ?";
+        String sql = "SELECT * FROM Doctor WHERE cedula = ?";
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {
             ps.setString(1, cedula);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    User user = null;
-                    if (rs.getString("user_nombre") != null) {
-                        user = new User(rs.getString("user_nombre"), rs.getString("user_password"), rs.getString("user_tipo"));
-                    }
-                    Doctor doc = new Doctor(
+                    return new Doctor(
                         rs.getString("cedula"),
                         rs.getString("nombre"),
                         rs.getString("apellido"),
-                        rs.getString("especialidad_nombre"),
+                        rs.getString("especialidad"),
                         rs.getString("edad"),
                         rs.getString("sexo"),
-                        user
+                        null 
                     );
-                    misDoctores.add(doc);
-                    return doc;
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException e) { e.printStackTrace(); }
+        finally { ConexionDB.cerrarConexion(cnx); }
         return null;
     }
 
     public Paciente buscarPacienteByCedula(String cedula) {
-        for (Paciente paciente : misPacientes) {
-            if (paciente.getCedula().equalsIgnoreCase(cedula)) {
-                return paciente;
+        
+        for (Paciente p : misPacientes) {
+            if (p.getCedula().equals(cedula)) {
+                return p;
             }
         }
-        
         Connection cnx = ConexionDB.obtenerConexion();
         if (cnx == null) return null;
-        String sql = "SELECT p.cedula, p.nombre, p.apellido, p.id_paciente, p.edad, p.sexo, " +
-                     "s.id_seguro, s.nombre_empresa, s.tipo_seguro, s.descuento, " +
-                     "u.nombre AS user_nombre, u.password AS user_password, u.tipo AS user_tipo " +
-                     "FROM Paciente p LEFT JOIN Seguro s ON p.id_seguro = s.id_seguro " +
-                     "LEFT JOIN Usuario u ON p.cedula = u.password AND u.tipo = 'Paciente' WHERE p.cedula = ?";
-        
-        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
-            ps.setString(1, cedula);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    User user = null;
-                    if (rs.getString("user_nombre") != null) {
-                        user = new User(rs.getString("user_nombre"), rs.getString("user_password"), rs.getString("user_tipo"));
-                    }
-                    Paciente paciente = new Paciente(
-                        rs.getString("cedula"),
-                        rs.getString("nombre"),
-                        rs.getString("apellido"),
-                        rs.getInt("id_paciente"),
-                        rs.getString("edad"),
-                        rs.getString("sexo"),
-                        user
-                    );
-                    if (rs.getString("id_seguro") != null) {
-                        Seguro seguro = new Seguro(rs.getString("id_seguro"), rs.getString("nombre_empresa"), rs.getString("tipo_seguro"), rs.getDouble("descuento"));
-                        paciente.setSeguro(seguro);
-                    }
-                    misPacientes.add(paciente); 
-                    return paciente;
+
+        try {
+            String sqlPaciente = "SELECT * FROM Paciente WHERE cedula = ?";
+            PreparedStatement psPaciente = cnx.prepareStatement(sqlPaciente);
+            psPaciente.setString(1, cedula);
+            ResultSet rs = psPaciente.executeQuery();
+
+            if (rs.next()) {
+                Seguro seguro = null;
+                String idSeguro = rs.getString("id_seguro");
+                if (idSeguro != null) {
+                    seguro = buscarSeguroById(idSeguro);
                 }
+
+                User user = null;
+                String sqlUser = "SELECT nombre, password, tipo FROM Usuario WHERE password = ?";
+                PreparedStatement psUser = cnx.prepareStatement(sqlUser);
+                psUser.setString(1, cedula);
+                ResultSet rsUser = psUser.executeQuery();
+                if (rsUser.next()) {
+                    user = new User(
+                        rsUser.getString("nombre"),
+                        rsUser.getString("password"),
+                        rsUser.getString("tipo")
+                    );
+                }
+                rsUser.close();
+                psUser.close();
+
+                Paciente paciente = new Paciente(
+                    rs.getString("cedula"),
+                    rs.getString("nombre"),
+                    rs.getString("apellido"),
+                    rs.getInt("id_cod_paciente"),
+                    rs.getString("edad"),
+                    rs.getString("sexo"),
+                    user
+                );
+                if (seguro != null) {
+                    paciente.setSeguro(seguro);
+                }
+                rs.close();
+                psPaciente.close();
+                return paciente;
             }
+            rs.close();
+            psPaciente.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            ConexionDB.cerrarConexion(cnx);
         }
-        return null;       
+        return null;
     }
 
     public Especialidad buscarEspecialidadPorNombre(String nombre) {
@@ -1532,13 +1589,58 @@ public class Clinica implements Serializable {
         
         return null;
     }
+    
+    public Seguro buscarSeguroById(String idSeguro) {
+        for (Seguro seguro : misSeguros) {
+            if (seguro.getIdSeguro().equals(idSeguro)) {
+                return seguro;
+            }
+        }
 
-    public Enfermedad buscarEnfermedadById(String id) {
+        Connection cnx = ConexionDB.obtenerConexion();
+        if (cnx == null) return null;
+        String sql = "SELECT * FROM Seguro WHERE id_seguro = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setString(1, idSeguro);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new Seguro(
+                        rs.getString("id_seguro"),
+                        rs.getString("nombre_empresa"),
+                        rs.getString("tipo_Seguro"),
+                        rs.getDouble("descuento")    
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            ConexionDB.cerrarConexion(cnx);
+        }
+        return null;
+    }
+
+    public Enfermedad buscarEnfermedadById(String idEnfermedad) {
         for (Enfermedad enf : misEnfermedades) {
-            if (enf.getId().equalsIgnoreCase(id)) {
+            if (enf.getId().equals(idEnfermedad)) {
                 return enf;
             }
         }
+        Connection cnx = ConexionDB.obtenerConexion();
+        if (cnx == null) return null;
+        String sql = "SELECT * FROM Enfermedad WHERE id_enfermedad = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setString(1, idEnfermedad);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new Enfermedad(
+                        rs.getString("id_enfermedad"),
+                        rs.getString("nombre")
+                    );
+                }
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        finally { ConexionDB.cerrarConexion(cnx); }
         return null;
     }
 
@@ -1597,5 +1699,42 @@ public class Clinica implements Serializable {
 
     public int getTotalVacunasAplicadas() {
         return totalVacunasAplicadas;
+    }
+
+    public Factura buscarFacturaById(int idFactura) {
+        for (Factura factura : misFacturas) {
+            if (factura.getId().equalsIgnoreCase("FAC-" + idFactura)) {
+                return factura;
+            }            
+        }
+        
+        Connection cnx = ConexionDB.obtenerConexion();
+        if (cnx == null) return null;
+        Factura facturaEncontrada = null;
+        String sql = "SELECT * FROM Factura WHERE id_factura = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setInt(1, idFactura);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                   
+                    Paciente paciente = buscarPacienteByCedula(rs.getString("cedula_paciente"));
+                    facturaEncontrada = new Factura(
+                        rs.getString("id_factura"),
+                        paciente,
+                        rs.getTimestamp("fecha_factura"),
+                        new ArrayList<>(), 
+                        new ArrayList<>(), 
+                        rs.getDouble("subtotal"),
+                        rs.getDouble("descuento"),
+                        rs.getDouble("total_pagado")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            ConexionDB.cerrarConexion(cnx);
+        }
+        return facturaEncontrada;
     }
 }

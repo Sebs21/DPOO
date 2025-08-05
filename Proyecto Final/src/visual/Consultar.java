@@ -54,6 +54,7 @@ public class Consultar extends JDialog {
     private Doctor doctorActual;
     private Paciente pacienteActual;
     private Consulta consultaCreada = null;
+    private Consulta nuevaConsulta = null; 
     private boolean consultaFinalizada = false;
 
     public Consultar(JDialog parent) {
@@ -303,18 +304,20 @@ public class Consultar extends JDialog {
     public void actualizarCampos(Doctor doctor, Paciente paciente) {
         this.doctorActual = doctor;
         this.pacienteActual = paciente;
-		txtDoctor.setText(doctor.getNombre() + " " + doctor.getApellido());
-		txtIdConsulta.setText("CON-" + Clinica.getIdConsulta());
-		txtNombre.setText(paciente.getNombre());
-		txtApellido.setText(paciente.getApellido());
-		txtCedula.setText(paciente.getCedula());
-		txtEdad.setText(paciente.getEdad());
+        txtDoctor.setText(doctor.getNombre() + " " + doctor.getApellido());
+        txtIdConsulta.setText("CON-" + Clinica.getIdConsulta());
+        txtIdfactura.setText("FAC-" + Clinica.getIdFactura());
+        txtNombre.setText(paciente.getNombre());
+        txtApellido.setText(paciente.getApellido());
+        txtCedula.setText(paciente.getCedula());
+        txtEdad.setText(paciente.getEdad());
         txtSexo.setText(paciente.getSexo());
         if (paciente.getSeguro() != null) {
-		    txtSeguro.setText(paciente.getSeguro().getNombreEmpresa());
+            txtSeguro.setText(paciente.getSeguro().getNombreEmpresa());
         } else {
             txtSeguro.setText("No aplica");
-        }
+        }       
+        
     }
     
     
@@ -331,32 +334,61 @@ public class Consultar extends JDialog {
             JOptionPane.showMessageDialog(this, "No se ha podido identificar al doctor o al paciente.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         String id = txtIdConsulta.getText();
+        String idFacturaStr = txtIdfactura.getText();
+        int idFactura = Integer.parseInt(idFacturaStr.replace("FAC-", ""));
         String descripcion = txtDescripcion.getText();
         Enfermedad enfermedadSeleccionada = (Enfermedad) cbxEnfermedad.getSelectedItem();
         Date fecha = (Date) spnFecha.getValue();
         boolean esImportante = rdbtnImportante.isSelected();
-        double precioConsulta = 0;
-
+        double precioConsulta = esImportante ? 3500.00 : 1500.00;
         
-        if (esImportante) {
-            precioConsulta = 3500.00;
-        } else {
-            precioConsulta = 1500.00; 
+        
+        boolean facturaExiste = false;
+        if (idFacturaStr != null && idFacturaStr.startsWith("FAC-")) {
+            try {
+                idFactura = Integer.parseInt(idFacturaStr.replace("FAC-", ""));
+                
+                facturaExiste = Clinica.getInstance().buscarFacturaById(idFactura) != null;
+            } catch (NumberFormatException ex) {
+                idFactura = 0;
+                facturaExiste = false;
+            }
         }
-
-        Consulta nuevaConsulta = new Consulta(id, Clinica.getIdFactura(), descripcion, enfermedadSeleccionada, fecha, txtSeguro.getText(), this.doctorActual, this.pacienteActual, esImportante, precioConsulta);
+        if (!facturaExiste) {
+            idFactura = 0; 
+        }
+        
+        nuevaConsulta = new Consulta(
+            id,
+            idFactura, 
+            descripcion,
+            enfermedadSeleccionada,
+            fecha,
+            txtSeguro.getText(),
+            this.doctorActual,
+            this.pacienteActual,
+            esImportante,
+            precioConsulta
+        );
         Clinica.getInstance().agregarConsulta(nuevaConsulta);
+        Clinica.getInstance().cargarConsultasDesdeDB();
         pacienteActual.agregarConsultaAlHistorial(nuevaConsulta);
+
+        Consulta consultaEnBD = Clinica.getInstance().buscarConsultaById(nuevaConsulta.getId());
+        if (consultaEnBD == null) {
+            JOptionPane.showMessageDialog(this, "La consulta no se guardó correctamente en la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         if (!this.doctorActual.getMisPacientes().contains(this.pacienteActual)) {
             this.doctorActual.getMisPacientes().add(this.pacienteActual);
         }
-        
+
         pacienteActual.agregarEnfermedadAlHistorial(enfermedadSeleccionada);
-        
-        consultaCreada = nuevaConsulta;         
+
+        consultaCreada = nuevaConsulta;
 
         JOptionPane.showMessageDialog(this, "Consulta registrada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         this.consultaFinalizada = true;

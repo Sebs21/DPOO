@@ -12,7 +12,11 @@ import logico.Bajo_vigilancia;
 
 public class Reporte_control_enfermedades extends JDialog {
 
-    private JTable table;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JTable table;
     private DefaultTableModel model;
 
     public Reporte_control_enfermedades(ArrayList<Bajo_vigilancia> vigilancias) {

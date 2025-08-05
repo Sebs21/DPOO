@@ -18,7 +18,6 @@ import javax.swing.border.EmptyBorder;
 
 import logico.Bajo_vigilancia;
 import logico.Clinica;
-import logico.Doctor;
 import logico.User;
 
 public class Principal extends JFrame {
@@ -119,7 +118,7 @@ public class Principal extends JFrame {
 		        Reporte_control_enfermedades reporDoc = new Reporte_control_enfermedades(vigilancias);
 		        reporDoc.setVisible(true);
 		    } else {
-		        Reporte_control_enfermedades repor_enfe = new Reporte_control_enfermedades(null);
+		        Reporte_control_enfermedades repor_enfe = new Reporte_control_enfermedades(new ArrayList<>());
 		        repor_enfe.setVisible(true);
 		    }
 		});

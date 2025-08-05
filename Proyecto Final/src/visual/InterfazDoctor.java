@@ -6,7 +6,6 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -19,8 +18,10 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import logico.Bajo_vigilancia;
 import logico.Cita;
 import logico.Clinica;
+import logico.Consulta;
 import logico.Doctor;
 import logico.Enfermedad;
 import logico.Paciente;
@@ -85,7 +86,8 @@ public class InterfazDoctor extends JDialog {
         JButton btnGestionarVigilancia = new JButton("Gestionar Vigilancias");
         btnGestionarVigilancia.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	Reporte_control_enfermedades Gv = new Reporte_control_enfermedades(doctorLogin);
+                ArrayList<Bajo_vigilancia> vigilancias = Clinica.getInstance().obtenerVigilanciasDelDoctor(doctorLogin.getCedula());
+                Reporte_control_enfermedades Gv = new Reporte_control_enfermedades(vigilancias);
                 Gv.setVisible(true);
             }
         });
@@ -166,27 +168,20 @@ public class InterfazDoctor extends JDialog {
 
     public void actualizarTablaHistorial(String cedulaDoctor) {
         modeloPacientes.setRowCount(0);
-        Doctor doctor = Clinica.getInstance().buscarDoctorByCedula(cedulaDoctor);
-        if (doctor != null && doctor.getMisPacientes() != null) {
-            for (Paciente paciente : doctor.getMisPacientes()) {
-                
-                String enfermedadesStr = "N/A";
-                if (paciente.getHistorialDeEnfermedades() != null && !paciente.getHistorialDeEnfermedades().isEmpty()) {
-                    enfermedadesStr = paciente.getHistorialDeEnfermedades().stream()
-                                            .map(Enfermedad::getNombre)
-                                            .collect(Collectors.joining(", "));
-                }
-
-                Object[] fila = {
-                    paciente.getCedula(),
-                    paciente.getNombre(),
-                    paciente.getApellido(),
-                    paciente.getEdad(),
-                    paciente.getSeguro() != null ? paciente.getSeguro().getNombreEmpresa() : "N/A",
-                    enfermedadesStr
-                };
-                modeloPacientes.addRow(fila);
-            }
+        ArrayList<Consulta> consultasDelDoctor = Clinica.getInstance().obtenerConsultasDelDoctor(cedulaDoctor);
+        for (Consulta consulta : consultasDelDoctor) {
+            Paciente paciente = consulta.getPaciente();
+            Enfermedad enfermedad = consulta.getEnfermedad();
+            String enfermedadesStr = enfermedad != null ? enfermedad.getNombre() : "N/A";
+            Object[] fila = {
+                paciente.getCedula(),
+                paciente.getNombre(),
+                paciente.getApellido(),
+                paciente.getEdad(),
+                paciente.getSeguro() != null ? paciente.getSeguro().getNombreEmpresa() : "N/A",
+                enfermedadesStr
+            };
+            modeloPacientes.addRow(fila);
         }
     }
 
