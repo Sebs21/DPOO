@@ -10,33 +10,21 @@ public class ConexionDB {
     public static Connection obtenerConexion() {
         try {
 
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");           
             
-            
-            String server = "localhost"; 
-            String port = "1433";        
-            String databaseName = "Clinica";
-            
-            
-            String url = String.format(
-                "jdbc:sqlserver://%s:%s;databaseName=%s;integratedSecurity=true;encrypt=true;trustServerCertificate=true;",
-                server, port, databaseName
-            );
+            String url = "jdbc:sqlserver://localhost:1433;databaseName=Clinica;integratedSecurity=true;encrypt=true;trustServerCertificate=true;";
             
             Connection cnx = DriverManager.getConnection(url);
             System.out.println("Conexión local a la base de datos Clinica.");
             return cnx;
             
         } catch (ClassNotFoundException e) {
-            System.err.println("Error");
             e.printStackTrace();
             return null;
-        } catch (SQLException e) {
-            System.err.println("Error");          
+        } catch (SQLException e) {       
             e.printStackTrace();
             return null;
-        } catch (UnsatisfiedLinkError e) {
-            System.err.println("Error");          
+        } catch (UnsatisfiedLinkError e) {     
             e.printStackTrace();
             return null;
         }
