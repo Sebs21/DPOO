@@ -178,6 +178,44 @@ public class Facturacion extends JDialog {
         calcularTotales(subtotal);
     }
     
+    private void procesarFactura() {
+        if (pacienteSeleccionado == null || (consultasPendientes.isEmpty() && vacunasPendientes.isEmpty())) {
+            JOptionPane.showMessageDialog(this, "No hay servicios pendientes para facturar.", "Información", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+       
+        for (Consulta c : consultasPendientes) {
+            c.setPagada(true);
+            Clinica.getInstance().actualizarEstadoPagadoConsulta(c.getId(), true);
+        }
+        
+        for (RegistroVacunacion r : vacunasPendientes) {
+            r.setPagada(true);
+            Clinica.getInstance().actualizarEstadoPagadoVacuna(r.getIdRegistro(), true);
+        }
+
+        String idFactura = "FACT-" + Clinica.getIdFactura();
+        double subtotal = Double.parseDouble(txtSubtotal.getText());
+        double totalPagado = Double.parseDouble(txtTotalPagar.getText());
+        double descuento = subtotal - totalPagado;
+        
+        Factura nuevaFactura = new Factura(idFactura, pacienteSeleccionado, new Date(), consultasPendientes, vacunasPendientes, subtotal, descuento, totalPagado);
+        Clinica.getInstance().agregarFactura(nuevaFactura);
+
+        JOptionPane.showMessageDialog(this, "Factura generada.", "Exito", JOptionPane.INFORMATION_MESSAGE);
+
+        
+        Clinica.getInstance().cargarConsultasDesdeDB();
+        Clinica.getInstance().cargarRegistroVacunacionDesdeDB();
+
+        pacienteSeleccionado = null;
+        txtCedulaPaciente.setText("");
+        txtNombrePaciente.setText("");
+        model.setRowCount(0);
+        limpiarCalculos();
+    }
+    
     private void calcularTotales(double subtotal) {
         double porcientoDescuento = 0;
         if (pacienteSeleccionado.getSeguro() != null) {
@@ -190,37 +228,7 @@ public class Facturacion extends JDialog {
         txtSubtotal.setText(String.format("%.2f", subtotal));
         txtDescuento.setText(String.format("%.2f (%.0f%%)", montoDescuento, porcientoDescuento * 100));
         txtTotalPagar.setText(String.format("%.2f", totalAPagar));
-    }
-    
-    private void procesarFactura() {
-        if (pacienteSeleccionado == null || (consultasPendientes.isEmpty() && vacunasPendientes.isEmpty())) {
-            JOptionPane.showMessageDialog(this, "No hay servicios pendientes para facturar.", "Información", JOptionPane.INFORMATION_MESSAGE);
-            return;
-        }
-
-        for (Consulta c : consultasPendientes) {
-            c.setPagada(true);
-        }
-        for (RegistroVacunacion r : vacunasPendientes) {
-            r.setPagada(true);
-        }
-
-        String idFactura = "FACT-" + Clinica.getIdFactura();
-        double subtotal = Double.parseDouble(txtSubtotal.getText());
-        double totalPagado = Double.parseDouble(txtTotalPagar.getText());
-        double descuento = subtotal - totalPagado;
-        
-        Factura nuevaFactura = new Factura(idFactura, pacienteSeleccionado, new Date(), consultasPendientes, vacunasPendientes, subtotal, descuento, totalPagado);
-        Clinica.getInstance().agregarFactura(nuevaFactura);
-
-        JOptionPane.showMessageDialog(this, "Factura generada y servicios marcados como pagados.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-        
-        pacienteSeleccionado = null;
-        txtCedulaPaciente.setText("");
-        txtNombrePaciente.setText("");
-        model.setRowCount(0);
-        limpiarCalculos();
-    }
+    }    
     
     private void limpiarCalculos() {
         txtSubtotal.setText("");

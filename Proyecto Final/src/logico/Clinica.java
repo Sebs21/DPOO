@@ -76,7 +76,8 @@ public class Clinica implements Serializable {
         cargarUsuariosDesdeDB();
         cargarDoctoresDesdeDB(); 
         cargarPacientesDesdeDB(); 
-        cargarVacunasDesdeDB(); 
+        cargarVacunasDesdeDB();
+        cargarRegistroVacunacionDesdeDB();
         cargarConsultasDesdeDB(); 
         cargarCitasDesdeDB();
         cargarFacturasDesdeDB(); 
@@ -1031,13 +1032,27 @@ public class Clinica implements Serializable {
             ConexionDB.cerrarConexion(cnx);        
         }  	 
     
-    private void actualizarEstadoPagadoConsulta(String idConsulta, boolean pagada) {
+    public void actualizarEstadoPagadoConsulta(String idConsulta, boolean pagada) {
         Connection cnx = ConexionDB.obtenerConexion();
         if (cnx == null) return;
         String sql = "UPDATE Consulta SET pagada = ? WHERE id_consulta = ?";
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {
             ps.setBoolean(1, pagada);
             ps.setString(2, idConsulta);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        ConexionDB.cerrarConexion(cnx);
+    }
+    
+    public void actualizarEstadoPagadoVacuna(int idRegistro, boolean pagada) {
+        Connection cnx = ConexionDB.obtenerConexion();
+        if (cnx == null) return;
+        String sql = "UPDATE RegistroVacunacion SET pagada = ? WHERE id_registro = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setBoolean(1, pagada);
+            ps.setInt(2, idRegistro);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -1578,6 +1593,35 @@ public class Clinica implements Serializable {
             ConexionDB.cerrarConexion(cnx);
         }
         return null;
+    }
+    
+    public void cargarRegistroVacunacionDesdeDB() {
+        Connection cnx = ConexionDB.obtenerConexion();
+        if (cnx == null) return;
+        String sql = "SELECT * FROM RegistroVacunacion";
+        try (Statement st = cnx.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+            while (rs.next()) {
+                int idRegistro = rs.getInt("id_registro");
+                String cedulaPaciente = rs.getString("cedula_paciente");
+                String idVacuna = rs.getString("id_vacuna");
+                Date fechaAplicacion = rs.getTimestamp("fecha_aplicacion");
+                int cantidadMl = rs.getInt("cantidad_ml");
+                boolean pagada = rs.getBoolean("pagada");
+
+                Paciente paciente = buscarPacienteByCedula(cedulaPaciente);
+                vacunacion vacuna = buscarVacunaById(idVacuna);
+
+                if (paciente != null && vacuna != null) {
+                    RegistroVacunacion registro = new RegistroVacunacion(idRegistro, vacuna, fechaAplicacion, cantidadMl, pagada);
+                    paciente.agregarVacunaAplicada(registro);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            ConexionDB.cerrarConexion(cnx);
+        }
     }
 
     public Especialidad buscarEspecialidadPorNombre(String nombre) {

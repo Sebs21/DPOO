@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 
 import logico.Bajo_vigilancia;
 import logico.Clinica;
+import logico.Paciente;
 import logico.User;
 
 public class Principal extends JFrame {
@@ -130,8 +131,15 @@ public class Principal extends JFrame {
 		
 		JMenuItem btnRegistroVacuna = new JMenuItem("Registrar Aplicación");
 		btnRegistroVacuna.addActionListener(e -> {
-			Visual_vacunacion vacu = new Visual_vacunacion();
-			vacu.setVisible(true);
+			User usuario = Clinica.getInstance().getLoginUser();
+			if (usuario.getTipo().equalsIgnoreCase("Paciente")) {
+			    Paciente pacienteLogueado = Clinica.getInstance().buscarPacienteByCedula(usuario.getPass());
+			    Visual_vacunacion ventanaVacu = new Visual_vacunacion(pacienteLogueado);
+			    ventanaVacu.setVisible(true);
+			} else {
+			    Visual_vacunacion ventanaVacu = new Visual_vacunacion();
+			    ventanaVacu.setVisible(true);
+			}
 		});
 		btnVacunacion.add(btnRegistroVacuna);
 		
@@ -191,6 +199,7 @@ public class Principal extends JFrame {
 		    btnVacunacion.setEnabled(true);
 		    menuCita.setEnabled(true);
 		    btnInterfaz.setEnabled(false);
+		    mntmRegistrarDoctor.setEnabled(false);
 		    btnAgregarVacuna.setEnabled(false);
 		    btnAgregarSeguro.setEnabled(false);
 		    btnAgregarEspecialidad.setVisible(false);
@@ -206,6 +215,7 @@ public class Principal extends JFrame {
 		    menuCita.setEnabled(false);
 		    btnFacturar.setEnabled(false);
 		    mntmRegistrarDoctor.setEnabled(false);
+		    btnRegistroVacuna.setEnabled(false);
 
 		} else if (userType.equalsIgnoreCase("Administrador")) {
 		    btnAdministracion.setEnabled(true);
@@ -218,6 +228,7 @@ public class Principal extends JFrame {
 		
 		} else if (userType.equalsIgnoreCase("Invitado")) {
 			btnAdministracion.setEnabled(false);
+			mntmRegistrarDoctor.setEnabled(false);
 			btnResumenes.setEnabled(false);
 			btnEnfermedadesVigilancia.setEnabled(false);
 			btnVacunacion.setEnabled(false);
