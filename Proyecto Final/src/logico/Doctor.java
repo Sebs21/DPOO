@@ -8,6 +8,7 @@ public class Doctor extends Persona
 	private String especialidad;
 	private ArrayList<Paciente>misPacientes;
 	private User user;
+	private ArrayList<Cita> misCitas;
 	
 	private boolean seleccionado;
 
@@ -16,14 +17,25 @@ public class Doctor extends Persona
 		super(cedula, nombre, apellido, edad, sexo);
 		this.especialidad = especialidad;
 		this.misPacientes = new ArrayList<Paciente>();
+		this.misCitas = new ArrayList<>();
 		this.user = user;
 	}
 	
+	public void agregarCita(Cita cita) {
+		if(this.misCitas == null) {
+			this.misCitas = new ArrayList<>();
+		}
+		this.misCitas.add(cita);
+	}
 	
 	public User getUser() {
 		return user;
 	}
-	
+
+	public ArrayList<Cita> getMisCitas() {
+		return misCitas;
+	}
+
 	public void setUser(User user) {
 		this.user = user;
 	}
@@ -51,5 +63,9 @@ public class Doctor extends Persona
 	public void setEspecialidad(String especialidad) {
 		this.especialidad = especialidad;
 	}
-	
+
+	public void setMisCitas(ArrayList<Cita> misCitas) {
+		this.misCitas = misCitas;
+	}
+
 }

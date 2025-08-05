@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.ImageIcon;
@@ -14,6 +15,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+
+import logico.Bajo_vigilancia;
 import logico.Clinica;
 import logico.Doctor;
 import logico.User;
@@ -109,18 +112,17 @@ public class Principal extends JFrame {
 
 		JMenuItem btnReporteVigilancia = new JMenuItem("Reporte de Vigilancia");
 		btnReporteVigilancia.addActionListener(e -> {
-            User currentUser = Clinica.getInstance().getLoginUser();
-            if (currentUser != null && currentUser.getTipo().equalsIgnoreCase("Doctor")) {
-                Doctor doc = Clinica.getInstance().buscarDoctorByCedula(currentUser.getPass());
-                if (doc != null) {
-                    Reporte_control_enfermedades reporDoc = new Reporte_control_enfermedades(doc);
-                    reporDoc.setVisible(true);
-                }
-            } else {
-                Reporte_control_enfermedades repor_enfe = new Reporte_control_enfermedades();
-                repor_enfe.setVisible(true);
-            }
-        });
+		    User currentUser = Clinica.getInstance().getLoginUser();
+		    if (currentUser != null && currentUser.getTipo().equalsIgnoreCase("Doctor")) {
+		        String cedulaDoctor = currentUser.getPass();
+		        ArrayList<Bajo_vigilancia> vigilancias = Clinica.getInstance().obtenerVigilanciasDelDoctor(cedulaDoctor);
+		        Reporte_control_enfermedades reporDoc = new Reporte_control_enfermedades(vigilancias);
+		        reporDoc.setVisible(true);
+		    } else {
+		        Reporte_control_enfermedades repor_enfe = new Reporte_control_enfermedades(null);
+		        repor_enfe.setVisible(true);
+		    }
+		});
 		btnEnfermedadesVigilancia.add(btnReporteVigilancia);
 
 		btnVacunacion = new JMenu("Vacunación");

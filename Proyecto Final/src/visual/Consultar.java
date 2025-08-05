@@ -53,6 +53,7 @@ public class Consultar extends JDialog {
 
     private Doctor doctorActual;
     private Paciente pacienteActual;
+    private Consulta consultaCreada = null;
     private boolean consultaFinalizada = false;
 
     public Consultar(JDialog parent) {
@@ -277,13 +278,20 @@ public class Consultar extends JDialog {
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
 		
 		JButton okButton = new JButton("Finalizar Consulta");
-		okButton.addActionListener(e -> finalizarConsulta());
-		buttonPane.add(okButton);
-		getRootPane().setDefaultButton(okButton);
+        okButton.addActionListener(e -> finalizarConsulta());
+        buttonPane.add(okButton);
+        getRootPane().setDefaultButton(okButton);		
 		
 		JButton cancelButton = new JButton("Cancelar");
-		cancelButton.addActionListener(e -> dispose());
-		buttonPane.add(cancelButton);
+        cancelButton.addActionListener(e -> dispose());
+        buttonPane.add(cancelButton);
+        
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                preguntarVigilanciaDespuesDeConsulta();
+            }
+        });
 		
 		 cargarEnfermedades();
     }
@@ -347,33 +355,46 @@ public class Consultar extends JDialog {
         }
         
         pacienteActual.agregarEnfermedadAlHistorial(enfermedadSeleccionada);
-
-        if (chckbxEnviarAVigilancia.isSelected()) {
-            boolean horasValidas = false;
-            int horas = 0;
-            while (!horasValidas) {
-                String horasStr = JOptionPane.showInputDialog(this, "La consulta es importante.\nIngrese las horas de vigilancia:", "Vigilancia Requerida", JOptionPane.QUESTION_MESSAGE);
-                try {
-                    if (horasStr == null) break;
-                    horas = Integer.parseInt(horasStr);
-                    if (horas > 0) {
-                        horasValidas = true;
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Por favor, ingrese un número de horas mayor a cero.", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(this, "Por favor, ingrese un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-
-            if (horasValidas) {
-                Clinica.getInstance().iniciarVigilancia(nuevaConsulta, horas);
-                JOptionPane.showMessageDialog(this, "Paciente enviado a vigilancia por " + horas + " horas.", "Vigilancia Iniciada", JOptionPane.INFORMATION_MESSAGE);
-            }
-        }
+        
+        consultaCreada = nuevaConsulta;         
 
         JOptionPane.showMessageDialog(this, "Consulta registrada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         this.consultaFinalizada = true;
         dispose();
     }
+    
+    private void preguntarVigilanciaDespuesDeConsulta() {     
+        if (consultaFinalizada && consultaCreada != null) {
+            int respuesta = JOptionPane.showConfirmDialog(
+                null, "¿Desea enviar al paciente a vigilancia?",
+                "Enviar a Vigilancia", JOptionPane.YES_NO_OPTION
+            );
+            if (respuesta == JOptionPane.YES_OPTION) {
+                boolean horasValidas = false;
+                int horas = 0;
+                while (!horasValidas) {
+                    String horasStr = JOptionPane.showInputDialog(
+                        null, "Ingrese las horas de vigilancia:",
+                        "Vigilancia Requerida", JOptionPane.QUESTION_MESSAGE
+                    );
+                    if (horasStr == null) break;
+                    try {
+                        horas = Integer.parseInt(horasStr);
+                        if (horas > 0) {
+                            horasValidas = true;
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Por favor, ingrese un número de horas mayor a cero.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(null, "Por favor, ingrese un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                if (horasValidas) {
+                    Clinica.getInstance().iniciarVigilancia(consultaCreada, horas);
+                    JOptionPane.showMessageDialog(null, "Paciente enviado a vigilancia por " + horas + " horas.", "Vigilancia Iniciada", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        }
+    }
+    
 }

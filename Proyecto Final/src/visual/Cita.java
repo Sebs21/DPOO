@@ -238,7 +238,7 @@ public class Cita extends JDialog {
             Clinica.getInstance().actualizarPaciente(pacienteParaLaCita);
         }
 
-        String idCita = "CITA-" + Clinica.getIdCita();
+        String idCita = "CIT-" + Clinica.getIdCita();
         Date fechaCita = (Date) spnFechaCita.getValue();
         logico.Cita nuevaCita = new logico.Cita(idCita, doctorSeleccionado, pacienteParaLaCita, fechaCita);
         Clinica.getInstance().agregarCita(nuevaCita);

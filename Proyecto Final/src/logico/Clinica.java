@@ -30,6 +30,7 @@ public class Clinica implements Serializable {
     public static int idEspecialidad = 1;
     public static int idEnfermedad = 1;
     public static int idVigilancia = 1;
+    public static int idVacuna = 1;
 
     
     private ArrayList<Consulta> misConsultas;
@@ -67,9 +68,9 @@ public class Clinica implements Serializable {
         return clinica;
     }
 
-    //Cargar todos los datos desde la base de datos
     private void cargarDatosDesdeDB() {
-        cargarEspecialidadesDesdeDB();
+    	
+    	cargarEspecialidadesDesdeDB();
         cargarSegurosDesdeDB();
         cargarEnfermedadesDesdeDB();
         cargarUsuariosDesdeDB();
@@ -77,9 +78,10 @@ public class Clinica implements Serializable {
         cargarPacientesDesdeDB(); 
         cargarVacunasDesdeDB(); 
         cargarConsultasDesdeDB(); 
-        cargarCitasDesdeDB(); 
+        cargarCitasDesdeDB();
         cargarFacturasDesdeDB(); 
         cargarVigilanciasDesdeDB(); 
+        
         actualizarContadoresIDs();
     }
 
@@ -93,25 +95,25 @@ public class Clinica implements Serializable {
         //Insertar Especialidades
 		ArrayList<Especialidad> especialidadesIniciales = new ArrayList<>();
 		especialidadesIniciales.add(new Especialidad("ESP-1", "Medicina General"));
-		especialidadesIniciales.add(new Especialidad("ESP-2", "Cardiología"));
-		especialidadesIniciales.add(new Especialidad("ESP-3", "Pediatría"));
-		especialidadesIniciales.add(new Especialidad("ESP-4", "Dermatología"));
-		especialidadesIniciales.add(new Especialidad("ESP-5", "Ginecología y Obstetricia"));
-		especialidadesIniciales.add(new Especialidad("ESP-6", "Neurología"));
-		especialidadesIniciales.add(new Especialidad("ESP-7", "Ortopedia y Traumatología"));
-		especialidadesIniciales.add(new Especialidad("ESP-8", "Oftalmología"));
-		especialidadesIniciales.add(new Especialidad("ESP-9", "Otorrinolaringología"));
-		especialidadesIniciales.add(new Especialidad("ESP-10", "Urología"));
-		especialidadesIniciales.add(new Especialidad("ESP-11", "Gastroenterología"));
-		especialidadesIniciales.add(new Especialidad("ESP-12", "Endocrinología"));
-		especialidadesIniciales.add(new Especialidad("ESP-13", "Psiquiatría"));
-		especialidadesIniciales.add(new Especialidad("ESP-14", "Oncología"));
-		especialidadesIniciales.add(new Especialidad("ESP-15", "Neumología"));
-		especialidadesIniciales.add(new Especialidad("ESP-16", "Reumatología"));
-		especialidadesIniciales.add(new Especialidad("ESP-17", "Nefrología"));
+		especialidadesIniciales.add(new Especialidad("ESP-2", "CardiologÃ­a"));
+		especialidadesIniciales.add(new Especialidad("ESP-3", "PediatrÃ­a"));
+		especialidadesIniciales.add(new Especialidad("ESP-4", "DermatologÃ­a"));
+		especialidadesIniciales.add(new Especialidad("ESP-5", "GinecologÃ­a y Obstetricia"));
+		especialidadesIniciales.add(new Especialidad("ESP-6", "NeurologÃ­a"));
+		especialidadesIniciales.add(new Especialidad("ESP-7", "Ortopedia y TraumatologÃ­a"));
+		especialidadesIniciales.add(new Especialidad("ESP-8", "OftalmologÃ­a"));
+		especialidadesIniciales.add(new Especialidad("ESP-9", "OtorrinolaringologÃ­a"));
+		especialidadesIniciales.add(new Especialidad("ESP-10", "UrologÃ­a"));
+		especialidadesIniciales.add(new Especialidad("ESP-11", "GastroenterologÃ­a"));
+		especialidadesIniciales.add(new Especialidad("ESP-12", "EndocrinologÃ­a"));
+		especialidadesIniciales.add(new Especialidad("ESP-13", "PsiquiatrÃ­a"));
+		especialidadesIniciales.add(new Especialidad("ESP-14", "OncologÃ­a"));
+		especialidadesIniciales.add(new Especialidad("ESP-15", "NeumologÃ­a"));
+		especialidadesIniciales.add(new Especialidad("ESP-16", "ReumatologÃ­a"));
+		especialidadesIniciales.add(new Especialidad("ESP-17", "NefrologÃ­a"));
 		especialidadesIniciales.add(new Especialidad("ESP-18", "Medicina Interna"));
-		especialidadesIniciales.add(new Especialidad("ESP-19", "Cirugía General"));
-		especialidadesIniciales.add(new Especialidad("ESP-20", "Fisiatría"));
+		especialidadesIniciales.add(new Especialidad("ESP-19", "CirugÃ­a General"));
+		especialidadesIniciales.add(new Especialidad("ESP-20", "FisiatrÃ­a"));
 
 		for (Especialidad esp : especialidadesIniciales) {
 		    agregarEspecialidad(esp);
@@ -120,11 +122,11 @@ public class Clinica implements Serializable {
 		//Insertar Seguros
 		ArrayList<Seguro> segurosIniciales = new ArrayList<>();
 		segurosIniciales.add(new Seguro("S-0", "No aplica", "Null", 0.0));
-		segurosIniciales.add(new Seguro("S-1", "ARS Humano (Plan Básico)", "Básico", 0.50));
+		segurosIniciales.add(new Seguro("S-1", "ARS Humano (Plan BÃ¡sico)", "BÃ¡sico", 0.50));
 		segurosIniciales.add(new Seguro("S-2", "ARS Humano (Plan Superior)", "Superior", 0.85));
-		segurosIniciales.add(new Seguro("S-3", "ARS Universal (Plan Básico)", "Básico", 0.45));
+		segurosIniciales.add(new Seguro("S-3", "ARS Universal (Plan BÃ¡sico)", "BÃ¡sico", 0.45));
 		segurosIniciales.add(new Seguro("S-4", "ARS Universal (Plan Premium)", "Premium", 0.80));
-		segurosIniciales.add(new Seguro("S-5", "Seguros Reservas (Mi Salud)", "Básico", 0.55));
+		segurosIniciales.add(new Seguro("S-5", "Seguros Reservas (Mi Salud)", "BÃ¡sico", 0.55));
 		segurosIniciales.add(new Seguro("S-6", "MAPFRE Salud ARS (Internacional)", "Internacional", 0.90));
 		segurosIniciales.add(new Seguro("S-7", "Primera ARS (Plan Voluntario)", "Voluntario", 0.70));
 
@@ -134,34 +136,34 @@ public class Clinica implements Serializable {
 
 		//Insertar Enfermedades
 		ArrayList<Enfermedad> enfermedadesIniciales = new ArrayList<>();
-		enfermedadesIniciales.add(new Enfermedad("ENF-1", "Hipertensión Arterial"));
+		enfermedadesIniciales.add(new Enfermedad("ENF-1", "HipertensiÃ³n Arterial"));
 		enfermedadesIniciales.add(new Enfermedad("ENF-2", "Diabetes Mellitus Tipo 1"));
 		enfermedadesIniciales.add(new Enfermedad("ENF-3", "Diabetes Mellitus Tipo 2"));
 		enfermedadesIniciales.add(new Enfermedad("ENF-4", "Asma Bronquial"));
-		enfermedadesIniciales.add(new Enfermedad("ENF-5", "Gripe Común (Influenza)"));
+		enfermedadesIniciales.add(new Enfermedad("ENF-5", "Gripe ComÃºn (Influenza)"));
 		enfermedadesIniciales.add(new Enfermedad("ENF-6", "Faringitis Aguda"));
-		enfermedadesIniciales.add(new Enfermedad("ENF-7", "Migraña Crónica"));
-		enfermedadesIniciales.add(new Enfermedad("ENF-8", "Rinitis Alérgica"));
+		enfermedadesIniciales.add(new Enfermedad("ENF-7", "MigraÃ±a CrÃ³nica"));
+		enfermedadesIniciales.add(new Enfermedad("ENF-8", "Rinitis AlÃ©rgica"));
 		enfermedadesIniciales.add(new Enfermedad("ENF-9", "Gastritis"));
-		enfermedadesIniciales.add(new Enfermedad("ENF-10", "Enfermedad por Reflujo Gastroesofágico (ERGE)"));
-		enfermedadesIniciales.add(new Enfermedad("ENF-11", "Síndrome del Intestino Irritable"));
+		enfermedadesIniciales.add(new Enfermedad("ENF-10", "Enfermedad por Reflujo GastroesofÃ¡gico (ERGE)"));
+		enfermedadesIniciales.add(new Enfermedad("ENF-11", "SÃ­ndrome del Intestino Irritable"));
 		enfermedadesIniciales.add(new Enfermedad("ENF-12", "Anemia por deficiencia de hierro"));
 		enfermedadesIniciales.add(new Enfermedad("ENF-13", "Hipotiroidismo"));
 		enfermedadesIniciales.add(new Enfermedad("ENF-14", "Hipertiroidismo"));
 		enfermedadesIniciales.add(new Enfermedad("ENF-15", "Artritis Reumatoide"));
 		enfermedadesIniciales.add(new Enfermedad("ENF-16", "Osteoartritis"));
-		enfermedadesIniciales.add(new Enfermedad("ENF-17", "Depresión"));
+		enfermedadesIniciales.add(new Enfermedad("ENF-17", "DepresiÃ³n"));
 		enfermedadesIniciales.add(new Enfermedad("ENF-18", "Trastorno de Ansiedad Generalizada"));
 		enfermedadesIniciales.add(new Enfermedad("ENF-19", "Cefalea Tensional"));
-		enfermedadesIniciales.add(new Enfermedad("ENF-20", "Infección del Tracto Urinario (ITU)"));
-		enfermedadesIniciales.add(new Enfermedad("ENF-21", "Neumonía"));
+		enfermedadesIniciales.add(new Enfermedad("ENF-20", "InfecciÃ³n del Tracto Urinario (ITU)"));
+		enfermedadesIniciales.add(new Enfermedad("ENF-21", "NeumonÃ­a"));
 		enfermedadesIniciales.add(new Enfermedad("ENF-22", "Bronquitis Aguda"));
-		enfermedadesIniciales.add(new Enfermedad("ENF-23", "Dermatitis Atópica (Eczema)"));
-		enfermedadesIniciales.add(new Enfermedad("ENF-24", "Acné Vulgar"));
+		enfermedadesIniciales.add(new Enfermedad("ENF-23", "Dermatitis AtÃ³pica (Eczema)"));
+		enfermedadesIniciales.add(new Enfermedad("ENF-24", "AcnÃ© Vulgar"));
 		enfermedadesIniciales.add(new Enfermedad("ENF-25", "Psoriasis"));
-		enfermedadesIniciales.add(new Enfermedad("ENF-26", "Insuficiencia Cardíaca Congestiva"));
+		enfermedadesIniciales.add(new Enfermedad("ENF-26", "Insuficiencia CardÃ­aca Congestiva"));
 		enfermedadesIniciales.add(new Enfermedad("ENF-27", "Enfermedad Coronaria"));
-		enfermedadesIniciales.add(new Enfermedad("ENF-28", "Fibrilación Auricular"));
+		enfermedadesIniciales.add(new Enfermedad("ENF-28", "FibrilaciÃ³n Auricular"));
 		enfermedadesIniciales.add(new Enfermedad("ENF-29", "Accidente Cerebrovascular (ACV)"));
 		enfermedadesIniciales.add(new Enfermedad("ENF-30", "Epilepsia"));
 		enfermedadesIniciales.add(new Enfermedad("ENF-31", "Enfermedad de Alzheimer"));
@@ -170,15 +172,15 @@ public class Clinica implements Serializable {
 		enfermedadesIniciales.add(new Enfermedad("ENF-34", "Glaucoma"));
 		enfermedadesIniciales.add(new Enfermedad("ENF-35", "Hernia de Disco Lumbar"));
 		enfermedadesIniciales.add(new Enfermedad("ENF-36", "Escoliosis"));
-		enfermedadesIniciales.add(new Enfermedad("ENF-37", "Cálculos Renales (Nefrolitiasis)"));
-		enfermedadesIniciales.add(new Enfermedad("ENF-38", "Insuficiencia Renal Crónica"));
+		enfermedadesIniciales.add(new Enfermedad("ENF-37", "CÃ¡lculos Renales (Nefrolitiasis)"));
+		enfermedadesIniciales.add(new Enfermedad("ENF-38", "Insuficiencia Renal CrÃ³nica"));
 		enfermedadesIniciales.add(new Enfermedad("ENF-39", "Hepatitis C"));
 		enfermedadesIniciales.add(new Enfermedad("ENF-40", "VIH/SIDA"));
-		enfermedadesIniciales.add(new Enfermedad("ENF-41", "Cáncer de Mama"));
-		enfermedadesIniciales.add(new Enfermedad("ENF-42", "Cáncer de Pulmón"));
-		enfermedadesIniciales.add(new Enfermedad("ENF-43", "Cáncer de Próstata"));
-		enfermedadesIniciales.add(new Enfermedad("ENF-44", "Cáncer Colorrectal"));
-		enfermedadesIniciales.add(new Enfermedad("ENF-45", "Lupus Eritematoso Sistémico"));
+		enfermedadesIniciales.add(new Enfermedad("ENF-41", "CÃ¡ncer de Mama"));
+		enfermedadesIniciales.add(new Enfermedad("ENF-42", "CÃ¡ncer de PulmÃ³n"));
+		enfermedadesIniciales.add(new Enfermedad("ENF-43", "CÃ¡ncer de PrÃ³stata"));
+		enfermedadesIniciales.add(new Enfermedad("ENF-44", "CÃ¡ncer Colorrectal"));
+		enfermedadesIniciales.add(new Enfermedad("ENF-45", "Lupus Eritematoso SistÃ©mico"));
 		enfermedadesIniciales.add(new Enfermedad("ENF-46", "Fibromialgia"));
 		enfermedadesIniciales.add(new Enfermedad("ENF-47", "Apendicitis Aguda"));
 		enfermedadesIniciales.add(new Enfermedad("ENF-48", "Colecistitis Aguda"));
@@ -193,17 +195,16 @@ public class Clinica implements Serializable {
 		agregarStockVacuna(new vacunacion("VAC-1", "Influenza (Gripe)", "Sanofi Pasteur", 1200.00), 200); 
 		agregarStockVacuna(new vacunacion("VAC-2", "COVID-19 (Pfizer)", "Pfizer-BioNTech", 1500.00), 300); 
 		agregarStockVacuna(new vacunacion("VAC-3", "COVID-19 (Moderna)", "Moderna", 1450.00), 250); 
-		agregarStockVacuna(new vacunacion("VAC-4", "Tétanos, Difteria y Tos ferina (Tdap)", "GSK", 800.00), 150); 
-		agregarStockVacuna(new vacunacion("VAC-5", "Sarampión, Paperas y Rubéola (MMR)", "Merck", 950.00), 180); 
+		agregarStockVacuna(new vacunacion("VAC-4", "TÃ©tanos, Difteria y Tos ferina (Tdap)", "GSK", 800.00), 150); 
+		agregarStockVacuna(new vacunacion("VAC-5", "SarampiÃ³n, Paperas y RubÃ©ola (MMR)", "Merck", 950.00), 180); 
 		agregarStockVacuna(new vacunacion("VAC-6", "Hepatitis B", "Merck", 1100.00), 120); 
 		agregarStockVacuna(new vacunacion("VAC-7", "Hepatitis A", "GSK", 1000.00), 100); 
 		agregarStockVacuna(new vacunacion("VAC-8", "Virus del Papiloma Humano (VPH)", "Merck", 4500.00), 90); 
 		agregarStockVacuna(new vacunacion("VAC-9", "Varicela", "Merck", 1800.00), 80); 
-		agregarStockVacuna(new vacunacion("VAC-10", "Neumocócica (Prevenar 13)", "Pfizer", 2500.00), 130); 
-		agregarStockVacuna(new vacunacion("VAC-11", "Meningocócica", "Sanofi Pasteur", 3000.00), 70); 
+		agregarStockVacuna(new vacunacion("VAC-10", "NeumocÃ³cica (Prevenar 13)", "Pfizer", 2500.00), 130); 
+		agregarStockVacuna(new vacunacion("VAC-11", "MeningocÃ³cica", "Sanofi Pasteur", 3000.00), 70); 
 		agregarStockVacuna(new vacunacion("VAC-12", "Fiebre Amarilla", "Sanofi Pasteur", 2200.00), 50);
 		
-		//Insertar Usuario Administrador por defecto
 		User admin = new User("Admin", "Admin", "Administrador");
 		agregarUsuario(admin);
 
@@ -215,32 +216,32 @@ public class Clinica implements Serializable {
     public static int getIdDoctor() { 
     	return idDoctor; 
     	}
-    public static int getIdPaciente() { return 
-    		idPaciente; 
+    public static int getIdPaciente() { 
+    	return idPaciente; 
     }
-    public static int getIdConsulta() { return 
-    		idConsulta; 
+    public static int getIdConsulta() { 
+    	return idConsulta; 
     }
-    public static int getIdFactura() { return 
-    		idFactura; 
+    public static int getIdFactura() {
+    	return idFactura; 
     }
-    public static int getIdCita() { return 
-    		idCita; 
+    public static int getIdCita() { 
+    	return idCita; 
     }
-    public static int getIdSeguro() { return 
-    		idSeguro; 
+    public static int getIdSeguro() { 
+    	return idSeguro; 
     }
-    public static int getIdUser() { return 
-    		idUser; 
+    public static int getIdUser() {    	
+    	return idUser; 
     }
-    public static int getIdEspecialidad() { return 
-    		idEspecialidad; 
+    public static int getIdEspecialidad() { 
+    	return idEspecialidad; 
     }
-    public static int getIdEnfermedad() { return 
-    		idEnfermedad; 
+    public static int getIdEnfermedad() { 
+    	return idEnfermedad; 
     }
-    public static int getIdVigilancia() { return 
-    		idVigilancia; 
+    public static int getIdVigilancia() { 
+    	return idVigilancia; 
     }
 
     //Actualizar contadores de IDs desde la DB
@@ -249,92 +250,131 @@ public class Clinica implements Serializable {
         if (cnx == null) return;
         
         try {
-            // Para especialidades
-            String sql = "SELECT MAX(CAST(SUBSTRING(id_especialidad, 5, LEN(id_especialidad)) AS INT)) FROM Especialidad WHERE id_especialidad LIKE 'ESP-%'";
+            // Para especialidades (ESP-)
+            String sql = "SELECT MAX(CAST(SUBSTRING(id_especialidad, 5, LEN(id_especialidad)) AS INT)) FROM Especialidad WHERE id_especialidad LIKE 'ESP-%' AND ISNUMERIC(SUBSTRING(id_especialidad, 5, LEN(id_especialidad))) = 1";
             try (Statement st = cnx.createStatement(); ResultSet rs = st.executeQuery(sql)) {
                 if (rs.next() && rs.getObject(1) != null) {
                     idEspecialidad = rs.getInt(1) + 1;
                 }
+            } catch (SQLException e) {
+                System.err.println("Error en especialidades: " + e.getMessage());
+                idEspecialidad = 1;
             }
             
-            // Para seguros
-            sql = "SELECT MAX(CAST(SUBSTRING(id_seguro, 3, LEN(id_seguro)) AS INT)) FROM Seguro WHERE id_seguro LIKE 'S-%'";
+            // Para seguros (S-)
+            sql = "SELECT MAX(CAST(SUBSTRING(id_seguro, 3, LEN(id_seguro)) AS INT)) FROM Seguro WHERE id_seguro LIKE 'S-%' AND ISNUMERIC(SUBSTRING(id_seguro, 3, LEN(id_seguro))) = 1";
             try (Statement st = cnx.createStatement(); ResultSet rs = st.executeQuery(sql)) {
                 if (rs.next() && rs.getObject(1) != null) {
                     idSeguro = rs.getInt(1) + 1;
                 }
+            } catch (SQLException e) {
+                System.err.println("Error en seguros: " + e.getMessage());
+                idSeguro = 1;
             }
             
-            //Para vigilancias
+            // Para vigilancias (IDENTITY - INT)
             sql = "SELECT MAX(id_vigilancia) FROM Bajo_vigilancia";
             try (Statement st = cnx.createStatement(); ResultSet rs = st.executeQuery(sql)) {
                 if (rs.next() && rs.getObject(1) != null) {
                     idVigilancia = rs.getInt(1) + 1;
                 }
+            } catch (SQLException e) {
+                System.err.println("Error en vigilancias: " + e.getMessage());
+                idVigilancia = 1;
             }
             
-            // Para enfermedades
-            sql = "SELECT MAX(CAST(SUBSTRING(id_enfermedad, 5, LEN(id_enfermedad)) AS INT)) FROM Enfermedad WHERE id_enfermedad LIKE 'ENF-%'";
+            // Para enfermedades (ENF-)
+            sql = "SELECT MAX(CAST(SUBSTRING(id_enfermedad, 5, LEN(id_enfermedad)) AS INT)) FROM Enfermedad WHERE id_enfermedad LIKE 'ENF-%' AND ISNUMERIC(SUBSTRING(id_enfermedad, 5, LEN(id_enfermedad))) = 1";
             try (Statement st = cnx.createStatement(); ResultSet rs = st.executeQuery(sql)) {
                 if (rs.next() && rs.getObject(1) != null) {
                     idEnfermedad = rs.getInt(1) + 1;
                 }
+            } catch (SQLException e) {
+                System.err.println("Error en enfermedades: " + e.getMessage());
+                idEnfermedad = 1;
             }
             
-            sql = "SELECT MAX(CAST(SUBSTRING(id_consulta, 3, LEN(id_consulta)) AS INT)) FROM Consulta WHERE id_consulta LIKE 'CON-%'";
+            // Para consultas (CON-)
+            sql = "SELECT MAX(CAST(SUBSTRING(id_consulta, 5, LEN(id_consulta)) AS INT)) FROM Consulta WHERE id_consulta LIKE 'CON-%' AND ISNUMERIC(SUBSTRING(id_consulta, 5, LEN(id_consulta))) = 1";
             try (Statement st = cnx.createStatement(); ResultSet rs = st.executeQuery(sql)) {
                 if (rs.next() && rs.getObject(1) != null) {
                     idConsulta = rs.getInt(1) + 1;
                 }
+            } catch (SQLException e) {
+                System.err.println("Error en consultas: " + e.getMessage());
+                idConsulta = 1;
             }
             
-            // Para citas
-            sql = "SELECT MAX(CAST(SUBSTRING(id_cita, 3, LEN(id_cita)) AS INT)) FROM Cita WHERE id_cita LIKE 'CITA-%'";
+            // Para citas (CIT-)
+            sql = "SELECT MAX(CAST(SUBSTRING(id_cita, 5, LEN(id_cita)) AS INT)) FROM Cita WHERE id_cita LIKE 'CIT-%' AND ISNUMERIC(SUBSTRING(id_cita, 5, LEN(id_cita))) = 1";
             try (Statement st = cnx.createStatement(); ResultSet rs = st.executeQuery(sql)) {
                 if (rs.next() && rs.getObject(1) != null) {
                     idCita = rs.getInt(1) + 1;
                 }
+            } catch (SQLException e) {
+                System.err.println("Error en citas: " + e.getMessage());
+                idCita = 1;
             }
             
-            // Para facturas
-            sql = "SELECT MAX(CAST(SUBSTRING(id_factura, 5, LEN(id_factura)) AS INT)) FROM Factura WHERE id_factura LIKE 'FAC-%'";
+            // Para facturas (FAC-)
+            sql = "SELECT MAX(CAST(SUBSTRING(id_factura, 5, LEN(id_factura)) AS INT)) FROM Factura WHERE id_factura LIKE 'FAC-%' AND ISNUMERIC(SUBSTRING(id_factura, 5, LEN(id_factura))) = 1";
             try (Statement st = cnx.createStatement(); ResultSet rs = st.executeQuery(sql)) {
                 if (rs.next() && rs.getObject(1) != null) {
                     idFactura = rs.getInt(1) + 1;
                 }
+            } catch (SQLException e) {
+                System.err.println("Error en facturas: " + e.getMessage());
+                idFactura = 1;
+            }
+            
+            // Para vacunas (VAC-)
+            sql = "SELECT MAX(CAST(SUBSTRING(id_vacuna, 5, LEN(id_vacuna)) AS INT)) FROM Vacuna WHERE id_vacuna LIKE 'VAC-%' AND ISNUMERIC(SUBSTRING(id_vacuna, 5, LEN(id_vacuna))) = 1";
+            try (Statement st = cnx.createStatement(); ResultSet rs = st.executeQuery(sql)) {
+                if (rs.next() && rs.getObject(1) != null) {
+                    idVacuna = rs.getInt(1) + 1;
+                }
+            } catch (SQLException e) {
+                System.err.println("Error en vacunas: " + e.getMessage());
+                idVacuna = 1;
             }
             
             // Para pacientes
-            sql = "SELECT MAX(id_paciente) FROM Paciente";
+            sql = "SELECT MAX(id_paciente) FROM Paciente WHERE id_paciente IS NOT NULL";
             try (Statement st = cnx.createStatement(); ResultSet rs = st.executeQuery(sql)) {
                 if (rs.next() && rs.getObject(1) != null) {
                     idPaciente = rs.getInt(1) + 1;
                 }
+            } catch (SQLException e) {
+                System.err.println("Error en pacientes: " + e.getMessage());
+                idPaciente = 1;
             }
             
-            // Para usuarios y doctores (mantener como estaba)
-            sql = "SELECT COUNT(*) FROM Usuario";
+            // Para usuarios
+            sql = "SELECT MAX(id_usuario) FROM Usuario";
             try (Statement st = cnx.createStatement(); ResultSet rs = st.executeQuery(sql)) {
-                if (rs.next()) {
+                if (rs.next() && rs.getObject(1) != null) {
                     idUser = rs.getInt(1) + 1;
                 }
+            } catch (SQLException e) {
+                System.err.println("Error en usuarios: " + e.getMessage());
+                idUser = 1;
             }
             
-            //Para doctores
+            // Para doctores
             sql = "SELECT COUNT(*) FROM Doctor";
             try (Statement st = cnx.createStatement(); ResultSet rs = st.executeQuery(sql)) {
                 if (rs.next()) {
                     idDoctor = rs.getInt(1) + 1;
                 }
-            }
-            
-        } catch (SQLException e) {
-            e.printStackTrace();
+            } catch (SQLException e) {
+                System.err.println("Error en doctores: " + e.getMessage());
+                idDoctor = 1;
+            }          
+          
+        } finally {
+            ConexionDB.cerrarConexion(cnx);
         }
-    }
-
-
-    //Metodos para cargar datos desde la DB a las listas en memoria
+    }    
 
     public ArrayList<Especialidad> getMisEspecialidades() {
         return misEspecialidades;
@@ -354,6 +394,7 @@ public class Clinica implements Serializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        ConexionDB.cerrarConexion(cnx);
     }
     
     public void actualizarPaciente(Paciente paciente) {
@@ -371,7 +412,8 @@ public class Clinica implements Serializable {
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        }      
+        ConexionDB.cerrarConexion(cnx);
     }
 
     private void cargarEspecialidadesDesdeDB() {
@@ -387,6 +429,7 @@ public class Clinica implements Serializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        ConexionDB.cerrarConexion(cnx);
     }
 
     public ArrayList<Seguro> getMisSeguros() {
@@ -405,6 +448,7 @@ public class Clinica implements Serializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        ConexionDB.cerrarConexion(cnx);
     }
 
     public ArrayList<Enfermedad> getMisEnfermedades() {
@@ -423,6 +467,7 @@ public class Clinica implements Serializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        ConexionDB.cerrarConexion(cnx);
     }
 
     public ArrayList<User> getMisUsuarios() {
@@ -441,6 +486,7 @@ public class Clinica implements Serializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        ConexionDB.cerrarConexion(cnx);
     }
 
     public ArrayList<Doctor> getMisDoctores() {
@@ -474,6 +520,7 @@ public class Clinica implements Serializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        ConexionDB.cerrarConexion(cnx);
     }
 
     public ArrayList<Paciente> getMisPacientes() {
@@ -513,6 +560,7 @@ public class Clinica implements Serializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        ConexionDB.cerrarConexion(cnx);
     }
 
     public ArrayList<Consulta> getMisConsultas() {
@@ -574,6 +622,7 @@ public class Clinica implements Serializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        ConexionDB.cerrarConexion(cnx);
     }
 
     public ArrayList<Cita> getMisCitas() {
@@ -582,7 +631,7 @@ public class Clinica implements Serializable {
 
     private void cargarCitasDesdeDB() {
         Connection cnx = ConexionDB.obtenerConexion();
-        if (cnx == null) return;
+        if (cnx == null) return;            
         
         String sql = "SELECT c.id_cita, c.fecha_cita, c.estado, " +
                      "p.cedula AS paciente_cedula, p.nombre AS paciente_nombre, p.apellido AS paciente_apellido, p.id_paciente AS paciente_id, p.edad AS paciente_edad, p.sexo AS paciente_sexo, " +
@@ -594,30 +643,54 @@ public class Clinica implements Serializable {
                      "JOIN Especialidad esp ON d.id_especialidad = esp.id_especialidad";
         
         try (Statement st = cnx.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
-            while (rs.next()) {
-                Paciente paciente = buscarPacienteByCedula(rs.getString("paciente_cedula"));
-                if (paciente == null) {
-                    paciente = new Paciente(rs.getString("paciente_cedula"), rs.getString("paciente_nombre"), rs.getString("paciente_apellido"), rs.getInt("paciente_id"), rs.getString("paciente_edad"), rs.getString("paciente_sexo"), null);
-                }
-                
-                Doctor doctor = buscarDoctorByCedula(rs.getString("doctor_cedula"));
-                if (doctor == null) {
-                    doctor = new Doctor(rs.getString("doctor_cedula"), rs.getString("doctor_nombre"), rs.getString("doctor_apellido"), rs.getString("doctor_especialidad"), rs.getString("doctor_edad"), rs.getString("doctor_sexo"), null);
-                }
+                ResultSet rs = st.executeQuery(sql)) {                         
+               
+               while (rs.next()) {
+                   Paciente paciente = buscarPacienteByCedula(rs.getString("paciente_cedula"));
+                   if (paciente == null) {
+                       paciente = new Paciente(
+                           rs.getString("paciente_cedula"), 
+                           rs.getString("paciente_nombre"), 
+                           rs.getString("paciente_apellido"), 
+                           rs.getInt("id_paciente"), 
+                           rs.getString("paciente_edad"), 
+                           rs.getString("paciente_sexo"), 
+                           null
+                       );
+                       misPacientes.add(paciente);
+                   }
 
-                Cita cita = new Cita(
-                    rs.getString("id_cita"),
-                    doctor,
-                    paciente,
-                    rs.getTimestamp("fecha_cita")
-                );
-                cita.setEstado(rs.getString("estado"));
-                misCitas.add(cita);
-            }
-        } catch (SQLException e) {
+                   Doctor doctor = buscarDoctorByCedula(rs.getString("doctor_cedula"));
+                   if (doctor == null) {
+                       doctor = new Doctor(
+                           rs.getString("doctor_cedula"), 
+                           rs.getString("doctor_nombre"), 
+                           rs.getString("doctor_apellido"), 
+                           rs.getString("doctor_especialidad"), 
+                           rs.getString("doctor_edad"), 
+                           rs.getString("doctor_sexo"), 
+                           null
+                       );
+                       misDoctores.add(doctor);
+                   }
+                   Cita cita = new Cita(
+                       rs.getString("id_cita"),
+                       doctor,
+                       paciente,
+                       rs.getTimestamp("fecha_cita")
+                   );
+                   cita.setEstado(rs.getString("estado"));
+                   misCitas.add(cita);
+                   
+                   if (doctor.getMisCitas() == null) {
+                       doctor.setMisCitas(new ArrayList<>());
+                   }
+                   doctor.getMisCitas().add(cita);
+               }                                    
+           } catch (SQLException e) {
             e.printStackTrace();
-        }
+        }       
+        ConexionDB.cerrarConexion(cnx);
     }
 
 
@@ -654,6 +727,7 @@ public class Clinica implements Serializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        ConexionDB.cerrarConexion(cnx);
     }
 
     public ArrayList<vacunacion> getInventarioDeVacunas() {
@@ -679,6 +753,7 @@ public class Clinica implements Serializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        ConexionDB.cerrarConexion(cnx);
     }
 
     public ArrayList<Bajo_vigilancia> getMisVigilancias() {
@@ -686,58 +761,39 @@ public class Clinica implements Serializable {
     }
 
     private void cargarVigilanciasDesdeDB() {
+        misVigilancias.clear(); // Limpia la lista primero
         Connection cnx = ConexionDB.obtenerConexion();
         if (cnx == null) return;
-        
+
         String sql = "SELECT bv.id_vigilancia, bv.fecha_inicio, bv.estado, bv.horas_vigilancia, " +
-                "p.cedula AS paciente_cedula, p.nombre AS paciente_nombre, p.apellido AS paciente_apellido, p.id_paciente AS paciente_id, p.edad AS paciente_edad, p.sexo AS paciente_sexo, " +
-                "d.cedula AS doctor_cedula, d.nombre AS doctor_nombre, d.apellido AS doctor_apellido, d.edad AS doctor_edad, d.sexo AS doctor_sexo, " +
-                "esp.nombre AS doctor_especialidad, " +
-                "enf.id_enfermedad, enf.nombre AS enfermedad_nombre, " +
-                "c.id_consulta AS consulta_id " + 
-                "FROM Bajo_vigilancia bv " +
-                "JOIN Paciente p ON bv.cedula_paciente = p.cedula " +
-                "JOIN Doctor d ON bv.cedula_doctor = d.cedula " +
-                "JOIN Especialidad esp ON d.id_especialidad = esp.id_especialidad " +
-                "JOIN Enfermedad enf ON bv.id_enfermedad = enf.id_enfermedad " +
-                "LEFT JOIN Consulta c ON bv.id_consulta_origen = c.id_consulta";
-        
+            "bv.cedula_paciente, bv.id_enfermedad, bv.cedula_doctor, bv.id_consulta_origen " +
+            "FROM Bajo_vigilancia bv";
+
         try (Statement st = cnx.createStatement();
              ResultSet rs = st.executeQuery(sql)) {
             while (rs.next()) {
-                Paciente paciente = buscarPacienteByCedula(rs.getString("paciente_cedula"));
-                if (paciente == null) {
-                    paciente = new Paciente(rs.getString("paciente_cedula"), rs.getString("paciente_nombre"), rs.getString("paciente_apellido"), rs.getInt("paciente_id"), rs.getString("paciente_edad"), rs.getString("paciente_sexo"), null);
-                }
-                
-                Doctor doctor = buscarDoctorByCedula(rs.getString("doctor_cedula"));
-                if (doctor == null) {
-                    doctor = new Doctor(rs.getString("doctor_cedula"), rs.getString("doctor_nombre"), rs.getString("doctor_apellido"), rs.getString("doctor_especialidad"), rs.getString("doctor_edad"), rs.getString("doctor_sexo"), null);
-                }
-                
+                Paciente paciente = buscarPacienteByCedula(rs.getString("cedula_paciente"));
                 Enfermedad enfermedad = buscarEnfermedadById(rs.getString("id_enfermedad"));
-                if (enfermedad == null) {
-                    enfermedad = new Enfermedad(rs.getString("id_enfermedad"), rs.getString("enfermedad_nombre"));
-                }
-                
-                Consulta consultaOrigen = null;
-                if (rs.getString("consulta_id") != null) {
-                    consultaOrigen = buscarConsultaById(rs.getString("consulta_id"));
-                }
+                Doctor doctor = buscarDoctorByCedula(rs.getString("cedula_doctor"));
+                Consulta consultaOrigen = buscarConsultaById(rs.getString("id_consulta_origen"));
 
-                Bajo_vigilancia vigilancia = new Bajo_vigilancia(
-                    paciente,
-                    enfermedad,
-                    doctor,
-                    rs.getTimestamp("fecha_inicio"),
-                    consultaOrigen,
-                    rs.getInt("horas_vigilancia")
-                );
-                vigilancia.setEstado(rs.getString("estado"));
-                misVigilancias.add(vigilancia);
+                if (paciente != null && enfermedad != null && doctor != null) {
+                    Bajo_vigilancia vigilancia = new Bajo_vigilancia(
+                        paciente,
+                        enfermedad,
+                        doctor,
+                        rs.getTimestamp("fecha_inicio"),
+                        consultaOrigen,
+                        rs.getInt("horas_vigilancia")
+                    );
+                    vigilancia.setEstado(rs.getString("estado"));
+                    misVigilancias.add(vigilancia);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            ConexionDB.cerrarConexion(cnx);
         }
     }
 
@@ -758,6 +814,7 @@ public class Clinica implements Serializable {
                 e.printStackTrace();
             }
         }
+        ConexionDB.cerrarConexion(cnx);
     }
 
     public void agregarSeguro(Seguro seguro) {
@@ -779,6 +836,17 @@ public class Clinica implements Serializable {
                 e.printStackTrace();
             }
         }
+        ConexionDB.cerrarConexion(cnx);
+    }
+    
+    public ArrayList<Bajo_vigilancia> obtenerVigilanciasDelDoctor(String cedulaDoctor) {
+        ArrayList<Bajo_vigilancia> vigilanciasDelDoctor = new ArrayList<>();
+        for (Bajo_vigilancia v : misVigilancias) {
+            if (v.getDoctorResponsable().getCedula().equalsIgnoreCase(cedulaDoctor)) {
+                vigilanciasDelDoctor.add(v);
+            }
+        }
+        return vigilanciasDelDoctor;
     }
 
     public void agregarEnfermedad(Enfermedad enfermedad) {
@@ -798,6 +866,7 @@ public class Clinica implements Serializable {
                 e.printStackTrace();
             }
         }
+        ConexionDB.cerrarConexion(cnx);
     }
 
     public void agregarUsuario(User user) {
@@ -818,6 +887,7 @@ public class Clinica implements Serializable {
                 e.printStackTrace();
             }
         }
+        ConexionDB.cerrarConexion(cnx);
     }
 
     public void agregarDoctor(Doctor doctor) {
@@ -842,11 +912,12 @@ public class Clinica implements Serializable {
             idDoctor++; 
         } catch (SQLException e) {
             if (e.getErrorCode() == 2627) {
-                System.out.println("Doctor con cédula '" + doctor.getCedula() + "' ya existe en la DB.");
+                System.out.println("Doctor con cÃ©dula '" + doctor.getCedula() + "' ya existe en la DB.");
             } else {
                 e.printStackTrace();
             }
         }
+        ConexionDB.cerrarConexion(cnx);
     }
 
     public void agregarPaciente(Paciente paciente) {
@@ -870,22 +941,22 @@ public class Clinica implements Serializable {
             idPaciente++; 
         } catch (SQLException e) {
             if (e.getErrorCode() == 2627) {
-                System.out.println("Paciente con cédula '" + paciente.getCedula() + "' ya existe en la DB.");
+                System.out.println("Paciente con cÃ©dula '" + paciente.getCedula() + "' ya existe en la DB.");
             } else {
                 e.printStackTrace();
             }
         }
+        ConexionDB.cerrarConexion(cnx);
     }
 
     public void agregarConsulta(Consulta consulta) {
         Connection cnx = ConexionDB.obtenerConexion();
         if (cnx == null) return;
         
-        String sql = "INSERT INTO Consulta (id_consulta, id_factura, descripcion, fecha_consulta, seguro_aplicado, importancia, precio, pagada, cedula_paciente, cedula_doctor, id_enfermedad) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Consulta (id_consulta, id_factura, descripcion, fecha_consulta, seguro_aplicado, importancia, precio, pagada, cedula_paciente, cedula_doctor, id_enfermedad) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {
-            ps.setString(1, consulta.getId());
+        	ps.setString(1, consulta.getId());
             
             if (consulta.getIdFactura() > 0) {
                 ps.setInt(2, consulta.getIdFactura());
@@ -901,9 +972,7 @@ public class Clinica implements Serializable {
             ps.setBoolean(8, consulta.isPagada());
             ps.setString(9, consulta.getPaciente().getCedula());
             ps.setString(10, consulta.getDoctor().getCedula());
-            ps.setString(11, consulta.getEnfermedad().getId());           
-            ps.executeUpdate();
-               
+            ps.setString(11, consulta.getEnfermedad().getId());                     
             this.misConsultas.add(consulta);
             idConsulta++;
             
@@ -912,13 +981,17 @@ public class Clinica implements Serializable {
             e.printStackTrace();
         } finally {
             ConexionDB.cerrarConexion(cnx);
-        }
+        }        
     }
 
     public void agregarCita(Cita cita) {
         Connection cnx = ConexionDB.obtenerConexion();
         if (cnx == null) return;
-
+        
+        if (cita.getIdCita() == null || cita.getIdCita().isEmpty()) {
+            cita.setIdCita("CIT-" + idCita);
+        }
+        
         String sql = "INSERT INTO Cita (id_cita, fecha_cita, estado, cedula_paciente, cedula_doctor) VALUES (?, ?, ?, ?, ?)";
         
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {
@@ -931,51 +1004,26 @@ public class Clinica implements Serializable {
             int filasAfectadas = ps.executeUpdate();
             
             if (filasAfectadas > 0) {
+                if (this.misCitas == null) {
+                    this.misCitas = new ArrayList<>();
+                }
                 this.misCitas.add(cita);
-                idCita++;                
-            } else {              
-            }
 
-        } catch (SQLException e) {                              
-                e.printStackTrace();
-           
-        } 
-            ConexionDB.cerrarConexion(cnx);
-        
-    }  	 
-    
-    public void agregarFactura(Factura factura) {
-        Connection cnx = ConexionDB.obtenerConexion();
-        if (cnx == null) return;
-        String sql = "INSERT INTO Factura (id_factura, fecha_factura, subtotal, descuento, total_pagado, cedula_paciente) VALUES (?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
-            ps.setString(1, factura.getId());
-            ps.setTimestamp(2, new java.sql.Timestamp(factura.getFecha().getTime()));
-            ps.setDouble(3, factura.getSubTotal());
-            ps.setDouble(4, factura.getDescuento());
-            ps.setDouble(5, factura.getTotalPagado());
-            ps.setString(6, factura.getPaciente().getCedula());
-            ps.executeUpdate();
-            misFacturas.add(factura);         
-            idFactura++;
-            
-            for (Consulta c : factura.getConsultasFacturadas()) {
-                actualizarEstadoPagadoConsulta(c.getId(), true);
-            }
-            for (RegistroVacunacion rv : factura.getVacunasFacturadas()) {
-                actualizarEstadoPagadoRegistroVacunacion(rv.getTipoVacuna().getIdVacuna(), rv.getFechaAplicacion(), true);
-            }
-
-        } catch (SQLException e) {
-            if (e.getErrorCode() == 2627) {
-                System.out.println("Factura con ID '" + factura.getId() + "' ya existe en la DB.");
+                Doctor doctor = cita.getDoctor();
+                if (doctor.getMisCitas() == null) {
+                    doctor.setMisCitas(new ArrayList<>());
+                }
+                doctor.getMisCitas().add(cita);
+                
+                idCita++;            
             } else {
-                e.printStackTrace();
-            }
+            } 
+        }catch (SQLException e) {
+        	e.printStackTrace();
         }
-    }
-
-   
+            ConexionDB.cerrarConexion(cnx);        
+        }  	 
+    
     private void actualizarEstadoPagadoConsulta(String idConsulta, boolean pagada) {
         Connection cnx = ConexionDB.obtenerConexion();
         if (cnx == null) return;
@@ -987,6 +1035,7 @@ public class Clinica implements Serializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        ConexionDB.cerrarConexion(cnx);
     }
     
     public ArrayList<Doctor> obtenerDoctoresDesdeDB() {
@@ -1105,6 +1154,51 @@ public class Clinica implements Serializable {
         return consultas;
     }
     
+    public void actualizarIdFacturaConsulta(String idConsulta, String idFactura) {
+        Connection cnx = ConexionDB.obtenerConexion();
+        if (cnx == null) return;
+        String sql = "UPDATE Consulta SET id_factura = ? WHERE id_consulta = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setString(1, idFactura);
+            ps.setString(2, idConsulta);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        ConexionDB.cerrarConexion(cnx);
+    }
+    
+    public void agregarFactura(Factura factura) {
+        Connection cnx = ConexionDB.obtenerConexion();
+        if (cnx == null) return;
+        String sql = "INSERT INTO Factura (id_factura, fecha_factura, subtotal, descuento, total_pagado, cedula_paciente) VALUES (?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setString(1, factura.getId());
+            ps.setTimestamp(2, new java.sql.Timestamp(factura.getFecha().getTime()));
+            ps.setDouble(3, factura.getSubTotal());
+            ps.setDouble(4, factura.getDescuento());
+            ps.setDouble(5, factura.getTotalPagado());
+            ps.setString(6, factura.getPaciente().getCedula());
+            ps.executeUpdate();
+            misFacturas.add(factura);
+            idFactura++;
+
+            for (Consulta c : factura.getConsultasFacturadas()) {
+                actualizarIdFacturaConsulta(c.getId(), factura.getId());
+                actualizarEstadoPagadoConsulta(c.getId(), true);
+            }
+            
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 2627) {
+                System.out.println("Factura con ID '" + factura.getId() + "' ya existe en la DB.");
+            } else {
+                e.printStackTrace();
+            }
+        }
+        ConexionDB.cerrarConexion(cnx);
+    }
+    
+    
     public ArrayList<Cita> obtenerCitasDesdeDB() {
         ArrayList<Cita> citas = new ArrayList<>();
         Connection cnx = ConexionDB.obtenerConexion();
@@ -1157,27 +1251,10 @@ public class Clinica implements Serializable {
         return facturas;
     }
     
-    private void actualizarEstadoPagadoRegistroVacunacion(String idVacuna, Date fechaAplicacion, boolean pagada) {
-        Connection cnx = ConexionDB.obtenerConexion();
-        if (cnx == null) return;
-       
-        String sql = "UPDATE RegistroVacunacion SET pagada = ? WHERE id_vacuna = ? AND fecha_aplicacion = ?";
-        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
-            ps.setBoolean(1, pagada);
-            ps.setString(2, idVacuna);
-            ps.setTimestamp(3, new java.sql.Timestamp(fechaAplicacion.getTime()));
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-
     public void agregarStockVacuna(vacunacion vacuna, int cantidad) {
         Connection cnx = ConexionDB.obtenerConexion();
         if (cnx == null) return;
 
-        
         String updateSql = "UPDATE Vacuna SET cantidad_disponible = cantidad_disponible + ?, precio = ? WHERE id_vacuna = ?";
         String insertSql = "INSERT INTO Vacuna (id_vacuna, nombre, fabricante, cantidad_disponible, precio) VALUES (?, ?, ?, ?, ?)";
 
@@ -1212,6 +1289,7 @@ public class Clinica implements Serializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        ConexionDB.cerrarConexion(cnx);
     }
     
     public boolean administrarVacuna(Paciente paciente, vacunacion vacunaAUsar, Date fecha, int cantMl) {
@@ -1241,7 +1319,6 @@ public class Clinica implements Serializable {
                 ps.executeUpdate();
             }
 
-            //Registrar la aplicación de la vacuna en la DB
             String insertRegistroSql = "INSERT INTO RegistroVacunacion (id_vacuna, cedula_paciente, fecha_aplicacion, cantidad_ml, pagada) VALUES (?, ?, ?, ?, ?)";
             try (PreparedStatement ps = cnx.prepareStatement(insertRegistroSql)) {
                 ps.setString(1, vacunaAUsar.getIdVacuna());
@@ -1268,11 +1345,19 @@ public class Clinica implements Serializable {
             }
             e.printStackTrace();
             return false;
-        } 
+        }
     }
 
     public void iniciarVigilancia(Consulta consulta, int horas) {
-        if (consulta != null) {
+        if (consulta == null) return;
+
+        Connection cnx = ConexionDB.obtenerConexion();
+        if (cnx == null) return;
+
+        String sql = "INSERT INTO Bajo_vigilancia (cedula_paciente, id_enfermedad, cedula_doctor, fecha_inicio, estado, id_consulta_origen, horas_vigilancia) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            
             Bajo_vigilancia nuevaVigilancia = new Bajo_vigilancia(
                 consulta.getPaciente(),
                 consulta.getEnfermedad(),
@@ -1281,73 +1366,55 @@ public class Clinica implements Serializable {
                 consulta,
                 horas
             );
-            agregarVigilancia(nuevaVigilancia); 
-            }
+
+            ps.setString(1, nuevaVigilancia.getPaciente().getCedula());
+            ps.setString(2, nuevaVigilancia.getEnfermedad().getId());
+            ps.setString(3, nuevaVigilancia.getDoctorResponsable().getCedula());
+            ps.setTimestamp(4, new java.sql.Timestamp(nuevaVigilancia.getFechaInicio().getTime()));
+            ps.setString(5, nuevaVigilancia.getEstado());
+            ps.setString(6, nuevaVigilancia.getConsultaOrigen().getId());
+            ps.setInt(7, nuevaVigilancia.getHorasVigilancia());
+            
+            ps.executeUpdate();
+                      
+            this.misVigilancias.add(nuevaVigilancia);     
+        } catch (SQLException e) {        
+            e.printStackTrace();
+        } finally {
+            ConexionDB.cerrarConexion(cnx);
+        }
     }
     
     public void agregarVigilancia(Bajo_vigilancia vigilancia) {
-        if (vigilancia == null) {           
-            return;
-        }
+        if (vigilancia == null) return;
+        if (vigilancia.getPaciente() == null || vigilancia.getEnfermedad() == null || vigilancia.getDoctorResponsable() == null) return;
 
-        if (vigilancia.getPaciente() == null) {            
-            return;
-        }
-        
-        if (vigilancia.getEnfermedad() == null) {           
-            return;
-        }
-        
-        if (vigilancia.getDoctorResponsable() == null) {            
-            return;
-        }
-        
         Connection cnx = ConexionDB.obtenerConexion();
-        if (cnx == null) {           
-            return;
-        }
-               
-        String sql = "INSERT INTO Bajo_vigilancia (id_vigilancia,cedula_paciente, id_enfermedad, cedula_doctor, fecha_inicio, estado, id_consulta, horas_vigilancia) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        
+        if (cnx == null) return;
+
+        String sql = "INSERT INTO Bajo_vigilancia (cedula_paciente, id_enfermedad, cedula_doctor, fecha_inicio, estado, id_consulta_origen, horas_vigilancia) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {
-            
-        	ps.setInt(1, idVigilancia); 
-            ps.setString(2, vigilancia.getPaciente().getCedula());
-            ps.setString(3, vigilancia.getEnfermedad().getId());
-            ps.setString(4, vigilancia.getDoctorResponsable().getCedula());
-            ps.setTimestamp(5, new java.sql.Timestamp(vigilancia.getFechaInicio().getTime()));
-            ps.setString(6, vigilancia.getEstado());
-            
+            ps.setString(1, vigilancia.getPaciente().getCedula());
+            ps.setString(2, vigilancia.getEnfermedad().getId());
+            ps.setString(3, vigilancia.getDoctorResponsable().getCedula());
+            ps.setTimestamp(4, new java.sql.Timestamp(vigilancia.getFechaInicio().getTime()));
+            ps.setString(5, vigilancia.getEstado());
             if (vigilancia.getConsultaOrigen() != null) {
-                ps.setString(7, vigilancia.getConsultaOrigen().getId());             
+                ps.setString(6, vigilancia.getConsultaOrigen().getId());
             } else {
-                ps.setNull(7, java.sql.Types.VARCHAR);              
+                ps.setNull(6, java.sql.Types.VARCHAR);
             }
-            
-            ps.setInt(8, vigilancia.getHorasVigilancia()); 
-            
-            int filasAfectadas = ps.executeUpdate();
-            
-            if (filasAfectadas > 0) {              
-                if (this.misVigilancias == null) {
-                    this.misVigilancias = new ArrayList<>();
-                }
-                this.misVigilancias.add(vigilancia);
-                idVigilancia++; 
-                }
-            
+            ps.setInt(7, vigilancia.getHorasVigilancia());
+
+            int filas = ps.executeUpdate();
+            if (filas > 0) {
+                misVigilancias.add(vigilancia);
+                idVigilancia++;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-                       
-        } catch (Exception e) {
-            e.printStackTrace();
         } finally {
-            try {
-                if (cnx != null) 
-                	cnx.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            ConexionDB.cerrarConexion(cnx);
         }
     }
 
@@ -1365,6 +1432,7 @@ public class Clinica implements Serializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        ConexionDB.cerrarConexion(cnx);
     }
 
 
@@ -1452,7 +1520,7 @@ public class Clinica implements Serializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return null;       
     }
 
     public Especialidad buscarEspecialidadPorNombre(String nombre) {

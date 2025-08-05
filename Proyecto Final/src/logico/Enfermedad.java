@@ -33,4 +33,6 @@ public class Enfermedad implements Serializable {
     public String toString() {
         return nombre;
     }
+
+	 
 }
